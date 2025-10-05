@@ -15,7 +15,7 @@ type AuthContextType = {
   token: string | null;
   isLoading: boolean;
   login: (email: string, password: string) => Promise<void>;
-  register: (email: string, password: string) => Promise<void>;
+  register: (name: string, email: string, password: string) => Promise<void>;
   logout: () => Promise<void>;
 };
 
@@ -45,8 +45,8 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
         await saveToken(accessToken);
         setToken(accessToken);
       },
-      register: async (email: string, password: string) => {
-        const { accessToken } = await registerApi(email, password);
+      register: async (name: string, email: string, password: string) => {
+        const { accessToken } = await registerApi(name, email, password);
         await saveToken(accessToken);
         setToken(accessToken);
       },

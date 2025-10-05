@@ -13,10 +13,12 @@ import RegisterScreen from "../screens/auth/RegisterScreen";
 import CaseListScreen from "../screens/cases/CaseListScreen";
 import QuizScreen from "../screens/quiz/QuizScreen";
 import ReviewScreen from "../screens/quiz/ReviewScreen";
+import DashboardScreen from "../screens/dashboard/DashboardScreen";
 
 export type RootStackParamList = {
   Login: undefined;
   Register: undefined;
+  Dashboard: undefined;
   CaseList: undefined;
   Quiz: { caseId: string } | undefined;
   Review: { caseId: string; inferId?: string } | undefined;
@@ -58,6 +60,11 @@ export default function RootNavigator() {
       <Stack.Navigator>
         {token ? (
           <>
+            <Stack.Screen
+              name="Dashboard"
+              component={DashboardScreen}
+              options={{ title: "Dashboard" }}
+            />
             <Stack.Screen
               name="CaseList"
               component={CaseListScreen}

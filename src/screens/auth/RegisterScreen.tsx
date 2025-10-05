@@ -10,14 +10,15 @@ export default function RegisterScreen({
   navigation,
 }: NativeStackScreenProps<RootStackParamList, "Register">) {
   const { register } = useAuth();
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [loading, setLoading] = useState(false);
+  const [name, setName] = useState<string>("");
+  const [email, setEmail] = useState<string>("");
+  const [password, setPassword] = useState<string>("");
+  const [loading, setLoading] = useState<boolean>(false);
 
   async function onSubmit() {
     try {
       setLoading(true);
-      await register(email.trim(), password);
+      await register(name, email.trim(), password);
     } catch (e: any) {
       Alert.alert(
         "Registration failed",
@@ -40,6 +41,21 @@ export default function RegisterScreen({
       >
         Create account
       </Text>
+      <TextInput
+        value={name}
+        onChangeText={setName}
+        placeholder="Name"
+        autoCapitalize="none"
+        keyboardType="default"
+        placeholderTextColor={colors.muted}
+        style={{
+          backgroundColor: "#111827",
+          color: colors.text,
+          padding: 12,
+          borderRadius: 12,
+          marginBottom: 12,
+        }}
+      />
       <TextInput
         value={email}
         onChangeText={setEmail}

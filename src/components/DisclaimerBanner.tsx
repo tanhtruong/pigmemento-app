@@ -13,7 +13,7 @@ export default function DisclaimerBanner() {
       }}
     >
       <Text style={{ color: colors.warning, fontWeight: "700" }}>
-        Educational use only — not for diagnosis.
+        Educational use only - not for diagnosis.
       </Text>
     </View>
   );
