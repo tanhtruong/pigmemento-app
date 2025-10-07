@@ -2,12 +2,21 @@ import React from "react";
 import { StatusBar } from "expo-status-bar";
 import { AuthProvider } from "./src/context/AuthContext";
 import RootNavigator from "./src/navigation/RootNavigator";
+import { SafeAreaView } from "react-native-safe-area-context";
+import { colors } from "./src/theme/colors";
+import DisclaimerBanner from "./src/components/DisclaimerBanner";
+import { View } from "react-native";
 
 export default function App() {
   return (
     <AuthProvider>
       <StatusBar style="light" />
-      <RootNavigator />
+      <SafeAreaView style={{ flex: 1, backgroundColor: colors.bg }}>
+        <DisclaimerBanner />
+        <View style={{ flex: 1 }}>
+          <RootNavigator />
+        </View>
+      </SafeAreaView>
     </AuthProvider>
   );
 }

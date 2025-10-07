@@ -4,11 +4,17 @@ import React, {
   useLayoutEffect,
   useState,
 } from "react";
-import { View, Text, FlatList, Pressable, Image } from "react-native";
-import { api } from "../../lib/api";
-import { CaseDto } from "../../types";
+import { View, Text, FlatList, Pressable } from "react-native";
 import { colors } from "../../theme/colors";
-import DisclaimerBanner from "../../components/DisclaimerBanner";
+import StatCard from "../../components/StatCard";
+import MiniTrendChart from "../../components/MiniTrendChart";
+import {
+  getProgress,
+  getRecentAttempts,
+  getDrillsDue,
+  type ProgressSummary,
+  type RecentAttempt,
+} from "../../lib/progress";
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
 import { RootStackParamList } from "../../navigation/RootNavigator";
 import { useAuth } from "../../context/AuthContext";
@@ -16,8 +22,12 @@ import { useAuth } from "../../context/AuthContext";
 export default function DashboardScreen({
   navigation,
 }: NativeStackScreenProps<RootStackParamList, "Dashboard">) {
-  const [cases, setCases] = useState<CaseDto[]>([]);
-  const [loading, setLoading] = useState<boolean>(true);
+  const [progress, setProgress] = useState<ProgressSummary | null>(null);
+  const [recent, setRecent] = useState<RecentAttempt[]>([]);
+  const [drills, setDrills] = useState<{ count: number; nextDueAt?: string }>({
+    count: 0,
+  });
+
   const { logout } = useAuth();
 
   const handleLogout = useCallback(() => {
@@ -43,18 +53,155 @@ export default function DashboardScreen({
   useEffect(() => {
     (async () => {
       try {
-        const { data } = await api.get<CaseDto[]>("/cases?limit=10");
-        setCases(data);
-      } finally {
-        setLoading(false);
-      }
+        const [p, r, d] = await Promise.all([
+          getProgress().catch(() => null),
+          getRecentAttempts().catch(() => []),
+          getDrillsDue().catch(() => ({ count: 0 })),
+        ]);
+
+        if (p) {
+          setProgress(p);
+        }
+
+        setRecent(r);
+        setDrills(d);
+      } catch {}
     })();
   }, []);
 
+  const accuracy = progress ? `${Math.round(progress.accuracy * 100)}%` : "—";
+  const sens = progress ? `${Math.round(progress.sensitivity * 100)}%` : "—";
+  const spec = progress ? `${Math.round(progress.specificity * 100)}%` : "—";
+  const avgTime = progress ? `${Math.round(progress.avgTimeMs / 1000)}s` : "—";
+  const trend = progress?.trend?.map((t) => t.sensitivity ?? 0.0) ?? [];
+
   return (
     <View style={{ flex: 1, backgroundColor: colors.bg }}>
-      <DisclaimerBanner />
-      <Text style={{ color: colors.muted, padding: 20 }}>Dashboard.</Text>
+      <View style={{ padding: 16, gap: 12 }}>
+        <Text style={{ color: colors.text, fontSize: 22, fontWeight: "800" }}>
+          Dashboard
+        </Text>
+        <Text style={{ color: colors.muted }}>
+          Welcome back - keep training your recognition skills.
+        </Text>
+
+        {/* Stats Grid */}
+        <View style={{ flexDirection: "row", gap: 12 }}>
+          <StatCard
+            label="Accuracy"
+            value={accuracy}
+            hint={`${progress?.totalAttempts ?? 0} cases`}
+          />
+          <StatCard label="Sensitivity" value={sens} hint="Target ≥ 92%" />
+        </View>
+        <View style={{ flexDirection: "row", gap: 12 }}>
+          <StatCard label="Specificity" value={spec} />
+          <StatCard label="Avg time" value={avgTime} />
+        </View>
+
+        {/* Trend */}
+        <View
+          style={{
+            backgroundColor: colors.card,
+            padding: 14,
+            borderRadius: 16,
+          }}
+        >
+          <Text
+            style={{ color: colors.text, fontWeight: "700", marginBottom: 8 }}
+          >
+            Sensitivity trend
+          </Text>
+          <MiniTrendChart
+            data={
+              trend.length ? trend : [0.7, 0.72, 0.74, 0.73, 0.76, 0.78, 0.8]
+            }
+          />
+        </View>
+
+        {/* Drills */}
+        <View
+          style={{
+            backgroundColor: colors.card,
+            padding: 14,
+            borderRadius: 16,
+            flexDirection: "row",
+            justifyContent: "space-between",
+            alignItems: "center",
+          }}
+        >
+          <View>
+            <Text style={{ color: colors.text, fontWeight: "700" }}>
+              Spaced repetition
+            </Text>
+            <Text style={{ color: colors.muted }}>
+              {drills.count} cases due{" "}
+              {drills.nextDueAt
+                ? `· next ${new Date(drills.nextDueAt).toLocaleDateString()}`
+                : ""}
+            </Text>
+          </View>
+          <Pressable
+            onPress={() => navigation.navigate("CaseList")}
+            style={{
+              backgroundColor: colors.primary,
+              paddingVertical: 10,
+              paddingHorizontal: 14,
+              borderRadius: 12,
+            }}
+          >
+            <Text style={{ color: "#0B1220", fontWeight: "700" }}>
+              Start drill
+            </Text>
+          </Pressable>
+        </View>
+
+        {/* Recent Attempts */}
+        <View
+          style={{
+            backgroundColor: colors.card,
+            padding: 14,
+            borderRadius: 16,
+          }}
+        >
+          <Text
+            style={{ color: colors.text, fontWeight: "700", marginBottom: 8 }}
+          >
+            Recent activity
+          </Text>
+          <FlatList
+            data={recent}
+            keyExtractor={(x) => x.id}
+            ItemSeparatorComponent={() => <View style={{ height: 10 }} />}
+            renderItem={({ item }) => (
+              <Pressable
+                onPress={() =>
+                  navigation.navigate("Review", { caseId: item.caseId })
+                }
+                style={{
+                  backgroundColor: "#0F172A",
+                  borderRadius: 12,
+                  padding: 12,
+                }}
+              >
+                <Text style={{ color: colors.text, fontWeight: "600" }}>
+                  Case #{item.caseId.slice(0, 6)}
+                </Text>
+                <Text style={{ color: colors.muted }}>
+                  {item.correct ? "✅ Correct" : "❌ Incorrect"} · {item.answer}{" "}
+                  · {Math.round(item.timeToAnswerMs / 1000)}s ·{" "}
+                  {new Date(item.createdAt).toLocaleDateString()}
+                </Text>
+              </Pressable>
+            )}
+            ListEmptyComponent={
+              <Text style={{ color: colors.muted }}>
+                No attempts yet. Try a quiz!
+              </Text>
+            }
+          />
+        </View>
+      </View>
     </View>
   );
 }

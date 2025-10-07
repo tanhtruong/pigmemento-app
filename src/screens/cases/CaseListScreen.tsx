@@ -8,7 +8,6 @@ import { View, Text, FlatList, Pressable, Image } from "react-native";
 import { api } from "../../lib/api";
 import { CaseDto } from "../../types";
 import { colors } from "../../theme/colors";
-import DisclaimerBanner from "../../components/DisclaimerBanner";
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
 import { RootStackParamList } from "../../navigation/RootNavigator";
 
@@ -31,7 +30,6 @@ export default function CaseListScreen({
 
   return (
     <View style={{ flex: 1, backgroundColor: colors.bg }}>
-      <DisclaimerBanner />
       <FlatList
         data={cases}
         keyExtractor={(item) => item.id}
