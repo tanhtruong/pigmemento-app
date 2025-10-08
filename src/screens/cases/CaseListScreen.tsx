@@ -6,22 +6,22 @@ import React, {
 } from "react";
 import { View, Text, FlatList, Pressable, Image } from "react-native";
 import { api } from "../../lib/api";
-import { CaseDto } from "../../types";
 import { colors } from "../../theme/colors";
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
 import { RootStackParamList } from "../../navigation/RootNavigator";
+import { CaseListItem, Page } from "../../types";
 
 export default function CaseListScreen({
   navigation,
 }: NativeStackScreenProps<RootStackParamList, "CaseList">) {
-  const [cases, setCases] = useState<CaseDto[]>([]);
+  const [cases, setCases] = useState<CaseListItem[]>([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     (async () => {
       try {
-        const { data } = await api.get<CaseDto[]>("/cases?limit=50");
-        setCases(data);
+        const { data } = await api.get<Page<CaseListItem>>("/cases?limit=50");
+        setCases(data.items);
       } finally {
         setLoading(false);
       }
