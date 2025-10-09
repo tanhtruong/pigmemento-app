@@ -1,3 +1,4 @@
+import { AnswerListItemDto, Label, Page } from "../types";
 import { api } from "./api";
 
 export type ProgressSummary = {
@@ -14,7 +15,7 @@ export type RecentAttempt = {
   id: string;
   caseId: string;
   correct: boolean;
-  answer: "benign" | "malignant";
+  answer: Label;
   createdAt: string;
   timeToAnswerMs: number;
 };
@@ -24,10 +25,17 @@ export async function getProgress(): Promise<ProgressSummary> {
   return data;
 }
 
-export async function getRecentAttempts(limit = 5): Promise<RecentAttempt[]> {
-  const { data } = await api.get<RecentAttempt[]>(
-    `/me/recent-attempts?limit=${limit}`
+export async function getRecentAttempts(
+  limit = 5,
+  cursor?: string | null
+): Promise<Page<AnswerListItemDto>> {
+  const params = new URLSearchParams({ limit: String(limit) });
+  if (cursor) params.set("cursor", cursor);
+
+  const { data } = await api.get<Page<AnswerListItemDto>>(
+    `/answers/my-recent?${params.toString()}`
   );
+
   return data;
 }
 

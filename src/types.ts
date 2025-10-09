@@ -91,6 +91,15 @@ export interface AttemptDto {
   createdAt: string; // ISO
 }
 
+export interface AnswerListItemDto {
+  id: string;
+  caseId: string;
+  answer: Label;
+  correct: boolean;
+  timeToAnswerMs: number;
+  createdAt: string; // ISO UTC
+}
+
 // =========================
 // Inference
 // =========================
@@ -107,7 +116,7 @@ export interface InferResponseDto {
 // =========================
 export interface Page<T> {
   items: T[];
-  nextCursor?: string | null; // or pageNumber/pageSize if you choose those
+  nextCursor: string | null; // or pageNumber/pageSize if you choose those
 }
 
 // =========================

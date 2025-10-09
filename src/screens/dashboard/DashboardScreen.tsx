@@ -24,6 +24,7 @@ export default function DashboardScreen({
 }: NativeStackScreenProps<RootStackParamList, "Dashboard">) {
   const [progress, setProgress] = useState<ProgressSummary | null>(null);
   const [recent, setRecent] = useState<RecentAttempt[]>([]);
+  const [nextCursor, setNextCursor] = useState<string | null>(null);
   const [drills, setDrills] = useState<{ count: number; nextDueAt?: string }>({
     count: 0,
   });
@@ -55,7 +56,7 @@ export default function DashboardScreen({
       try {
         const [p, r, d] = await Promise.all([
           getProgress().catch(() => null),
-          getRecentAttempts().catch(() => []),
+          getRecentAttempts().catch(() => ({ items: [], nextCursor: null })),
           getDrillsDue().catch(() => ({ count: 0 })),
         ]);
 
@@ -63,8 +64,10 @@ export default function DashboardScreen({
           setProgress(p);
         }
 
-        setRecent(r);
+        setRecent(r.items);
         setDrills(d);
+
+        setNextCursor(r.nextCursor);
       } catch {}
     })();
   }, []);

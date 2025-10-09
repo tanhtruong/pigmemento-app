@@ -3,6 +3,7 @@ import { CONFIG } from "../config";
 import { getToken } from "./storage";
 
 export const api = axios.create({ baseURL: "https://api.pigmemento.app" });
+// export const api = axios.create({ baseURL: "http://localhost:5197" });
 
 // cache token in memory to avoid async read every request
 let currentToken: string | null = null;
