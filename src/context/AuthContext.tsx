@@ -7,7 +7,12 @@ import React, {
 } from "react";
 import * as Splash from "expo-splash-screen";
 import { saveToken, getToken, clearToken } from "../lib/storage";
-import { login as loginApi, register as registerApi } from "../lib/auth";
+import {
+  // login as loginApi,
+  // register as registerApi,
+  useLogin,
+  useRegister,
+} from "../lib/auth";
 import { setAuthToken } from "../lib/api";
 
 Splash.preventAutoHideAsync().catch(() => {});
@@ -28,6 +33,9 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
   const [token, setToken] = useState<string | null>(null);
   const [isLoading, setLoading] = useState(true);
 
+  const { mutateAsync: loginApi } = useLogin();
+  const { mutateAsync: registerApi } = useRegister();
+
   useEffect(() => {
     (async () => {
       const t = await getToken();
@@ -43,13 +51,13 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
       token,
       isLoading,
       login: async (email: string, password: string) => {
-        const { accessToken } = await loginApi(email, password);
+        const { accessToken } = await loginApi({ email, password });
         await saveToken(accessToken);
         setToken(accessToken);
         setAuthToken(accessToken);
       },
       register: async (name: string, email: string, password: string) => {
-        const { accessToken } = await registerApi(name, email, password);
+        const { accessToken } = await registerApi({ name, email, password });
         await saveToken(accessToken);
         setToken(accessToken);
         setAuthToken(accessToken);

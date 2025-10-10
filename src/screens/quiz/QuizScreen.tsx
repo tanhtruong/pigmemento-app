@@ -1,43 +1,52 @@
-import React, { useMemo, useState } from "react";
+import React, { useCallback, useMemo, useState } from "react";
 import { View, Text, Image, Pressable } from "react-native";
 import { colors } from "../../theme/colors";
 import { api } from "../../lib/api";
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
 import { RootStackParamList } from "../../navigation/RootNavigator";
+import { AttemptPostRequest, Label } from "../../types";
+import { useAnswerTimer } from "../../features/answers/hooks/use-answer-timer";
+import { useFocusEffect } from "@react-navigation/native";
+import { useCase } from "../../features/cases/api/use-case";
+import { useSubmitAnswer } from "../../features/answers/api/use-submit-answer";
 
 export default function QuizScreen({
   route,
   navigation,
 }: NativeStackScreenProps<RootStackParamList, "Quiz">) {
   const caseId = route.params?.caseId!;
-  const [answer, setAnswer] = useState<"benign" | "malignant" | null>(null);
-  const [submitting, setSubmitting] = useState(false);
-  const [imageUrl, setImageUrl] = useState<string | null>(null);
+  const [answer, setAnswer] = useState<Label | null>(null);
+  const { start, stop, reset } = useAnswerTimer();
 
-  React.useEffect(() => {
-    (async () => {
-      const { data } = await api.get(`/cases/${caseId}`); // returns case without truth
-      setImageUrl(data.imageUrl);
-    })();
-  }, [caseId]);
+  const { data } = useCase(caseId);
+  const { mutate: submitAttempt, isPending } = useSubmitAnswer();
 
-  async function onSubmit() {
+  useFocusEffect(
+    useCallback(() => {
+      start();
+      return () => reset();
+    }, [start, reset])
+  );
+
+  const onSubmit = async () => {
     if (!answer) return;
-    setSubmitting(true);
-    try {
-      // Send to inference; backend proxies to ML service and returns probs + cam URL
-      const { data } = await api.post("/infer", { caseId, answer });
-      navigation.replace("Review", { caseId });
-    } finally {
-      setSubmitting(false);
-    }
-  }
+    const timeToAnswerMs = stop();
+
+    submitAttempt(
+      { caseId, answer, timeToAnswerMs },
+      {
+        onSuccess: () => {
+          navigation.replace("Review", { caseId });
+        },
+      }
+    );
+  };
 
   return (
     <View style={{ flex: 1, backgroundColor: colors.bg }}>
-      {imageUrl && (
+      {data?.imageUrl && (
         <Image
-          source={{ uri: imageUrl }}
+          source={{ uri: data.imageUrl }}
           style={{ width: "100%", height: 340 }}
           resizeMode="cover"
         />
@@ -80,7 +89,7 @@ export default function QuizScreen({
         </View>
         <Pressable
           onPress={onSubmit}
-          disabled={!answer || submitting}
+          disabled={!answer || isPending}
           style={{
             marginTop: 16,
             backgroundColor: colors.primary,
@@ -90,7 +99,7 @@ export default function QuizScreen({
           }}
         >
           <Text style={{ color: "#0B1220", fontWeight: "700" }}>
-            {submitting ? "Submitting…" : "Submit"}
+            {isPending ? "Submitting…" : "Submit"}
           </Text>
         </Pressable>
       </View>

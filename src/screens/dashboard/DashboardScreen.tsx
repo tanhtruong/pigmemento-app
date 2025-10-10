@@ -1,38 +1,26 @@
-import React, {
-  useCallback,
-  useEffect,
-  useLayoutEffect,
-  useState,
-} from "react";
+import React, { useCallback, useLayoutEffect, useState } from "react";
 import { View, Text, FlatList, Pressable } from "react-native";
 import { colors } from "../../theme/colors";
 import StatCard from "../../components/StatCard";
 import MiniTrendChart from "../../components/MiniTrendChart";
-import {
-  getProgress,
-  getRecentAttempts,
-  getDrillsDue,
-  type ProgressSummary,
-  type RecentAttempt,
-} from "../../lib/progress";
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
 import { RootStackParamList } from "../../navigation/RootNavigator";
 import { useAuth } from "../../context/AuthContext";
+import { useProgress } from "../../features/dashboard/api/use-progress";
+import { useRecentAttempts } from "../../features/dashboard/api/use-recent-attempts";
+import { useDrillsDue } from "../../features/dashboard/api/use-drills-due";
 
 export default function DashboardScreen({
   navigation,
 }: NativeStackScreenProps<RootStackParamList, "Dashboard">) {
-  const [progress, setProgress] = useState<ProgressSummary | null>(null);
-  const [recent, setRecent] = useState<RecentAttempt[]>([]);
-  const [nextCursor, setNextCursor] = useState<string | null>(null);
-  const [drills, setDrills] = useState<{ count: number; nextDueAt?: string }>({
-    count: 0,
-  });
+  const { data: progress = null } = useProgress();
+  const { data: drills = { count: 0, nextDueAt: null } } = useDrillsDue();
+  const { data: recent } = useRecentAttempts(5, null);
 
   const { logout } = useAuth();
 
   const handleLogout = useCallback(() => {
-    void logout();
+    logout();
   }, [logout]);
 
   useLayoutEffect(() => {
@@ -50,27 +38,6 @@ export default function DashboardScreen({
       ),
     });
   }, [navigation, handleLogout]);
-
-  useEffect(() => {
-    (async () => {
-      try {
-        const [p, r, d] = await Promise.all([
-          getProgress().catch(() => null),
-          getRecentAttempts().catch(() => ({ items: [], nextCursor: null })),
-          getDrillsDue().catch(() => ({ count: 0 })),
-        ]);
-
-        if (p) {
-          setProgress(p);
-        }
-
-        setRecent(r.items);
-        setDrills(d);
-
-        setNextCursor(r.nextCursor);
-      } catch {}
-    })();
-  }, []);
 
   const accuracy = progress ? `${Math.round(progress.accuracy * 100)}%` : "—";
   const sens = progress ? `${Math.round(progress.sensitivity * 100)}%` : "—";
@@ -173,7 +140,7 @@ export default function DashboardScreen({
             Recent activity
           </Text>
           <FlatList
-            data={recent}
+            data={recent?.items ?? []}
             keyExtractor={(x) => x.id}
             ItemSeparatorComponent={() => <View style={{ height: 10 }} />}
             renderItem={({ item }) => (

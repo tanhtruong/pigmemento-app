@@ -12,20 +12,21 @@ export default function ReviewScreen({
 }: NativeStackScreenProps<RootStackParamList, "Review">) {
   const { caseId } = route.params!;
   const [detail, setDetail] = useState<CaseDetail | null>(null);
-  const [infer, setInfer] = useState<InferResponseDto | null>(null);
+  // const [infer, setInfer] = useState<InferResponseDto | null>(null);
 
   useEffect(() => {
     (async () => {
       const caseRes = await api.get<CaseDetail>(`/cases/${caseId}`);
       setDetail(caseRes.data);
-      const inferRes = await api.get<InferResponseDto>(
-        `/infer/result?caseId=${caseId}`
-      ); // or returned immediately from /infer
-      setInfer(inferRes.data);
+      // const inferRes = await api.get<InferResponseDto>(
+      //   `/infer/result?caseId=${caseId}`
+      // ); // or returned immediately from /infer
+      // setInfer(inferRes.data);
     })();
   }, [caseId]);
 
-  if (!detail || !infer)
+  if (!detail)
+    // if (!detail || !infer)
     return (
       <View
         style={{
@@ -39,12 +40,12 @@ export default function ReviewScreen({
       </View>
     );
 
-  const correct =
-    infer.probs.malignant > infer.probs.benign ? "malignant" : "benign";
+  // const correct =
+  //   infer.probs.malignant > infer.probs.benign ? "malignant" : "benign";
 
   return (
     <View style={{ flex: 1, backgroundColor: colors.bg }}>
-      <CameraOverlay imageUrl={detail.imageUrl} camUrl={infer.camPngUrl} />
+      {/* <CameraOverlay imageUrl={detail.imageUrl} camUrl={infer.camPngUrl} /> */}
       <View style={{ padding: 16 }}>
         <Text
           style={{
@@ -56,12 +57,12 @@ export default function ReviewScreen({
         >
           Model probabilities
         </Text>
-        <Text style={{ color: colors.text }}>
+        {/* <Text style={{ color: colors.text }}>
           Benign: {(infer.probs.benign * 100).toFixed(1)}%
         </Text>
         <Text style={{ color: colors.text, marginBottom: 12 }}>
           Malignant: {(infer.probs.malignant * 100).toFixed(1)}%
-        </Text>
+        </Text> */}
         <Text style={{ color: colors.muted, marginBottom: 12 }}>
           Truth label:{" "}
           <Text style={{ color: colors.text, fontWeight: "700" }}>
@@ -78,7 +79,7 @@ export default function ReviewScreen({
           keyExtractor={(x, i) => i.toString()}
           renderItem={({ item }) => (
             <Text style={{ color: colors.muted, marginBottom: 6 }}>
-              • {item}
+              • {item.points}
             </Text>
           )}
           ListEmptyComponent={

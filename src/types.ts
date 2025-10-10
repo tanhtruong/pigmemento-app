@@ -37,7 +37,7 @@ export interface AuthUser {
 }
 
 export interface AuthResponse {
-  token: string; // JWT
+  accessToken: string; // JWT
   user: AuthUser;
 }
 
