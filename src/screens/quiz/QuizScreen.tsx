@@ -1,5 +1,5 @@
 import React, { useCallback, useState } from "react";
-import { View, Text, Image, Pressable } from "react-native";
+import { View, Text, Image, Pressable, Alert } from "react-native";
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
 import { useFocusEffect } from "@react-navigation/native";
 import { RootStackParamList } from "navigation/RootNavigator";
@@ -11,6 +11,7 @@ import { colors } from "@lib/theme/colors";
 import { Controller, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import z from "zod";
+import { AxiosError, isAxiosError } from "axios";
 
 const quizSchema = z.object({
   caseId: z.string().uuid(),
@@ -32,6 +33,7 @@ export default function QuizScreen({
     control,
     handleSubmit,
     watch,
+    setValue,
     formState: { errors, isSubmitting },
   } = useForm({
     resolver: zodResolver(quizSchema),
@@ -51,21 +53,28 @@ export default function QuizScreen({
 
   const selected = watch("answer");
 
+  const onPressSubmit = async () => {
+    const ms = stop(); // get elapsed time
+    setValue("timeToAnswerMs", ms, { shouldValidate: true, shouldDirty: true });
+    // Now run RHF submit so values include timeToAnswerMs
+    await handleSubmit(onSubmit)();
+  };
+
   const onSubmit = async (values: z.infer<typeof quizSchema>) => {
     const timeToAnswerMs = stop();
 
-    submitAttempt(
-      {
-        caseId: values.caseId,
-        answer: values.answer,
-        timeToAnswerMs: values.timeToAnswerMs,
+    submitAttempt(values, {
+      onSuccess: () => {
+        navigation.replace("Review", { caseId });
       },
-      {
-        onSuccess: () => {
-          navigation.replace("Review", { caseId });
-        },
-      }
-    );
+      onError: (e) => {
+        if (isAxiosError(e)) {
+          Alert.alert(
+            e.response?.data.error ?? "Something went wrong. Try again."
+          );
+        }
+      },
+    });
   };
 
   return (
@@ -132,8 +141,8 @@ export default function QuizScreen({
         )}
 
         <Pressable
-          onPress={handleSubmit(onSubmit)}
-          disabled={isPending}
+          onPress={onPressSubmit}
+          disabled={isPending || isSubmitting || !selected}
           style={{
             marginTop: 16,
             backgroundColor: colors.primary,

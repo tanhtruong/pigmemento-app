@@ -6,16 +6,6 @@ export interface AttemptPostRequest {
   timeToAnswerMs: number; // latency
 }
 
-export interface AttemptDto {
-  id: string;
-  userId: string;
-  caseId: string;
-  answer: Label;
-  correct: boolean;
-  timeToAnswerMs: number;
-  createdAt: string; // ISO
-}
-
 export interface AnswerListItemDto {
   id: string;
   caseId: string;
@@ -24,3 +14,11 @@ export interface AnswerListItemDto {
   timeToAnswerMs: number;
   createdAt: string; // ISO UTC
 }
+
+export type DailyAttempts = {
+  limit: number;
+  used: number;
+  remaining: number;
+  resetAtLocal: string; // ISO
+  resetAtUtc: string; // UTC
+};

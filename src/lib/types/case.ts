@@ -15,7 +15,6 @@ export interface CaseListItem {
   imageUrl: string;
   difficulty: Difficulty;
   patient: Patient;
-  // no 'label' here
 }
 
 /**
@@ -34,6 +33,9 @@ export interface CaseDetail {
   teachingPoints?: TeachingPoint[];
 }
 
+/**
+ * Teaching points for a case
+ */
 export interface TeachingPoint {
   id: string;
   caseId: string;

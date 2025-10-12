@@ -1,16 +1,7 @@
 import { api } from "@lib/api";
 import { queryKeys } from "@lib/query-keys";
+import { ProgressSummary } from "@lib/types/progress";
 import { useQuery } from "@tanstack/react-query";
-
-export type ProgressSummary = {
-  accuracy: number; // 0..1
-  sensitivity: number; // 0..1
-  specificity: number; // 0..1
-  avgTimeMs: number; // milliseconds
-  totalAttempts: number;
-  streakDays: number;
-  trend?: Array<{ date: string; accuracy: number; sensitivity: number }>;
-};
 
 export const useProgress = () => {
   return useQuery({

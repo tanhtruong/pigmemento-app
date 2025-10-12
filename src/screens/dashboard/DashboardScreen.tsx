@@ -1,21 +1,24 @@
 import { useCallback, useLayoutEffect } from "react";
 import { View, Text, FlatList, Pressable } from "react-native";
-import { colors } from "../../lib/theme/colors";
-import StatCard from "../../components/StatCard";
-import MiniTrendChart from "../../components/MiniTrendChart";
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
-import { RootStackParamList } from "../../navigation/RootNavigator";
-import { useAuth } from "../../context/AuthContext";
-import { useProgress } from "../../features/dashboard/api/use-progress";
-import { useRecentAttempts } from "../../features/dashboard/api/use-recent-attempts";
-import { useDrillsDue } from "../../features/dashboard/api/use-drills-due";
+import { RootStackParamList } from "navigation/RootNavigator";
+import { useProgress } from "@features/dashboard/api/use-progress";
+import { useDrillsDue } from "@features/dashboard/api/use-drills-due";
+import { useRecentAttempts } from "@features/dashboard/api/use-recent-attempts";
+import { useAuth } from "context/AuthContext";
+import { colors } from "@lib/theme/colors";
+import StatCard from "@components/StatCard";
+import MiniTrendChart from "@components/MiniTrendChart";
+import { Check, Dot, X } from "lucide-react-native";
+import { useDailyAttempts } from "@features/dashboard/api/use-daily-attempts";
 
 export default function DashboardScreen({
   navigation,
 }: NativeStackScreenProps<RootStackParamList, "Dashboard">) {
   const { data: progress } = useProgress();
   const { data: drills } = useDrillsDue();
-  const { data: recent } = useRecentAttempts(5, null);
+  const { data: recent } = useRecentAttempts();
+  const { data: dailyAttempts } = useDailyAttempts();
 
   const { logout } = useAuth();
 
@@ -140,7 +143,7 @@ export default function DashboardScreen({
             Recent activity
           </Text>
           <FlatList
-            data={recent?.items ?? []}
+            data={recent.items}
             keyExtractor={(x) => x.id}
             ItemSeparatorComponent={() => <View style={{ height: 10 }} />}
             renderItem={({ item }) => (
@@ -157,11 +160,45 @@ export default function DashboardScreen({
                 <Text style={{ color: colors.text, fontWeight: "600" }}>
                   Case #{item.caseId.slice(0, 6)}
                 </Text>
-                <Text style={{ color: colors.muted }}>
-                  {item.correct ? "✅ Correct" : "❌ Incorrect"} · {item.answer}{" "}
-                  · {Math.round(item.timeToAnswerMs / 1000)}s ·{" "}
-                  {new Date(item.createdAt).toLocaleDateString()}
-                </Text>
+                <View
+                  style={{
+                    flexDirection: "row",
+                    alignItems: "center",
+                    flexWrap: "wrap",
+                  }}
+                >
+                  {item.correct ? (
+                    <>
+                      <Check color={colors.success} />
+                      <Text style={{ color: colors.success, marginLeft: 2 }}>
+                        Correct
+                      </Text>
+                    </>
+                  ) : (
+                    <>
+                      <X color={colors.danger} />
+                      <Text style={{ color: colors.danger, marginLeft: 2 }}>
+                        Incorrect
+                      </Text>
+                    </>
+                  )}
+
+                  <Dot color={colors.text} />
+
+                  <Text style={{ color: colors.muted }}>{item.answer}</Text>
+
+                  <Dot color={colors.text} />
+
+                  <Text style={{ color: colors.muted }}>
+                    {Math.round(item.timeToAnswerMs / 1000)}s
+                  </Text>
+
+                  <Dot color={colors.text} />
+
+                  <Text style={{ color: colors.muted }}>
+                    {new Date(item.createdAt).toLocaleDateString()}
+                  </Text>
+                </View>
               </Pressable>
             )}
             ListEmptyComponent={

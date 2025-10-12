@@ -50,9 +50,23 @@ export default function ReviewScreen({
           Malignant: {(infer.probs.malignant * 100).toFixed(1)}%
         </Text> */}
         <Text style={{ color: colors.muted, marginBottom: 12 }}>
-          Truth label:{" "}
+          Ground truth:{" "}
           <Text style={{ color: colors.text, fontWeight: "700" }}>
             {detail.label || "hidden in quiz list"}
+          </Text>
+        </Text>
+
+        <Text style={{ color: colors.muted, marginBottom: 12 }}>
+          Pathological class:{" "}
+          <Text style={{ color: colors.text, fontWeight: "700" }}>
+            {detail.diagnosis2 || "-"}
+          </Text>
+        </Text>
+
+        <Text style={{ color: colors.muted, marginBottom: 12 }}>
+          Specific diagnosis:{" "}
+          <Text style={{ color: colors.text, fontWeight: "700" }}>
+            {detail.diagnosis3 || "-"}
           </Text>
         </Text>
         <Text

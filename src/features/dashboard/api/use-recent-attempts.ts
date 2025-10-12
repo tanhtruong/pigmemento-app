@@ -11,14 +11,15 @@ export const useRecentAttempts = (
   return useQuery({
     queryKey: queryKeys["recent-attempts"],
     queryFn: async () => {
-      const params = new URLSearchParams({ limit: String(limit) });
-      if (cursor) params.set("cursor", cursor);
-
-      const res = await api.get<Page<AnswerListItemDto>>(
-        `/answers/my-recent${params.toString()}`
-      );
+      const res = await api.get<Page<AnswerListItemDto>>(`/answers/my-recent`, {
+        params: {
+          limit,
+          ...(cursor ? { cursor } : {}),
+        },
+      });
 
       return res.data;
     },
+    initialData: { items: [], nextCursor: null },
   });
 };
