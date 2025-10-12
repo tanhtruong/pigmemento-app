@@ -1,7 +1,5 @@
 import axios, { AxiosHeaders, InternalAxiosRequestConfig } from "axios";
-import { CONFIG } from "../config";
 import { getToken } from "./storage";
-import { AttemptDto, AttemptPostRequest, Label } from "../types";
 
 // export const api = axios.create({ baseURL: "https://api.pigmemento.app" });
 export const api = axios.create({ baseURL: "http://localhost:5197" });
@@ -37,16 +35,3 @@ api.interceptors.request.use(async (config: InternalAxiosRequestConfig) => {
   }
   return config;
 });
-
-export const postAttempt = async (
-  caseId: string,
-  answer: Label,
-  ms: number
-) => {
-  const { data } = await api.post<AttemptDto>("attempt", {
-    caseId,
-    answer,
-    timeToAnswerMs: ms,
-  } satisfies AttemptPostRequest);
-  return data;
-};

@@ -1,33 +1,48 @@
-import React, { useState } from "react";
-import { View, Text, TextInput, Pressable, Alert } from "react-native";
-import { useAuth } from "../../context/AuthContext";
-import { colors } from "../../theme/colors";
+import { Text, Pressable, Alert } from "react-native";
 import AuthLayout from "./AuthLayout";
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
-import { RootStackParamList } from "../../navigation/RootNavigator";
+import { Controller, useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import z from "zod";
+import { RootStackParamList } from "navigation/RootNavigator";
+import { useAuth } from "context/AuthContext";
+import { colors } from "@lib/theme/colors";
+import { FormTextInput } from "@components/form/FormTextInput";
+
+const registerSchema = z.object({
+  name: z.string(),
+  email: z.string().email(),
+  password: z.string(),
+});
 
 export default function RegisterScreen({
   navigation,
 }: NativeStackScreenProps<RootStackParamList, "Register">) {
   const { register } = useAuth();
-  const [name, setName] = useState<string>("");
-  const [email, setEmail] = useState<string>("");
-  const [password, setPassword] = useState<string>("");
-  const [loading, setLoading] = useState<boolean>(false);
 
-  async function onSubmit() {
+  const {
+    control,
+    handleSubmit,
+    formState: { errors, isSubmitting },
+  } = useForm({
+    resolver: zodResolver(registerSchema),
+    defaultValues: {
+      name: "",
+      email: "",
+      password: "",
+    },
+  });
+
+  const onSubmit = async (values: z.infer<typeof registerSchema>) => {
     try {
-      setLoading(true);
-      await register(name, email.trim(), password);
+      await register(values.name, values.email, values.password);
     } catch (e: any) {
       Alert.alert(
         "Registration failed",
         e?.response?.data?.message || e.message
       );
-    } finally {
-      setLoading(false);
     }
-  }
+  };
 
   return (
     <AuthLayout>
@@ -41,62 +56,68 @@ export default function RegisterScreen({
       >
         Create account
       </Text>
-      <TextInput
-        value={name}
-        onChangeText={setName}
-        placeholder="Name"
-        autoCapitalize="none"
-        keyboardType="default"
-        placeholderTextColor={colors.muted}
-        style={{
-          backgroundColor: "#111827",
-          color: colors.text,
-          padding: 12,
-          borderRadius: 12,
-          marginBottom: 12,
-        }}
+      <Controller
+        control={control}
+        name="name"
+        render={({ field: { onChange, onBlur, value, ref } }) => (
+          <FormTextInput
+            ref={ref}
+            label="Name"
+            autoCapitalize="none"
+            keyboardType="default"
+            value={value}
+            onChangeText={onChange}
+            onBlur={onBlur}
+            error={errors.name?.message}
+          />
+        )}
       />
-      <TextInput
-        value={email}
-        onChangeText={setEmail}
-        placeholder="Email"
-        autoCapitalize="none"
-        keyboardType="email-address"
-        placeholderTextColor={colors.muted}
-        style={{
-          backgroundColor: "#111827",
-          color: colors.text,
-          padding: 12,
-          borderRadius: 12,
-          marginBottom: 12,
-        }}
+      <Controller
+        control={control}
+        name="email"
+        render={({ field: { onChange, onBlur, value, ref } }) => (
+          <FormTextInput
+            ref={ref}
+            label="Email"
+            autoCapitalize="none"
+            keyboardType="email-address"
+            value={value}
+            onChangeText={onChange}
+            onBlur={onBlur}
+            error={errors.email?.message}
+          />
+        )}
       />
-      <TextInput
-        value={password}
-        onChangeText={setPassword}
-        placeholder="Password"
-        secureTextEntry
-        placeholderTextColor={colors.muted}
-        style={{
-          backgroundColor: "#111827",
-          color: colors.text,
-          padding: 12,
-          borderRadius: 12,
-          marginBottom: 16,
-        }}
+      <Controller
+        control={control}
+        name="password"
+        render={({ field: { onChange, onBlur, value, ref } }) => (
+          <FormTextInput
+            ref={ref}
+            label="Password"
+            secureTextEntry
+            value={value}
+            onChangeText={onChange}
+            onBlur={onBlur}
+            error={errors.password?.message}
+          />
+        )}
       />
+
       <Pressable
-        onPress={onSubmit}
-        disabled={loading}
+        onPress={handleSubmit(onSubmit)}
+        disabled={isSubmitting}
         style={{
-          backgroundColor: colors.primary,
+          backgroundColor: isSubmitting ? colors.muted : colors.primary,
           padding: 14,
           borderRadius: 12,
           alignItems: "center",
         }}
       >
-        <Text style={{ color: "#0B1220", fontWeight: "700" }}>
-          {loading ? "Creating…" : "Register"}
+        <Text
+          style={{ color: colors["primary-foreground"], fontWeight: "700" }}
+        >
+          {isSubmitting ? "Creating…" : "Register"}
         </Text>
       </Pressable>
       <Pressable

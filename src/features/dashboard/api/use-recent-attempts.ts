@@ -1,7 +1,8 @@
+import { api } from "@lib/api";
+import { Page } from "@lib/helpers/pagination";
+import { queryKeys } from "@lib/query-keys";
+import { AnswerListItemDto } from "@lib/types/attempt";
 import { useQuery } from "@tanstack/react-query";
-import { api } from "../../../lib/api";
-import { AnswerListItemDto, Page } from "../../../types";
-import { queryKeys } from "../../../lib/query-keys";
 
 export const useRecentAttempts = (
   limit: number = 5,

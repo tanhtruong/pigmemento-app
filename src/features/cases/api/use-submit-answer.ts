@@ -1,7 +1,7 @@
+import { api } from "@lib/api";
+import { queryKeys } from "@lib/query-keys";
+import { AttemptPostRequest } from "@lib/types/attempt";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { api } from "../../../lib/api";
-import { AttemptPostRequest } from "../../../types";
-import { queryKeys } from "../../../lib/query-keys";
 
 export const useSubmitAnswer = () => {
   const queryClient = useQueryClient();

@@ -1,6 +1,14 @@
 {
   "extends": "expo/tsconfig.base",
   "compilerOptions": {
-    "strict": true
+    "strict": true,
+    "ignoreDeprecations": "6.0",
+    "baseUrl": "src", // or whatever your source folder is
+    "paths": {
+      "@lib/*": ["lib/*"],
+      "@types/*": ["types/*"],
+      "@features/*": ["features/*"],
+      "@components/*": ["components/*"]
+    }
   }
 }

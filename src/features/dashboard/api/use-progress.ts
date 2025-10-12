@@ -1,6 +1,6 @@
+import { api } from "@lib/api";
+import { queryKeys } from "@lib/query-keys";
 import { useQuery } from "@tanstack/react-query";
-import { api } from "../../../lib/api";
-import { queryKeys } from "../../../lib/query-keys";
 
 export type ProgressSummary = {
   accuracy: number; // 0..1
@@ -19,5 +19,6 @@ export const useProgress = () => {
       const res = await api.get<ProgressSummary>("/me/progress");
       return res.data;
     },
+    initialData: null,
   });
 };

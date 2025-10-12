@@ -1,4 +1,3 @@
-// useAnswerTimer.ts
 import { useRef, useCallback } from "react";
 import { AppState } from "react-native";
 

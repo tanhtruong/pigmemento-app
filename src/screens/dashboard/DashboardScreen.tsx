@@ -1,6 +1,6 @@
-import React, { useCallback, useLayoutEffect, useState } from "react";
+import { useCallback, useLayoutEffect } from "react";
 import { View, Text, FlatList, Pressable } from "react-native";
-import { colors } from "../../theme/colors";
+import { colors } from "../../lib/theme/colors";
 import StatCard from "../../components/StatCard";
 import MiniTrendChart from "../../components/MiniTrendChart";
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
@@ -13,8 +13,8 @@ import { useDrillsDue } from "../../features/dashboard/api/use-drills-due";
 export default function DashboardScreen({
   navigation,
 }: NativeStackScreenProps<RootStackParamList, "Dashboard">) {
-  const { data: progress = null } = useProgress();
-  const { data: drills = { count: 0, nextDueAt: null } } = useDrillsDue();
+  const { data: progress } = useProgress();
+  const { data: drills } = useDrillsDue();
   const { data: recent } = useRecentAttempts(5, null);
 
   const { logout } = useAuth();

@@ -1,19 +1,8 @@
-import React, {
-  createContext,
-  useContext,
-  useEffect,
-  useMemo,
-  useState,
-} from "react";
+import { createContext, useContext, useEffect, useMemo, useState } from "react";
 import * as Splash from "expo-splash-screen";
-import { saveToken, getToken, clearToken } from "../lib/storage";
-import {
-  // login as loginApi,
-  // register as registerApi,
-  useLogin,
-  useRegister,
-} from "../lib/auth";
-import { setAuthToken } from "../lib/api";
+import { useLogin, useRegister } from "@lib/auth";
+import { clearToken, getToken, saveToken } from "@lib/storage";
+import { setAuthToken } from "@lib/api";
 
 Splash.preventAutoHideAsync().catch(() => {});
 

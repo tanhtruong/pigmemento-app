@@ -1,6 +1,6 @@
+import { colors } from "@lib/theme/colors";
 import React from "react";
 import { View, Text } from "react-native";
-import { colors } from "../theme/colors";
 
 export default function StatCard({
   label,

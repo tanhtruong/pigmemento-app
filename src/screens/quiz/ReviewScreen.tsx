@@ -1,29 +1,15 @@
-import React, { useEffect, useState } from "react";
 import { View, Text, FlatList } from "react-native";
-import { api } from "../../lib/api";
-import { CaseDetail, InferResponseDto } from "../../types";
-import { colors } from "../../theme/colors";
-import CameraOverlay from "../../components/CameraOverlay";
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
-import { RootStackParamList } from "../../navigation/RootNavigator";
+import { RootStackParamList } from "navigation/RootNavigator";
+import { useCase } from "@features/cases/api/use-case";
+import { colors } from "@lib/theme/colors";
 
 export default function ReviewScreen({
   route,
 }: NativeStackScreenProps<RootStackParamList, "Review">) {
   const { caseId } = route.params!;
-  const [detail, setDetail] = useState<CaseDetail | null>(null);
-  // const [infer, setInfer] = useState<InferResponseDto | null>(null);
 
-  useEffect(() => {
-    (async () => {
-      const caseRes = await api.get<CaseDetail>(`/cases/${caseId}`);
-      setDetail(caseRes.data);
-      // const inferRes = await api.get<InferResponseDto>(
-      //   `/infer/result?caseId=${caseId}`
-      // ); // or returned immediately from /infer
-      // setInfer(inferRes.data);
-    })();
-  }, [caseId]);
+  const { data: detail } = useCase(caseId);
 
   if (!detail)
     // if (!detail || !infer)
