@@ -1,23 +1,21 @@
 import { useCallback, useLayoutEffect } from "react";
-import { View, Text, FlatList, Pressable } from "react-native";
+import { View, Text, Pressable } from "react-native";
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
 import { RootStackParamList } from "navigation/RootNavigator";
 import { useProgress } from "@features/dashboard/api/use-progress";
 import { useDrillsDue } from "@features/dashboard/api/use-drills-due";
-import { useRecentAttempts } from "@features/dashboard/api/use-recent-attempts";
 import { useAuth } from "context/AuthContext";
 import { colors } from "@lib/theme/colors";
 import StatCard from "@components/StatCard";
 import MiniTrendChart from "@components/MiniTrendChart";
-import { Check, Dot, X } from "lucide-react-native";
 import { useDailyAttempts } from "@features/dashboard/api/use-daily-attempts";
+import { List } from "@features/dashboard/components/recent-attempts/list";
 
 export default function DashboardScreen({
   navigation,
 }: NativeStackScreenProps<RootStackParamList, "Dashboard">) {
   const { data: progress } = useProgress();
   const { data: drills } = useDrillsDue();
-  const { data: recent } = useRecentAttempts();
   const { data: dailyAttempts } = useDailyAttempts();
 
   const { logout } = useAuth();
@@ -108,106 +106,43 @@ export default function DashboardScreen({
               Spaced repetition
             </Text>
             <Text style={{ color: colors.muted }}>
+              {dailyAttempts.remaining} remaining today
+            </Text>
+            <Text style={{ color: colors.muted }}>
               {drills.count} cases due{" "}
               {drills.nextDueAt
                 ? `· next ${new Date(drills.nextDueAt).toLocaleDateString()}`
                 : ""}
             </Text>
           </View>
-          <Pressable
-            onPress={() => navigation.navigate("CaseList")}
-            style={{
-              backgroundColor: colors.primary,
-              paddingVertical: 10,
-              paddingHorizontal: 14,
-              borderRadius: 12,
-            }}
-          >
-            <Text style={{ color: "#0B1220", fontWeight: "700" }}>
-              Start drill
-            </Text>
-          </Pressable>
+          {dailyAttempts.remaining > 0 && (
+            <Pressable
+              disabled={dailyAttempts.remaining === 0}
+              onPress={() => navigation.navigate("CaseList")}
+              style={{
+                backgroundColor:
+                  dailyAttempts.remaining === 0 ? colors.muted : colors.primary,
+                paddingVertical: 10,
+                paddingHorizontal: 14,
+                borderRadius: 12,
+              }}
+            >
+              <Text
+                style={{
+                  color: colors["primary-foreground"],
+                  fontWeight: "700",
+                }}
+              >
+                Start drill
+              </Text>
+            </Pressable>
+          )}
         </View>
 
         {/* Recent Attempts */}
-        <View
-          style={{
-            backgroundColor: colors.card,
-            padding: 14,
-            borderRadius: 16,
-          }}
-        >
-          <Text
-            style={{ color: colors.text, fontWeight: "700", marginBottom: 8 }}
-          >
-            Recent activity
-          </Text>
-          <FlatList
-            data={recent.items}
-            keyExtractor={(x) => x.id}
-            ItemSeparatorComponent={() => <View style={{ height: 10 }} />}
-            renderItem={({ item }) => (
-              <Pressable
-                onPress={() =>
-                  navigation.navigate("Review", { caseId: item.caseId })
-                }
-                style={{
-                  backgroundColor: "#0F172A",
-                  borderRadius: 12,
-                  padding: 12,
-                }}
-              >
-                <Text style={{ color: colors.text, fontWeight: "600" }}>
-                  Case #{item.caseId.slice(0, 6)}
-                </Text>
-                <View
-                  style={{
-                    flexDirection: "row",
-                    alignItems: "center",
-                    flexWrap: "wrap",
-                  }}
-                >
-                  {item.correct ? (
-                    <>
-                      <Check color={colors.success} />
-                      <Text style={{ color: colors.success, marginLeft: 2 }}>
-                        Correct
-                      </Text>
-                    </>
-                  ) : (
-                    <>
-                      <X color={colors.danger} />
-                      <Text style={{ color: colors.danger, marginLeft: 2 }}>
-                        Incorrect
-                      </Text>
-                    </>
-                  )}
-
-                  <Dot color={colors.text} />
-
-                  <Text style={{ color: colors.muted }}>{item.answer}</Text>
-
-                  <Dot color={colors.text} />
-
-                  <Text style={{ color: colors.muted }}>
-                    {Math.round(item.timeToAnswerMs / 1000)}s
-                  </Text>
-
-                  <Dot color={colors.text} />
-
-                  <Text style={{ color: colors.muted }}>
-                    {new Date(item.createdAt).toLocaleDateString()}
-                  </Text>
-                </View>
-              </Pressable>
-            )}
-            ListEmptyComponent={
-              <Text style={{ color: colors.muted }}>
-                No attempts yet. Try a quiz!
-              </Text>
-            }
-          />
-        </View>
+        <List
+          onItemPress={(caseId) => navigation.navigate("Review", { caseId })}
+        />
       </View>
     </View>
   );

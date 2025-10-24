@@ -3,11 +3,20 @@ import { NativeStackScreenProps } from "@react-navigation/native-stack";
 import { RootStackParamList } from "navigation/RootNavigator";
 import { colors } from "@lib/theme/colors";
 import { useCases } from "@features/cases/api/use-cases";
+import { useDailyAttempts } from "@features/dashboard/api/use-daily-attempts";
+import { useEffect } from "react";
 
 export default function CaseListScreen({
   navigation,
 }: NativeStackScreenProps<RootStackParamList, "CaseList">) {
   const { data, isLoading } = useCases();
+  const { data: dailyAttempts } = useDailyAttempts();
+
+  useEffect(() => {
+    if (dailyAttempts.remaining === 0) {
+      navigation.navigate("Dashboard");
+    }
+  }, [dailyAttempts]);
 
   return (
     <View style={{ flex: 1, backgroundColor: colors.bg }}>

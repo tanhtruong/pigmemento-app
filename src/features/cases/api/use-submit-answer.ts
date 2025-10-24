@@ -13,6 +13,8 @@ export const useSubmitAnswer = () => {
       queryClient.invalidateQueries({ queryKey: queryKeys["drills-due"] });
       queryClient.invalidateQueries({ queryKey: queryKeys["me-progress"] });
       queryClient.invalidateQueries({ queryKey: queryKeys["recent-attempts"] });
+      queryClient.invalidateQueries({ queryKey: queryKeys["daily-attempts"] });
+      queryClient.invalidateQueries({ queryKey: queryKeys["cases"] });
     },
   });
 };

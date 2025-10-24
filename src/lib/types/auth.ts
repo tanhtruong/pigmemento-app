@@ -4,8 +4,8 @@ export type Role = "user" | "admin" | "educator";
  * Authenticated user object
  */
 export interface AuthUser {
-  id: string;
-  name?: string | null;
+  id: string; // GUID
+  name: string;
   email: string;
   role: Role;
   createdAtUtc: string; // ISO

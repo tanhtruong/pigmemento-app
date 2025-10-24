@@ -1,6 +1,7 @@
 export const colors = {
   bg: "#0B1220",
   card: "#111827",
+  "activity-card-bg": "#0F172A",
   text: "#E5E7EB",
   muted: "#94A3B8",
   primary: "#38BDF8",
