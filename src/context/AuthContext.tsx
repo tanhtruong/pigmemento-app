@@ -8,6 +8,7 @@ Splash.preventAutoHideAsync().catch(() => {});
 
 type AuthContextType = {
   token: string | null;
+  isAuthenticated: boolean;
   isLoading: boolean;
   login: (email: string, password: string) => Promise<void>;
   register: (name: string, email: string, password: string) => Promise<void>;
@@ -20,24 +21,28 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
   children,
 }) => {
   const [token, setToken] = useState<string | null>(null);
-  const [isLoading, setLoading] = useState(true);
+  const [isLoading, setLoading] = useState<boolean>(true);
 
   const { mutateAsync: loginApi } = useLogin();
   const { mutateAsync: registerApi } = useRegister();
 
   useEffect(() => {
     (async () => {
-      const t = await getToken();
-      setToken(t);
-      setAuthToken(t);
-      setLoading(false);
-      Splash.hideAsync().catch(() => {});
+      try {
+        const t = await getToken();
+        setToken(t);
+        setAuthToken(t);
+      } finally {
+        setLoading(false);
+        Splash.hideAsync().catch(() => {});
+      }
     })();
   }, []);
 
   const value = useMemo(
     () => ({
       token,
+      isAuthenticated: !!token,
       isLoading,
       login: async (email: string, password: string) => {
         const { accessToken } = await loginApi({ email, password });
@@ -57,7 +62,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
         setAuthToken(null);
       },
     }),
-    [token, isLoading]
+    [isLoading]
   );
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;

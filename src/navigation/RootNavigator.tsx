@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import {
   NavigationContainer,
   DefaultTheme,
@@ -14,6 +14,7 @@ import CaseListScreen from "../screens/cases/CaseListScreen";
 import QuizScreen from "../screens/quiz/QuizScreen";
 import ReviewScreen from "../screens/quiz/ReviewScreen";
 import DashboardScreen from "../screens/dashboard/DashboardScreen";
+import { getToken } from "@lib/storage";
 
 export type RootStackParamList = {
   Login: undefined;
@@ -38,7 +39,7 @@ const PigmementoTheme = {
 };
 
 export default function RootNavigator() {
-  const { token, isLoading } = useAuth();
+  const { isLoading, isAuthenticated } = useAuth();
 
   if (isLoading) {
     return (
@@ -58,7 +59,7 @@ export default function RootNavigator() {
   return (
     <NavigationContainer theme={PigmementoTheme}>
       <Stack.Navigator>
-        {token ? (
+        {isAuthenticated ? (
           <>
             <Stack.Screen
               name="Dashboard"
