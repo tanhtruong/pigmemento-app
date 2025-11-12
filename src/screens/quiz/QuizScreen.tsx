@@ -1,164 +1,237 @@
-import React, { useCallback, useState } from "react";
-import { View, Text, Image, Pressable, Alert } from "react-native";
-import { NativeStackScreenProps } from "@react-navigation/native-stack";
-import { useFocusEffect } from "@react-navigation/native";
-import { RootStackParamList } from "navigation/RootNavigator";
-import { Label, labelSchema } from "@lib/types/case";
-import { useAnswerTimer } from "@features/cases/hooks/use-answer-timer";
-import { useCase } from "@features/cases/api/use-case";
-import { useSubmitAnswer } from "@features/cases/api/use-submit-answer";
-import { colors } from "@lib/theme/colors";
-import { Controller, useForm } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
+// QuizScreen.tsx
+import React, {useCallback} from "react";
+import {
+    View,
+    Text,
+    Image,
+    Pressable,
+    Alert,
+    ActivityIndicator,
+    ScrollView,
+} from "react-native";
+import {NativeStackScreenProps} from "@react-navigation/native-stack";
+import {useFocusEffect} from "@react-navigation/native";
+import {RootStackParamList} from "navigation/RootNavigator";
+import {Label, labelSchema} from "@lib/types/case";
+import {useAnswerTimer} from "@features/cases/hooks/use-answer-timer";
+import {useCase} from "@features/cases/api/use-case";
+import {useSubmitAnswer} from "@features/cases/api/use-submit-answer";
+import {colors} from "@lib/theme/colors"; // uses your new palette
+import {Controller, useForm} from "react-hook-form";
+import {zodResolver} from "@hookform/resolvers/zod";
 import z from "zod";
-import { AxiosError, isAxiosError } from "axios";
+import {isAxiosError} from "axios";
+import {useRandomCase} from "@features/cases/api/use-random-case";
 
-const quizSchema = z.object({
-  caseId: z.string().uuid(),
-  answer: labelSchema,
-  timeToAnswerMs: z.number(),
+import styles from "./QuizScreen.styles"; // <-- external stylesheet using new colors
+
+const attemptSchema = z.object({
+    chosenLabel: labelSchema,
 });
 
-export default function QuizScreen({
-  route,
-  navigation,
-}: NativeStackScreenProps<RootStackParamList, "Quiz">) {
-  const caseId = route.params?.caseId!;
-  const { data } = useCase(caseId);
+type Props = NativeStackScreenProps<RootStackParamList, "Quiz">;
 
-  const { start, stop, reset } = useAnswerTimer();
-  const { mutate: submitAttempt, isPending } = useSubmitAnswer();
+export default function QuizScreen({route, navigation}: Props) {
+    const paramCaseId = route.params?.caseId;
 
-  const {
-    control,
-    handleSubmit,
-    watch,
-    setValue,
-    formState: { errors, isSubmitting },
-  } = useForm({
-    resolver: zodResolver(quizSchema),
-    defaultValues: {
-      caseId,
-      answer: undefined as unknown as Label,
-      timeToAnswerMs: 0,
-    },
-  });
+    // If no caseId provided -> get random unseen case
+    const {
+        data: randomCase,
+        isLoading: isRandomLoading,
+        isError: isRandomError,
+    } = useRandomCase(!paramCaseId);
 
-  useFocusEffect(
-    useCallback(() => {
-      start();
-      return () => reset();
-    }, [start, reset])
-  );
+    const caseId = paramCaseId ?? randomCase?.id;
 
-  const selected = watch("answer");
+    const {
+        data,
+        isLoading: isCaseLoading,
+        isError: isCaseError,
+    } = useCase(caseId!);
 
-  const onPressSubmit = async () => {
-    const ms = stop(); // get elapsed time
-    setValue("timeToAnswerMs", ms, { shouldValidate: true, shouldDirty: true });
-    // Now run RHF submit so values include timeToAnswerMs
-    await handleSubmit(onSubmit)();
-  };
+    const {start, stop, reset} = useAnswerTimer();
+    const {mutate: submitAttempt, isPending} = useSubmitAnswer();
 
-  const onSubmit = async (values: z.infer<typeof quizSchema>) => {
-    const timeToAnswerMs = stop();
-
-    submitAttempt(values, {
-      onSuccess: () => {
-        navigation.replace("Review", { caseId });
-      },
-      onError: (e) => {
-        if (isAxiosError(e)) {
-          Alert.alert(
-            e.response?.data.error ?? "Something went wrong. Try again."
-          );
-        }
-      },
+    const {
+        control,
+        handleSubmit,
+        watch,
+        formState: {errors, isSubmitting},
+    } = useForm({
+        resolver: zodResolver(attemptSchema),
+        defaultValues: {
+            chosenLabel: undefined as unknown as Label,
+        },
     });
-  };
 
-  return (
-    <View style={{ flex: 1, backgroundColor: colors.bg }}>
-      {data?.imageUrl && (
-        <Image
-          source={{ uri: data.imageUrl }}
-          style={{ width: "100%", height: 340 }}
-          resizeMode="cover"
-        />
-      )}
-      <View style={{ padding: 16 }}>
-        <Text style={{ color: colors.text, fontSize: 18, marginBottom: 12 }}>
-          Your impression?
-        </Text>
+    useFocusEffect(
+        useCallback(() => {
+            if (!caseId) return;
+            start();
+            return () => reset();
+        }, [start, reset, caseId])
+    );
 
-        <Controller
-          control={control}
-          name="answer"
-          render={({ field: { value, onChange } }) => (
-            <View style={{ flexDirection: "row", gap: 12 }}>
-              <Pressable
-                onPress={() => onChange("benign")}
-                accessibilityRole="button"
-                accessibilityState={{ selected: value === "benign" }}
-                style={{
-                  flex: 1,
-                  backgroundColor:
-                    value === "benign" ? colors.success : colors.card,
-                  padding: 14,
-                  borderRadius: 12,
-                  alignItems: "center",
-                }}
-              >
-                <Text style={{ color: colors.text, fontWeight: "700" }}>
-                  Benign
+    const selected = watch("chosenLabel");
+    const disabled = isPending || isSubmitting || !selected;
+
+    const onPressSubmit = async () => {
+        await handleSubmit(onSubmit)();
+    };
+
+    const onSubmit = async (values: z.infer<typeof attemptSchema>) => {
+        if (!caseId) return;
+        const timeToAnswerMs = stop();
+
+        submitAttempt(
+            {
+                caseId,
+                attempt: {
+                    chosenLabel: values.chosenLabel,
+                    // timeToAnswerMs, // include if your API expects it
+                },
+            },
+            {
+                onSuccess: (res) => {
+                    const attempt = {
+                        ...res,
+                        chosenLabel: values.chosenLabel,
+                    };
+                    navigation.replace("Review", {caseId, attempt});
+                },
+                onError: (e) => {
+                    if (isAxiosError(e)) {
+                        Alert.alert(
+                            e.response?.data?.error ?? "Something went wrong. Try again."
+                        );
+                    } else {
+                        Alert.alert("Something went wrong. Try again.");
+                    }
+                },
+            }
+        );
+    };
+
+    if (isRandomError || isCaseError) {
+        return (
+            <View style={styles.loadingContainer}>
+                <Text style={styles.loadingText}>
+                    Couldn’t load a new case. Try again later.
                 </Text>
-              </Pressable>
-              <Pressable
-                onPress={() => onChange("malignant")}
-                accessibilityRole="button"
-                accessibilityState={{ selected: value === "malignant" }}
-                style={{
-                  flex: 1,
-                  backgroundColor:
-                    value === "malignant" ? colors.danger : colors.card,
-                  padding: 14,
-                  borderRadius: 12,
-                  alignItems: "center",
-                }}
-              >
-                <Text style={{ color: colors.text, fontWeight: "700" }}>
-                  Malignant
-                </Text>
-              </Pressable>
             </View>
-          )}
-        />
+        );
+    }
 
-        {!!errors.answer && (
-          <Text style={{ color: colors.danger, marginTop: 8 }}>
-            {errors.answer.message}
-          </Text>
-        )}
+    if (!caseId || isRandomLoading || isCaseLoading || !data) {
+        return (
+            <View style={styles.loadingContainer}>
+                <ActivityIndicator color={colors.accent}/>
+                <Text style={styles.loadingText}>Loading case…</Text>
+            </View>
+        );
+    }
 
-        <Pressable
-          onPress={onPressSubmit}
-          disabled={isPending || isSubmitting || !selected}
-          style={{
-            marginTop: 16,
-            backgroundColor: colors.primary,
-            padding: 14,
-            borderRadius: 12,
-            alignItems: "center",
-            opacity: !selected || isSubmitting ? 0.7 : 1,
-          }}
-        >
-          <Text
-            style={{ color: colors["primary-foreground"], fontWeight: "700" }}
-          >
-            {isPending ? "Submitting…" : "Submit"}
-          </Text>
-        </Pressable>
-      </View>
-    </View>
-  );
+    return (
+        <View style={styles.root}>
+            <ScrollView
+                style={{flex: 1}}
+                contentContainerStyle={styles.scrollContent}
+                bounces={false}
+            >
+                {/* Image */}
+                <View style={styles.imageWrapper}>
+                    <Image
+                        source={{uri: data.imageUrl}}
+                        style={styles.image}
+                        resizeMode="cover"
+                    />
+                </View>
+
+                {/* Clinical context */}
+                <View style={styles.clinicalCard}>
+                    <Text style={styles.clinicalLabel}>Clinical context</Text>
+                    <Text style={styles.clinicalMain}>
+                        {data.patientAge}-year-old · {data.site}
+                    </Text>
+                    {!!data.clinicalNote && (
+                        <Text style={styles.clinicalNote}>{data.clinicalNote}</Text>
+                    )}
+                </View>
+
+                {/* Question */}
+                <Text style={styles.questionTitle}>Your impression?</Text>
+                <Text style={styles.questionHelp}>
+                    Choose the single best option based on dermatoscopic appearance and
+                    minimal clinical info.
+                </Text>
+
+                {/* Choices */}
+                <Controller
+                    control={control}
+                    name="chosenLabel"
+                    render={({field: {value, onChange}}) => (
+                        <View style={styles.choicesRow}>
+                            <ChoiceButton
+                                label="Benign"
+                                value="benign"
+                                selected={value === "benign"}
+                                onPress={() => onChange("benign")}
+                            />
+                            <ChoiceButton
+                                label="Malignant"
+                                value="malignant"
+                                selected={value === "malignant"}
+                                onPress={() => onChange("malignant")}
+                            />
+                        </View>
+                    )}
+                />
+
+                {!!errors.chosenLabel && (
+                    <Text style={styles.errorText}>{errors.chosenLabel.message}</Text>
+                )}
+
+                {/* Submit */}
+                <Pressable
+                    onPress={onPressSubmit}
+                    disabled={disabled}
+                    style={[styles.submitButton, disabled && styles.submitButtonDisabled]}
+                >
+                    <Text style={styles.submitText}>
+                        {isPending || isSubmitting ? "Submitting…" : "Submit answer"}
+                    </Text>
+                </Pressable>
+
+                {/* Disclaimer */}
+                <Text style={styles.disclaimer}>
+                    Pigmemento is for educational training only. Do not use this app to
+                    diagnose or manage patients.
+                </Text>
+            </ScrollView>
+        </View>
+    );
 }
+
+type ChoiceButtonProps = {
+    label: string;
+    value: Label;
+    selected: boolean;
+    onPress: () => void;
+};
+
+const ChoiceButton: React.FC<ChoiceButtonProps> = ({
+                                                       label,
+                                                       selected,
+                                                       onPress,
+                                                   }) => (
+    <Pressable
+        onPress={onPress}
+        accessibilityRole="button"
+        accessibilityState={{selected}}
+        style={[styles.choiceButton, selected && styles.choiceButtonSelected]}
+    >
+        <Text style={[styles.choiceText, selected && styles.choiceTextSelected]}>
+            {label}
+        </Text>
+    </Pressable>
+);

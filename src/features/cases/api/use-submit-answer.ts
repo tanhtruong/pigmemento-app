@@ -1,20 +1,18 @@
-import { api } from "@lib/api";
-import { queryKeys } from "@lib/query-keys";
-import { AttemptPostRequest } from "@lib/types/attempt";
-import { useMutation, useQueryClient } from "@tanstack/react-query";
+import {api} from "@lib/api";
+import {queryKeys} from "@lib/query-keys";
+import {useMutation, useQueryClient} from "@tanstack/react-query";
+import {AttemptRequest, AttemptResponse} from "@lib/types/attempt";
 
 export const useSubmitAnswer = () => {
-  const queryClient = useQueryClient();
+    const queryClient = useQueryClient();
 
-  return useMutation({
-    mutationFn: async (attempt: AttemptPostRequest) =>
-      await api.post("/answers", attempt),
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: queryKeys["drills-due"] });
-      queryClient.invalidateQueries({ queryKey: queryKeys["me-progress"] });
-      queryClient.invalidateQueries({ queryKey: queryKeys["recent-attempts"] });
-      queryClient.invalidateQueries({ queryKey: queryKeys["daily-attempts"] });
-      queryClient.invalidateQueries({ queryKey: queryKeys["cases"] });
-    },
-  });
+    return useMutation({
+        mutationFn: async ({caseId, attempt}: { caseId: string, attempt: AttemptRequest }) => {
+            const res = await api.post<AttemptResponse>(`/cases/${caseId}/answer`, attempt)
+            return res.data as AttemptResponse;
+        },
+        onSuccess: () => {
+            queryClient.invalidateQueries({queryKey: queryKeys["cases"]});
+        },
+    });
 };

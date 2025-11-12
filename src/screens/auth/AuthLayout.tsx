@@ -1,15 +1,11 @@
-import { colors } from "@lib/theme/colors";
 import React from "react";
-import { View } from "react-native";
+import {View} from "react-native";
+import styles from "./Auth.styles";
 
-export default function AuthLayout({
-  children,
-}: {
-  children: React.ReactNode;
-}) {
-  return (
-    <View style={{ flex: 1, backgroundColor: colors.bg }}>
-      <View style={{ flex: 1, padding: 20 }}>{children}</View>
-    </View>
-  );
+export default function AuthLayout({children}: { children: React.ReactNode }) {
+    return (
+        <View style={styles.container}>
+            <View style={styles.content}>{children}</View>
+        </View>
+    );
 }

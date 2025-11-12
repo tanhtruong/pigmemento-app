@@ -1,92 +1,118 @@
-import { View, Text, FlatList } from "react-native";
-import { NativeStackScreenProps } from "@react-navigation/native-stack";
-import { RootStackParamList } from "navigation/RootNavigator";
-import { useCase } from "@features/cases/api/use-case";
-import { colors } from "@lib/theme/colors";
+import {View, Text, FlatList, Image, StyleSheet, Pressable} from "react-native";
+import {NativeStackScreenProps} from "@react-navigation/native-stack";
+import {RootStackParamList} from "navigation/RootNavigator";
+import {useCase} from "@features/cases/api/use-case";
+import {colors} from "@lib/theme/colors";
+import {AttemptResponse} from "@lib/types/attempt";
+import {Label} from "@lib/types/case";
+import {styles} from "./ReviewScreen.styles"
 
-export default function ReviewScreen({
-  route,
-}: NativeStackScreenProps<RootStackParamList, "Review">) {
-  const { caseId } = route.params!;
+type Props = NativeStackScreenProps<RootStackParamList, "Review">;
 
-  const { data: detail } = useCase(caseId);
+export default function ReviewScreen({route, navigation}: Props) {
+    const {caseId, attempt} = route.params as {
+        caseId: string;
+        attempt: AttemptResponse & { chosenLabel: Label };
+    };
 
-  if (!detail)
-    // if (!detail || !infer)
+    const {data: detail} = useCase(caseId);
+
+    if (!detail) {
+        return (
+            <View style={styles.center}>
+                <Text style={styles.loading}>Loading…</Text>
+            </View>
+        );
+    }
+
+    const isCorrect = attempt.correct;
+    const primaryLabel = isCorrect ? "Correct" : "Incorrect";
+    const primaryColor = isCorrect ? colors.success : colors.danger;
+
+    const handleBack = () => navigation.navigate("Dashboard");
+    const handleNext = () => navigation.navigate("Quiz");
+
     return (
-      <View
-        style={{
-          flex: 1,
-          backgroundColor: colors.bg,
-          justifyContent: "center",
-          alignItems: "center",
-        }}
-      >
-        <Text style={{ color: colors.text }}>Loading…</Text>
-      </View>
+        <View style={styles.root}>
+            {/* Case image */}
+            <Image
+                source={{uri: detail.imageUrl}}
+                style={styles.image}
+                resizeMode="cover"
+            />
+
+            <View style={styles.body}>
+                {/* Result pill */}
+                <View style={[styles.resultPill, {borderColor: primaryColor}]}>
+                    <View style={[styles.dot, {backgroundColor: primaryColor}]}/>
+                    <Text style={[styles.resultText, {color: primaryColor}]}>
+                        {primaryLabel}
+                    </Text>
+                </View>
+
+                {/* Clinical context */}
+                <View style={styles.clinicalCard}>
+                    <Text style={styles.clinicalLabel}>Clinical context</Text>
+                    <Text style={styles.clinicalMain}>
+                        {detail.patientAge ? `${detail.patientAge}-year-old` : "Age not specified"} ·{" "}
+                        {detail.site || "Site not specified"}
+                    </Text>
+                    {!!detail.clinicalNote && (
+                        <Text style={styles.clinicalNote}>{detail.clinicalNote}</Text>
+                    )}
+                </View>
+
+                {/* Answer vs truth */}
+                <View style={styles.answerRow}>
+                    <View style={styles.answerBlock}>
+                        <Text style={styles.answerLabel}>Your answer</Text>
+                        <Text
+                            style={[
+                                styles.answerValue,
+                                {color: isCorrect ? colors.success : colors.danger},
+                            ]}
+                        >
+                            {attempt.chosenLabel}
+                        </Text>
+                    </View>
+                    <View style={styles.answerBlock}>
+                        <Text style={styles.answerLabel}>Correct label</Text>
+                        <Text style={styles.answerValue}>{attempt.correctLabel}</Text>
+                    </View>
+                </View>
+
+                {/* Teaching points */}
+                <View style={styles.teachingCard}>
+                    <Text style={styles.subheading}>Teaching points</Text>
+                    <FlatList
+                        data={attempt.teachingPoints}
+                        keyExtractor={(_, i) => i.toString()}
+                        renderItem={({item}) => <Text style={styles.bullet}>• {item}</Text>}
+                        ListEmptyComponent={
+                            <Text style={styles.muted}>
+                                No case-specific teaching points yet. Focus on matching your reasoning to
+                                the ground truth pattern.
+                            </Text>
+                        }
+                    />
+                </View>
+
+                {/* Navigation actions */}
+                <View style={styles.actionsRow}>
+                    <Pressable style={styles.secondaryButton} onPress={handleBack}>
+                        <Text style={styles.secondaryText}>Back to dashboard</Text>
+                    </Pressable>
+                    <Pressable style={styles.primaryButton} onPress={handleNext}>
+                        <Text style={styles.primaryText}>Next case</Text>
+                    </Pressable>
+                </View>
+
+                {/* Disclaimer */}
+                <Text style={styles.disclaimer}>
+                    {attempt.disclaimer ??
+                        "Educational use only — not for diagnosis or patient management."}
+                </Text>
+            </View>
+        </View>
     );
-
-  // const correct =
-  //   infer.probs.malignant > infer.probs.benign ? "malignant" : "benign";
-
-  return (
-    <View style={{ flex: 1, backgroundColor: colors.bg }}>
-      {/* <CameraOverlay imageUrl={detail.imageUrl} camUrl={infer.camPngUrl} /> */}
-      <View style={{ padding: 16 }}>
-        <Text
-          style={{
-            color: colors.text,
-            fontSize: 18,
-            fontWeight: "700",
-            marginBottom: 8,
-          }}
-        >
-          Model probabilities
-        </Text>
-        {/* <Text style={{ color: colors.text }}>
-          Benign: {(infer.probs.benign * 100).toFixed(1)}%
-        </Text>
-        <Text style={{ color: colors.text, marginBottom: 12 }}>
-          Malignant: {(infer.probs.malignant * 100).toFixed(1)}%
-        </Text> */}
-        <Text style={{ color: colors.muted, marginBottom: 12 }}>
-          Ground truth:{" "}
-          <Text style={{ color: colors.text, fontWeight: "700" }}>
-            {detail.label || "hidden in quiz list"}
-          </Text>
-        </Text>
-
-        <Text style={{ color: colors.muted, marginBottom: 12 }}>
-          Pathological class:{" "}
-          <Text style={{ color: colors.text, fontWeight: "700" }}>
-            {detail.diagnosis2 || "-"}
-          </Text>
-        </Text>
-
-        <Text style={{ color: colors.muted, marginBottom: 12 }}>
-          Specific diagnosis:{" "}
-          <Text style={{ color: colors.text, fontWeight: "700" }}>
-            {detail.diagnosis3 || "-"}
-          </Text>
-        </Text>
-        <Text
-          style={{ color: colors.text, fontWeight: "700", marginBottom: 8 }}
-        >
-          Teaching points
-        </Text>
-        <FlatList
-          data={detail.teachingPoints || []}
-          keyExtractor={(x, i) => i.toString()}
-          renderItem={({ item }) => (
-            <Text style={{ color: colors.muted, marginBottom: 6 }}>
-              • {item.points}
-            </Text>
-          )}
-          ListEmptyComponent={
-            <Text style={{ color: colors.muted }}>No teaching points.</Text>
-          }
-        />
-      </View>
-    </View>
-  );
 }

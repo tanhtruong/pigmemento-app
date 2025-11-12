@@ -8,9 +8,8 @@ export const useCases = () => {
   return useQuery({
     queryKey: queryKeys.cases,
     queryFn: async () => {
-      const res = await api.get<Page<CaseListItem>>(`/cases`);
+      const res = await api.get<CaseListItem[]>(`/cases`);
       return res.data;
     },
-    initialData: { items: [], nextCursor: null },
   });
 };

@@ -1,102 +1,106 @@
-import React, { useState } from "react";
-import {
-  NavigationContainer,
-  DefaultTheme,
-  DarkTheme,
-} from "@react-navigation/native";
-import { createNativeStackNavigator } from "@react-navigation/native-stack";
-import { useAuth } from "../context/AuthContext";
-import { colors } from "../lib/theme/colors";
-import { Text, View } from "react-native";
+import React from "react";
+import {NavigationContainer, DarkTheme, Theme} from "@react-navigation/native";
+import {createNativeStackNavigator} from "@react-navigation/native-stack";
+import {Text, View} from "react-native";
+import {useAuth} from "../context/AuthContext";
 import LoginScreen from "../screens/auth/LoginScreen";
 import RegisterScreen from "../screens/auth/RegisterScreen";
 import CaseListScreen from "../screens/cases/CaseListScreen";
 import QuizScreen from "../screens/quiz/QuizScreen";
 import ReviewScreen from "../screens/quiz/ReviewScreen";
 import DashboardScreen from "../screens/dashboard/DashboardScreen";
-import { getToken } from "@lib/storage";
+import styles from "./RootNavigator.styles";
+import {colors} from "@lib/theme/colors";
+import {AttemptResponse} from "@lib/types/attempt";
 
 export type RootStackParamList = {
-  Login: undefined;
-  Register: undefined;
-  Dashboard: undefined;
-  CaseList: undefined;
-  Quiz: { caseId: string } | undefined;
-  Review: { caseId: string; inferId?: string } | undefined;
+    Login: undefined;
+    Register: undefined;
+    Dashboard: undefined;
+    CaseList: undefined;
+    Quiz: { caseId: string } | undefined;
+    Review: { caseId: string; attempt: AttemptResponse } | undefined;
 };
 
 const Stack = createNativeStackNavigator<RootStackParamList>();
 
-const PigmementoTheme = {
-  ...DarkTheme,
-  colors: {
-    ...DarkTheme.colors,
-    background: colors.bg,
-    text: colors.text,
-    primary: colors.primary,
-    card: colors.card,
-  },
+// Theme for @react-navigation using your tokens
+const PigmementoTheme: Theme = {
+    ...DarkTheme,
+    colors: {
+        ...DarkTheme.colors,
+        background: colors.background,
+        text: colors.textPrimary,
+        primary: colors.accent,       // used for links/ripples and header tint fallback
+        card: colors.surface,         // header background
+        border: colors.border,
+        notification: colors.accent,  // snackbars/toasts
+    },
 };
 
 export default function RootNavigator() {
-  const { isLoading, isAuthenticated } = useAuth();
+    const {isLoading, isAuthenticated} = useAuth();
 
-  if (isLoading) {
+    if (isLoading) {
+        return (
+            <View style={styles.loadingContainer}>
+                <Text style={styles.loadingText}>Loading…</Text>
+            </View>
+        );
+    }
+
     return (
-      <View
-        style={{
-          flex: 1,
-          alignItems: "center",
-          justifyContent: "center",
-          backgroundColor: colors.bg,
-        }}
-      >
-        <Text style={{ color: colors.text }}>Loading…</Text>
-      </View>
+        <NavigationContainer theme={PigmementoTheme}>
+            <Stack.Navigator
+                screenOptions={{
+                    headerStyle: {backgroundColor: colors.surface},
+                    headerTitleStyle: {color: colors.textPrimary, fontWeight: "700"},
+                    headerTintColor: colors.accent, // back arrow & action color
+                    contentStyle: {backgroundColor: colors.background},
+                    animation: "slide_from_right",
+                }}
+            >
+                {isAuthenticated ? (
+                    <>
+                        <Stack.Screen
+                            name="Dashboard"
+                            component={DashboardScreen}
+                            options={{
+                                title: "Dashboard",
+                                headerBackVisible: false, // no back button here
+                            }}
+                        />
+                        <Stack.Screen
+                            name="CaseList"
+                            component={CaseListScreen}
+                            options={{title: "Cases"}}
+                        />
+                        <Stack.Screen
+                            name="Quiz"
+                            component={QuizScreen}
+                            options={{title: "Quiz"}}
+                        />
+                        <Stack.Screen
+                            name="Review"
+                            component={ReviewScreen}
+                            options={{title: "Guided Review"}}
+                        />
+                    </>
+                ) : (
+                    <>
+                        <Stack.Screen
+                            name="Login"
+                            component={LoginScreen}
+                            options={{headerShown: false}}
+                        />
+                        <Stack.Screen
+                            name="Register"
+                            component={RegisterScreen}
+                            options={{headerShown: false}}
+                        />
+                    </>
+                )}
+            </Stack.Navigator>
+        </NavigationContainer>
     );
-  }
-
-  return (
-    <NavigationContainer theme={PigmementoTheme}>
-      <Stack.Navigator>
-        {isAuthenticated ? (
-          <>
-            <Stack.Screen
-              name="Dashboard"
-              component={DashboardScreen}
-              options={{ title: "Dashboard" }}
-            />
-            <Stack.Screen
-              name="CaseList"
-              component={CaseListScreen}
-              options={{ title: "Cases" }}
-            />
-            <Stack.Screen
-              name="Quiz"
-              component={QuizScreen}
-              options={{ title: "Quiz" }}
-            />
-            <Stack.Screen
-              name="Review"
-              component={ReviewScreen}
-              options={{ title: "Guided Review" }}
-            />
-          </>
-        ) : (
-          <>
-            <Stack.Screen
-              name="Login"
-              component={LoginScreen}
-              options={{ headerShown: false }}
-            />
-            <Stack.Screen
-              name="Register"
-              component={RegisterScreen}
-              options={{ headerShown: false }}
-            />
-          </>
-        )}
-      </Stack.Navigator>
-    </NavigationContainer>
-  );
 }
