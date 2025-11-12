@@ -12,9 +12,14 @@
       "resizeMode": "contain",
       "backgroundColor": "#ffffff"
     },
-    "plugins": [["expo-secure-store"]],
+    "plugins": [
+      [
+        "expo-secure-store"
+      ]
+    ],
     "ios": {
-      "supportsTablet": true
+      "supportsTablet": true,
+      "bundleIdentifier": "com.anonymous.pigmemento"
     },
     "android": {
       "adaptiveIcon": {
@@ -27,10 +32,11 @@
     "web": {
       "favicon": "./assets/favicon.png"
     },
-
     "extra": {
       "apiBaseUrl": "https://api.pigmemento.app",
-      "eas": { "projectId": "91cc7e68-135a-4239-a94d-22a46a6f00ad" }
+      "eas": {
+        "projectId": "91cc7e68-135a-4239-a94d-22a46a6f00ad"
+      }
     }
   }
 }
