@@ -1,4 +1,4 @@
-export type Role = "user" | "admin" | "educator";
+export type Role = 'user' | 'admin' | 'educator';
 
 /**
  * Authenticated user object

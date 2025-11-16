@@ -12,11 +12,7 @@
       "resizeMode": "contain",
       "backgroundColor": "#ffffff"
     },
-    "plugins": [
-      [
-        "expo-secure-store"
-      ]
-    ],
+    "plugins": [["expo-secure-store"]],
     "ios": {
       "supportsTablet": true,
       "bundleIdentifier": "com.anonymous.pigmemento"

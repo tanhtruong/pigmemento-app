@@ -1,5 +1,5 @@
-import { useRef, useCallback } from "react";
-import { AppState } from "react-native";
+import { useRef, useCallback } from 'react';
+import { AppState } from 'react-native';
 
 export function useAnswerTimer() {
   const startRef = useRef<number | null>(null);
@@ -7,22 +7,19 @@ export function useAnswerTimer() {
   const accumulatedRef = useRef(0);
 
   // Prefer performance.now() (monotonic) if available; fallback to Date.now()
-  const now = () =>
-    (global as any).performance?.now
-      ? (global as any).performance.now()
-      : Date.now();
+  const now = () => ((global as any).performance?.now ? (global as any).performance.now() : Date.now());
 
   const start = useCallback(() => {
     if (startRef.current !== null) return; // already running
     startRef.current = now();
 
     // Optional: pause/resume on app background/foreground
-    const sub = AppState.addEventListener("change", (state) => {
-      if (state === "background" || state === "inactive") {
+    const sub = AppState.addEventListener('change', (state) => {
+      if (state === 'background' || state === 'inactive') {
         if (startRef.current !== null && pausedAtRef.current === null) {
           pausedAtRef.current = now();
         }
-      } else if (state === "active") {
+      } else if (state === 'active') {
         if (pausedAtRef.current !== null) {
           accumulatedRef.current += now() - pausedAtRef.current;
           pausedAtRef.current = null;
