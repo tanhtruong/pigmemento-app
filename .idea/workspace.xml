@@ -70,8 +70,8 @@
   <component name="FileTemplateManagerImpl">
     <option name="RECENT_TEMPLATES">
       <list>
-        <option value="TypeScript File" />
         <option value="TypeScript JSX File" />
+        <option value="TypeScript File" />
       </list>
     </option>
   </component>
@@ -129,8 +129,9 @@
     "node.js.selected.package.tslint": "(autodetect)",
     "nodejs_package_manager_path": "npm",
     "prettierjs.PrettierConfiguration.Package": "/Users/tanht/Documents/Github/pigmemento-app/node_modules/prettier",
-    "settings.editor.selected.configurable": "preferences.keymap",
+    "settings.editor.selected.configurable": "reference.settingsdialog.IDE.editor.colors.General",
     "ts.external.directory.path": "/Users/tanht/Documents/Github/pigmemento-app/node_modules/typescript/lib",
+    "typescript.add.unambiguous.imports.on.the.fly": "true",
     "vue.rearranger.settings.migration": "true"
   },
   "keyToStringList": {
@@ -178,7 +179,7 @@
       <workItem from="1763133536714" duration="2000" />
       <workItem from="1763133551546" duration="783000" />
       <workItem from="1763134344019" duration="12195000" />
-      <workItem from="1763301275606" duration="23053000" />
+      <workItem from="1763301275606" duration="26388000" />
     </task>
     <task id="LOCAL-00001" summary="added styles and tokens for consistency between scenes">
       <option name="closed" value="true" />

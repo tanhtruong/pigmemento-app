@@ -6,8 +6,10 @@ import { useAuth } from '../../context/AuthContext';
 import { colors, radii, spacing, typography } from '@lib/theme';
 import DisclaimerBanner from '@components/DisclaimerBanner';
 import StatCard from '@components/cards/StatCard';
-import { useProfile, useProfileStats } from '@features/profile/api/use-profile';
+import { useProfile } from '@features/profile/api/use-profile';
 import { Avatar } from '@components/Avatar';
+import { useProfileStats } from '@features/profile/api/use-profile-stats';
+import { useDeleteAccount } from '@features/profile/api/use-delete-account';
 
 type Props = NativeStackScreenProps<RootStackParamList, 'Profile'>;
 
@@ -17,11 +19,36 @@ export default function ProfileScreen({}: Props) {
   const { data: user, isLoading: isProfileLoading } = useProfile();
   const { data: stats, isLoading: isStatsLoading } = useProfileStats();
 
+  const { mutate: deleteAccount, isPending: isDeleting } = useDeleteAccount();
+
   const handleLogout = async () => {
     Alert.alert('Log out', 'Are you sure you want to logout?', [
       { text: 'Cancel', style: 'cancel' },
       { text: 'Log out', style: 'destructive', onPress: async () => await logout() },
     ]);
+  };
+
+  const handleDeleteAccount = () => {
+    Alert.alert(
+      'Delete account',
+      "This will delete your account and anonymise your training history. This action can't be undone.",
+      [
+        { text: 'Cancel', style: 'cancel' },
+        {
+          text: 'Delete account',
+          style: 'destructive',
+          onPress: async () => {
+            try {
+              await deleteAccount();
+              await logout(); // clear local auth state after backend deletion
+            } catch (error) {
+              console.error(error);
+              Alert.alert('Something went wrong', 'We could not delete your account. Please try again.');
+            }
+          },
+        },
+      ],
+    );
   };
 
   const formatPercent = (value: number | null | undefined) => {
@@ -70,10 +97,7 @@ export default function ProfileScreen({}: Props) {
             <ActivityIndicator color={colors.accent} />
           </View>
         ) : !stats || stats.totalAttempts === 0 ? (
-          <Text style={styles.bodyText}>
-            No stats yet. Do a few quizzes and we’ll show your performance here — including sensitivity for melanoma
-            recognition.
-          </Text>
+          <Text style={styles.bodyText}>No stats yet. Do a few quizzes and we'll show your performance here.</Text>
         ) : (
           <>
             <View style={styles.statsGrid}>
@@ -92,6 +116,25 @@ export default function ProfileScreen({}: Props) {
       </View>
 
       <View style={{ flex: 1 }} />
+      <View style={styles.dangerCard}>
+        <Text style={styles.dangerTitle}>Danger zone</Text>
+        <Text style={styles.dangerText}>
+          Deleting your account will remove your personal information and anonymise your training history. This cannot
+          be undone.
+        </Text>
+
+        <Pressable
+          style={[styles.dangerButton, isDeleting && styles.dangerButtonDisabled]}
+          onPress={handleDeleteAccount}
+          disabled={isDeleting}
+        >
+          {isDeleting ? (
+            <ActivityIndicator color={colors.danger ?? '#fff'} />
+          ) : (
+            <Text style={styles.dangerButtonText}>Delete account</Text>
+          )}
+        </Pressable>
+      </View>
 
       <DisclaimerBanner />
     </ScrollView>
@@ -185,5 +228,39 @@ const styles = StyleSheet.create({
     ...typography.small,
     color: colors.accent,
     marginTop: spacing.xs,
+  },
+
+  // Danger zone styles
+  dangerCard: {
+    backgroundColor: colors.surface,
+    borderRadius: radii.card,
+    padding: spacing.md,
+    marginBottom: spacing.md,
+    borderWidth: 1,
+    borderColor: colors.danger,
+  },
+  dangerTitle: {
+    ...typography.subtitle,
+    color: colors.danger,
+    marginBottom: spacing.sm,
+  },
+  dangerText: {
+    ...typography.small,
+    color: colors.textSecondary,
+    marginBottom: spacing.md,
+  },
+  dangerButton: {
+    alignSelf: 'flex-start',
+    paddingHorizontal: spacing.lg,
+    paddingVertical: spacing.sm,
+    borderRadius: radii.full,
+    backgroundColor: colors.danger,
+  },
+  dangerButtonDisabled: {
+    opacity: 0.7,
+  },
+  dangerButtonText: {
+    color: colors.textPrimary,
+    fontWeight: '600',
   },
 });

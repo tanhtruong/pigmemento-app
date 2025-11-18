@@ -4,6 +4,7 @@ import { useLogin, useRegister } from '@lib/auth';
 import { clearToken, getToken, saveToken } from '@lib/storage';
 import { setAuthToken } from '@lib/api';
 import { jwtDecode } from 'jwt-decode';
+import { useQueryClient } from '@tanstack/react-query';
 
 Splash.preventAutoHideAsync().catch(() => {});
 
@@ -24,6 +25,7 @@ type AuthContextType = {
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
 export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
+  const queryClient = useQueryClient();
   const [token, setToken] = useState<string | null>(null);
   const [isLoading, setLoading] = useState<boolean>(true);
 
@@ -81,6 +83,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
       },
       logout: async () => {
         await clearToken();
+        queryClient.clear();
         setToken(null);
         setAuthToken(null);
       },
