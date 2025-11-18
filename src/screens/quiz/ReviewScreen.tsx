@@ -8,6 +8,7 @@ import { Label } from '@lib/types/case';
 import { styles } from './ReviewScreen.styles';
 import { useLatestAttempt } from '@features/cases/api/use-latest-attempt';
 import { ResultPill } from '@components/ResultPill';
+import { formatMsSmart } from '@lib/helpers/time';
 
 type Props = NativeStackScreenProps<RootStackParamList, 'Review'>;
 
@@ -17,7 +18,6 @@ export default function ReviewScreen({ route, navigation }: Props) {
   };
 
   const { data: detail, isLoading: isCaseLoading } = useCase(caseId);
-
   const { data: attempt, isLoading: isAttemptLoading } = useLatestAttempt(caseId);
 
   if (isCaseLoading || (!attempt && isAttemptLoading)) {
@@ -75,6 +75,10 @@ export default function ReviewScreen({ route, navigation }: Props) {
             <Text style={styles.answerValue}>{attempt.correctLabel}</Text>
           </View>
         </View>
+        <View style={styles.clinicalCard}>
+          <Text style={styles.clinicalLabel}>Time to Answer</Text>
+          <Text style={styles.clinicalMain}>{formatMsSmart(attempt.timeToAnswerMs)}</Text>
+        </View>
 
         {/* Teaching points */}
         <View style={styles.teachingCard}>
@@ -90,6 +94,8 @@ export default function ReviewScreen({ route, navigation }: Props) {
             }
           />
         </View>
+
+        <View style={{ flex: 1 }} />
 
         {/* Navigation actions */}
         <View style={styles.actionsRow}>

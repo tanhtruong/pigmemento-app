@@ -1,4 +1,3 @@
-// QuizScreen.tsx
 import React, { useCallback } from 'react';
 import { View, Text, Image, Pressable, Alert, ActivityIndicator, ScrollView } from 'react-native';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
@@ -19,6 +18,7 @@ import styles from './QuizScreen.styles'; // <-- external stylesheet using new c
 
 const attemptSchema = z.object({
   chosenLabel: labelSchema,
+  timeToAnswerMs: z.number(),
 });
 
 type Props = NativeStackScreenProps<RootStackParamList, 'Quiz'>;
@@ -45,6 +45,7 @@ export default function QuizScreen({ route, navigation }: Props) {
     resolver: zodResolver(attemptSchema),
     defaultValues: {
       chosenLabel: undefined as unknown as Label,
+      timeToAnswerMs: 0,
     },
   });
 
@@ -72,7 +73,7 @@ export default function QuizScreen({ route, navigation }: Props) {
         caseId,
         attempt: {
           chosenLabel: values.chosenLabel,
-          // timeToAnswerMs, // include if your API expects it
+          timeToAnswerMs, // include if your API expects it
         },
       },
       {

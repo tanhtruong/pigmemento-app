@@ -70,7 +70,7 @@ const DashboardScreen: React.FC = () => {
         />
 
         <SecondaryCard
-          title="Attempt history"
+          title="Attempt History"
           description="See all cases you’ve practiced and how you performed."
           icon={Library}
           onPress={openAttemptHistory}

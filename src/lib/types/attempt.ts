@@ -2,6 +2,7 @@ import { Label } from './case';
 
 export interface AttemptRequest {
   chosenLabel: Label; // user's guess
+  timeToAnswerMs: number;
 }
 
 export interface AttemptResponse {
@@ -16,4 +17,5 @@ export type AttemptSummary = {
   chosenLabel: Label;
   createdAt: string;
   totalAttempts: number;
+  timeToAnswerMs: number;
 };
