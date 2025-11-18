@@ -52,7 +52,7 @@ const styles = StyleSheet.create({
 
   card: {
     backgroundColor: colors.surface,
-    borderRadius: radii.lg, // ~16
+    borderRadius: radii.card,
     marginBottom: spacing.md,
     overflow: 'hidden',
     borderWidth: 1,

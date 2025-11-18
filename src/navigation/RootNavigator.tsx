@@ -13,6 +13,7 @@ import styles from './RootNavigator.styles';
 import { colors } from '@lib/theme/colors';
 import { AttemptResponse } from '@lib/types/attempt';
 import HistoryScreen from '../screens/cases/HistoryScreen';
+import ProfileScreen from '../screens/profile/ProfileScreen';
 
 export type RootStackParamList = {
   Login: undefined;
@@ -22,6 +23,7 @@ export type RootStackParamList = {
   History: undefined;
   Quiz: { caseId: string } | undefined;
   Review: { caseId: string; attempt?: AttemptResponse } | undefined;
+  Profile: undefined;
 };
 
 const Stack = createNativeStackNavigator<RootStackParamList>();
@@ -76,6 +78,7 @@ export default function RootNavigator() {
             <Stack.Screen name="History" component={HistoryScreen} options={{ title: 'History' }} />
             <Stack.Screen name="Quiz" component={QuizScreen} options={{ title: 'Quiz' }} />
             <Stack.Screen name="Review" component={ReviewScreen} options={{ title: 'Guided Review' }} />
+            <Stack.Screen name="Profile" component={ProfileScreen} options={{ title: 'Profile' }} />
           </>
         ) : (
           <>

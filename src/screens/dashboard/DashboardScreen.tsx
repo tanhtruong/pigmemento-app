@@ -1,29 +1,45 @@
-import React from 'react';
-import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
+import React, { useLayoutEffect } from 'react';
+import { View, Text, TouchableOpacity, StyleSheet, Button, Pressable, Alert } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { useAuth } from '../../context/AuthContext';
-import { Library, LogOut, MessageCircleWarningIcon, PlayCircle, School } from 'lucide-react-native';
+import { Library, LogOut, MessageCircleWarningIcon, PlayCircle, School, User, UserCircle } from 'lucide-react-native';
 import styles from './DashboardScreen.styles';
 import { colors } from '@lib/theme/colors';
 import { PrimaryCard } from '@components/cards/PrimaryCard';
 import { SecondaryCard } from '@components/cards/SecondaryCard';
 import DisclaimerBanner from '@components/DisclaimerBanner';
+import Constants from 'expo-constants';
+import { Avatar } from '@components/Avatar';
+import { useProfile } from '@features/profile/api/use-profile';
 
 const DashboardScreen: React.FC = () => {
   const navigation = useNavigation<any>();
   const { logout } = useAuth();
+  const { data: user } = useProfile();
+
+  useLayoutEffect(() => {
+    navigation.setOptions({
+      headerRight: () => (
+        <Pressable onPress={() => navigation.navigate('Profile')}>
+          {user ? <Avatar label={user.name} size={24} /> : <UserCircle color={colors.textPrimary} size={20} />}
+        </Pressable>
+      ),
+    });
+  }, [navigation, user]);
 
   const handleLogout = async () => {
-    await logout();
-    // If your navigation tree is auth-conditional, this will kick back to Log in.
+    // If you have a logout() function from context, call it here:
+    Alert.alert('Log out', 'Are you sure you want to logout?', [
+      { text: 'Cancel', style: 'cancel' },
+      { text: 'Log out', style: 'destructive', onPress: async () => await logout() },
+    ]);
   };
 
   const startQuiz = () => {
-    navigation.navigate('CaseList'); // make sure you have this screen wired
+    navigation.navigate('CaseList');
   };
 
   const openGuidedReview = () => {
-    // For now this can be a simple screen, or you can wire it later.
     navigation.navigate('GuidedReview');
   };
 

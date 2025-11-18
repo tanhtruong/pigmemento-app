@@ -122,11 +122,14 @@
     "git-widget-placeholder": "develop",
     "last_opened_file_path": "/Users/tanht/Documents/Github/pigmemento-app",
     "node.js.detected.package.eslint": "true",
+    "node.js.detected.package.standard": "true",
     "node.js.detected.package.tslint": "true",
     "node.js.selected.package.eslint": "(autodetect)",
+    "node.js.selected.package.standard": "",
     "node.js.selected.package.tslint": "(autodetect)",
     "nodejs_package_manager_path": "npm",
-    "settings.editor.selected.configurable": "preferences.editor",
+    "prettierjs.PrettierConfiguration.Package": "/Users/tanht/Documents/Github/pigmemento-app/node_modules/prettier",
+    "settings.editor.selected.configurable": "preferences.keymap",
     "ts.external.directory.path": "/Users/tanht/Documents/Github/pigmemento-app/node_modules/typescript/lib",
     "vue.rearranger.settings.migration": "true"
   },
@@ -141,6 +144,11 @@
     ]
   }
 }]]></component>
+  <component name="RecentsManager">
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/src/components/cards" />
+    </key>
+  </component>
   <component name="SharedIndexes">
     <attachedChunks>
       <set>
@@ -170,6 +178,7 @@
       <workItem from="1763133536714" duration="2000" />
       <workItem from="1763133551546" duration="783000" />
       <workItem from="1763134344019" duration="12195000" />
+      <workItem from="1763301275606" duration="23053000" />
     </task>
     <task id="LOCAL-00001" summary="added styles and tokens for consistency between scenes">
       <option name="closed" value="true" />

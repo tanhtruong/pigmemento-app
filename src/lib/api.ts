@@ -1,8 +1,8 @@
 import axios, { AxiosHeaders, InternalAxiosRequestConfig } from 'axios';
 import { getToken } from './storage';
+import Constants from 'expo-constants';
 
-// export const api = axios.create({ baseURL: "https://api.pigmemento.app" });
-export const api = axios.create({ baseURL: 'http://localhost:5197' });
+export const api = axios.create({ baseURL: Constants.expoConfig?.extra?.apiBaseUrl });
 
 // cache token in memory to avoid async read every request
 let currentToken: string | null = null;

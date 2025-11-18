@@ -12,7 +12,7 @@ type PrimaryCardProps = {
 export const PrimaryCard = ({ description, icon: Icon, title, onPress }: PrimaryCardProps) => {
   return (
     <TouchableOpacity style={styles.primaryCard} onPress={onPress}>
-      <Icon size={26} style={styles.primaryIcon} />
+      <Icon size={28} style={styles.primaryIcon} />
       <View>
         <Text style={styles.primaryTitle}>{title}</Text>
         <Text style={styles.primaryText}>{description}</Text>
@@ -26,14 +26,14 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     backgroundColor: colors.surfaceAlt,
-    padding: spacing.lg + 2, // ~14
-    borderRadius: radii.lg,
+    padding: spacing.md,
+    borderRadius: radii.card,
     borderWidth: 1,
     borderColor: colors.border,
     marginBottom: spacing.md,
   },
   primaryIcon: {
-    marginRight: spacing.md - 2, // ~10
+    marginRight: spacing.md,
     color: colors.accent,
   },
   primaryTitle: {

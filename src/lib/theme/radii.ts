@@ -3,4 +3,5 @@ export const radii = {
   md: 12,
   lg: 18,
   full: 999,
+  card: 12,
 };
