@@ -1,7 +1,7 @@
-import {spacing} from "./spacing";
+import { spacing } from './spacing';
 
 export const layout = {
-    gutter: spacing.lg,
-    contentMaxWidth: 720, // useful on tablets
-    cardGap: spacing.md,
+  gutter: spacing.lg,
+  contentMaxWidth: 720, // useful on tablets
+  cardGap: spacing.md,
 };

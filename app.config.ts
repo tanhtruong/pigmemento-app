@@ -1,16 +1,18 @@
-import { ExpoConfig, ConfigContext } from "expo/config";
+import { ExpoConfig, ConfigContext } from 'expo/config';
 
 export default ({ config }: ConfigContext): ExpoConfig => {
-  const ENV = process.env.APP_ENV || "dev";
-  const apiBaseUrl = "https://api.pigmemento.app";
-  // ENV === "prod" ? "https://api.pigmemento.app" : "http://10.0.2.2:5197";
-  //   : ENV === "staging"
-  //   ? "https://staging.api.pigmemento.app"
+  const ENV = process.env.APP_ENV || 'dev';
+  const apiBaseUrl =
+    ENV === 'prod'
+      ? 'https://api.pigmemento.app'
+      : ENV === 'staging'
+        ? 'https://staging.api.pigmemento.app'
+        : 'http://localhost:5197';
 
   return {
     ...config,
-    name: "Pigmemento",
-    slug: "pigmemento",
+    name: 'Pigmemento',
+    slug: 'pigmemento',
     extra: { apiBaseUrl },
   };
 };

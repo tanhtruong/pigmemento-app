@@ -1,8 +1,8 @@
-import { useQuery } from "@tanstack/react-query";
-import { CaseListItem } from "@lib/types/case";
-import { queryKeys } from "@lib/query-keys";
-import { api } from "@lib/api";
-import { Page } from "@lib/helpers/pagination";
+import { useQuery } from '@tanstack/react-query';
+import { CaseListItem } from '@lib/types/case';
+import { queryKeys } from '@lib/query-keys';
+import { api } from '@lib/api';
+import { Page } from '@lib/helpers/pagination';
 
 export const useCases = () => {
   return useQuery({
