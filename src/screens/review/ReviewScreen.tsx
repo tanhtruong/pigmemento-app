@@ -1,11 +1,9 @@
-import { View, Text, FlatList, Image, StyleSheet, Pressable } from 'react-native';
+import { View, Text, FlatList, Image, Pressable } from 'react-native';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
-import { RootStackParamList } from 'navigation/RootNavigator';
+import { RootStackParamList } from '../../navigation/RootNavigator';
 import { useCase } from '@features/cases/api/use-case';
 import { colors } from '@lib/theme/colors';
-import { AttemptResponse } from '@lib/types/attempt';
-import { Label } from '@lib/types/case';
-import { styles } from './ReviewScreen.styles';
+import { useReviewStyles } from './ReviewScreen.styles';
 import { useLatestAttempt } from '@features/cases/api/use-latest-attempt';
 import { ResultPill } from '@components/ResultPill';
 import { formatMsSmart } from '@lib/helpers/time';
@@ -13,9 +11,8 @@ import { formatMsSmart } from '@lib/helpers/time';
 type Props = NativeStackScreenProps<RootStackParamList, 'Review'>;
 
 export default function ReviewScreen({ route, navigation }: Props) {
-  const { caseId } = route.params as {
-    caseId: string;
-  };
+  const { caseId } = route.params as { caseId: string };
+  const styles = useReviewStyles();
 
   const { data: detail, isLoading: isCaseLoading } = useCase(caseId);
   const { data: attempt, isLoading: isAttemptLoading } = useLatestAttempt(caseId);
@@ -46,7 +43,11 @@ export default function ReviewScreen({ route, navigation }: Props) {
   return (
     <View style={styles.root}>
       {/* Case image */}
-      <Image source={{ uri: detail.imageUrl }} style={styles.image} resizeMode="cover" />
+      <Image
+        source={{ uri: detail.imageUrl }}
+        style={styles.image}
+        resizeMode="cover"
+      />
 
       <View style={styles.body}>
         {/* Result pill */}
@@ -99,10 +100,16 @@ export default function ReviewScreen({ route, navigation }: Props) {
 
         {/* Navigation actions */}
         <View style={styles.actionsRow}>
-          <Pressable style={styles.secondaryButton} onPress={handleBack}>
+          <Pressable
+            style={styles.secondaryButton}
+            onPress={handleBack}
+          >
             <Text style={styles.secondaryText}>Back to dashboard</Text>
           </Pressable>
-          <Pressable style={styles.primaryButton} onPress={handleNext}>
+          <Pressable
+            style={styles.primaryButton}
+            onPress={handleNext}
+          >
             <Text style={styles.primaryText}>Next case</Text>
           </Pressable>
         </View>

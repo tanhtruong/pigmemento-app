@@ -2,7 +2,8 @@ import { Image, Pressable, StyleSheet, Text, View } from 'react-native';
 import React from 'react';
 import { CaseListItem } from '@lib/types/case';
 import { ResultPill } from '@components/ResultPill';
-import { colors, radii, spacing, typography } from '@lib/theme';
+import { radii, spacing, typography } from '@lib/theme';
+import { useTheme } from '@lib/theme/ThemeProvider';
 
 type CaseListItemCardProps = {
   item: CaseListItem;
@@ -11,6 +12,7 @@ type CaseListItemCardProps = {
 };
 
 export function CaseListItemCard({ item, onPress, floatingPill = false }: CaseListItemCardProps) {
+  const styles = useCaseListItemCardStyles();
   return (
     <Pressable onPress={onPress} style={styles.card}>
       <Image source={{ uri: item.imageUrl }} style={styles.image} />
@@ -27,36 +29,40 @@ export function CaseListItemCard({ item, onPress, floatingPill = false }: CaseLi
   );
 }
 
-const styles = StyleSheet.create({
-  image: {
-    width: '100%',
-    height: 200,
-    resizeMode: 'cover',
-  },
+const useCaseListItemCardStyles = () => {
+  const { colors } = useTheme();
 
-  info: {
-    padding: spacing.md,
-  },
+  return StyleSheet.create({
+    image: {
+      width: '100%',
+      height: 200,
+      resizeMode: 'cover',
+    },
 
-  title: {
-    ...typography.body,
-    fontWeight: '700',
-    color: colors.textPrimary,
-  },
+    info: {
+      padding: spacing.md,
+    },
 
-  meta: {
-    ...typography.muted,
-    color: colors.textSecondary,
-    marginTop: 2,
-  },
+    title: {
+      ...typography.body,
+      fontWeight: '700',
+      color: colors.textPrimary,
+    },
 
-  card: {
-    backgroundColor: colors.surface,
-    borderRadius: radii.card,
-    marginBottom: spacing.md,
-    overflow: 'hidden',
-    borderWidth: 1,
-    borderColor: colors.border,
-    position: 'relative',
-  },
-});
+    meta: {
+      ...typography.muted,
+      color: colors.textSecondary,
+      marginTop: 2,
+    },
+
+    card: {
+      backgroundColor: colors.surface,
+      borderRadius: radii.card,
+      marginBottom: spacing.md,
+      overflow: 'hidden',
+      borderWidth: 1,
+      borderColor: colors.border,
+      position: 'relative',
+    },
+  });
+};

@@ -1,12 +1,16 @@
 import { StyleSheet } from 'react-native';
-import { colors } from '@lib/theme/colors';
+import { useTheme } from '@lib/theme/ThemeProvider';
 
-export default StyleSheet.create({
-  safeArea: {
-    flex: 1,
-    backgroundColor: colors.background,
-  },
-  container: {
-    flex: 1,
-  },
-});
+export const useAppStyles = () => {
+  const { colors } = useTheme();
+
+  return StyleSheet.create({
+    safeArea: {
+      flex: 1,
+      backgroundColor: colors.background,
+    },
+    container: {
+      flex: 1,
+    },
+  });
+};

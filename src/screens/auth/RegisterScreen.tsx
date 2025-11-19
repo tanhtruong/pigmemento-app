@@ -7,7 +7,7 @@ import z from 'zod';
 import { RootStackParamList } from 'navigation/RootNavigator';
 import { useAuth } from 'context/AuthContext';
 import { FormTextInput } from '@components/form/FormTextInput';
-import styles from './Auth.styles';
+import { useAuthStyles } from './Auth.styles';
 import { states } from '@lib/theme/states';
 
 const registerSchema = z.object({
@@ -18,6 +18,7 @@ const registerSchema = z.object({
 
 export default function RegisterScreen({ navigation }: NativeStackScreenProps<RootStackParamList, 'Register'>) {
   const { register } = useAuth();
+  const styles = useAuthStyles();
 
   const {
     control,

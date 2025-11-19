@@ -1,14 +1,13 @@
 import React, { useLayoutEffect } from 'react';
-import { View, Text, TouchableOpacity, StyleSheet, Button, Pressable, Alert } from 'react-native';
+import { View, Text, TouchableOpacity, Pressable, Alert } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { useAuth } from '../../context/AuthContext';
-import { Library, LogOut, MessageCircleWarningIcon, PlayCircle, School, User, UserCircle } from 'lucide-react-native';
-import styles from './DashboardScreen.styles';
+import { Library, LogOut, PlayCircle, UserCircle } from 'lucide-react-native';
+import { useDashboardStyles } from './DashboardScreen.styles';
 import { colors } from '@lib/theme/colors';
 import { PrimaryCard } from '@components/cards/PrimaryCard';
 import { SecondaryCard } from '@components/cards/SecondaryCard';
 import DisclaimerBanner from '@components/DisclaimerBanner';
-import Constants from 'expo-constants';
 import { Avatar } from '@components/Avatar';
 import { useProfile } from '@features/profile/api/use-profile';
 
@@ -16,6 +15,8 @@ const DashboardScreen: React.FC = () => {
   const navigation = useNavigation<any>();
   const { logout } = useAuth();
   const { data: user } = useProfile();
+
+  const styles = useDashboardStyles();
 
   useLayoutEffect(() => {
     navigation.setOptions({

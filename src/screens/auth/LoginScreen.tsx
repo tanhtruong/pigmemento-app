@@ -1,4 +1,4 @@
-import { Text, Pressable, Alert } from 'react-native';
+import { Text, Pressable, Alert, StyleSheet } from 'react-native';
 import AuthLayout from './AuthLayout';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { Controller, useForm } from 'react-hook-form';
@@ -7,7 +7,7 @@ import z from 'zod';
 import { RootStackParamList } from 'navigation/RootNavigator';
 import { useAuth } from 'context/AuthContext';
 import { FormTextInput } from '@components/form/FormTextInput';
-import styles from './Auth.styles';
+import { useAuthStyles } from './Auth.styles';
 import { states } from '@lib/theme/states';
 
 const loginSchema = z.object({
@@ -17,6 +17,7 @@ const loginSchema = z.object({
 
 export default function LoginScreen({ navigation }: NativeStackScreenProps<RootStackParamList, 'Login'>) {
   const { login } = useAuth();
+  const styles = useAuthStyles();
 
   const {
     control,

@@ -70,8 +70,8 @@
   <component name="FileTemplateManagerImpl">
     <option name="RECENT_TEMPLATES">
       <list>
-        <option value="TypeScript JSX File" />
         <option value="TypeScript File" />
+        <option value="TypeScript JSX File" />
       </list>
     </option>
   </component>
@@ -129,9 +129,8 @@
     "node.js.selected.package.tslint": "(autodetect)",
     "nodejs_package_manager_path": "npm",
     "prettierjs.PrettierConfiguration.Package": "/Users/tanht/Documents/Github/pigmemento-app/node_modules/prettier",
-    "settings.editor.selected.configurable": "reference.settingsdialog.IDE.editor.colors.General",
+    "settings.editor.selected.configurable": "editor.preferences.import",
     "ts.external.directory.path": "/Users/tanht/Documents/Github/pigmemento-app/node_modules/typescript/lib",
-    "typescript.add.unambiguous.imports.on.the.fly": "true",
     "vue.rearranger.settings.migration": "true"
   },
   "keyToStringList": {
@@ -147,6 +146,8 @@
 }]]></component>
   <component name="RecentsManager">
     <key name="MoveFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/src/screens/history" />
+      <recent name="$PROJECT_DIR$/src/screens/review" />
       <recent name="$PROJECT_DIR$/src/components/cards" />
     </key>
   </component>
@@ -179,7 +180,7 @@
       <workItem from="1763133536714" duration="2000" />
       <workItem from="1763133551546" duration="783000" />
       <workItem from="1763134344019" duration="12195000" />
-      <workItem from="1763301275606" duration="26388000" />
+      <workItem from="1763301275606" duration="42002000" />
     </task>
     <task id="LOCAL-00001" summary="added styles and tokens for consistency between scenes">
       <option name="closed" value="true" />

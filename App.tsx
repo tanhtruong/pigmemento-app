@@ -5,16 +5,19 @@ import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { View } from 'react-native';
 import { AuthProvider } from './src/context/AuthContext';
 import RootNavigator from './src/navigation/RootNavigator';
-import styles from './App.styles';
+import { useAppStyles } from './App.styles';
+import { ThemeProvider, useTheme } from '@lib/theme/ThemeProvider';
 
 const queryClient = new QueryClient();
+const AppContent = () => {
+  const styles = useAppStyles();
+  const { isDark } = useTheme();
 
-export default function App() {
   return (
     <SafeAreaProvider initialMetrics={initialWindowMetrics}>
       <QueryClientProvider client={queryClient}>
         <AuthProvider>
-          <StatusBar style="light" />
+          <StatusBar style={isDark ? 'light' : 'dark'} />
           <SafeAreaView style={styles.safeArea}>
             <View style={styles.container}>
               <RootNavigator />
@@ -23,5 +26,13 @@ export default function App() {
         </AuthProvider>
       </QueryClientProvider>
     </SafeAreaProvider>
+  );
+};
+
+export default function App() {
+  return (
+    <ThemeProvider>
+      <AppContent />
+    </ThemeProvider>
   );
 }

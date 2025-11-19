@@ -1,6 +1,7 @@
 import { StyleSheet, Text, View } from 'react-native';
-import { colors, spacing } from '@lib/theme';
+import { radii, spacing, typography } from '@lib/theme';
 import { Check, X } from 'lucide-react-native';
+import { useTheme } from '@lib/theme/ThemeProvider';
 
 type ResultPillProps = {
   isCorrect?: boolean;
@@ -8,6 +9,9 @@ type ResultPillProps = {
 };
 
 export const ResultPill = ({ isCorrect, floating }: ResultPillProps) => {
+  const { colors } = useTheme();
+  const styles = useResultPillStyles();
+
   if (isCorrect === undefined) return null;
 
   const color = isCorrect ? colors.success : colors.danger;
@@ -21,32 +25,42 @@ export const ResultPill = ({ isCorrect, floating }: ResultPillProps) => {
         floating ? styles.absolute : { borderColor: color, borderWidth: 1, alignSelf: 'flex-start' },
       ]}
     >
-      <Result size={16} style={styles.icon} color={color} />
+      <Result
+        size={16}
+        style={styles.icon}
+        color={color}
+      />
       <Text style={[styles.text, { color }]}>{label}</Text>
     </View>
   );
 };
 
-const styles = StyleSheet.create({
-  pill: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    paddingHorizontal: 8,
-    paddingVertical: 3,
-    borderRadius: 50,
-    backgroundColor: 'rgba(7, 12, 24, 0.7)',
-  },
-  absolute: {
-    position: 'absolute',
-    top: spacing.sm + 2,
-    left: spacing.sm + 2,
-  },
-  icon: {
-    marginRight: 4,
-  },
-  text: {
-    fontSize: 11,
-    fontWeight: '600',
-    letterSpacing: 0.5,
-  },
-});
+export const useResultPillStyles = () => {
+  const { colors } = useTheme();
+
+  return StyleSheet.create({
+    pill: {
+      flexDirection: 'row',
+      alignItems: 'center',
+      paddingHorizontal: 8,
+      paddingVertical: 3,
+      borderRadius: radii.full,
+      backgroundColor: colors.surfaceAlt,
+    },
+    absolute: {
+      position: 'absolute',
+      top: spacing.sm + 2,
+      left: spacing.sm + 2,
+    },
+    icon: {
+      marginRight: 4,
+    },
+    text: {
+      ...typography.small,
+      fontWeight: '600',
+      letterSpacing: 0.5,
+      // (You override color in the component with success/danger)
+      color: colors.textPrimary,
+    },
+  });
+};

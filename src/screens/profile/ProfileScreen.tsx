@@ -1,25 +1,27 @@
 import React from 'react';
-import { View, Text, StyleSheet, ScrollView, Pressable, ActivityIndicator, Alert } from 'react-native';
+import { View, Text, StyleSheet, ScrollView, Pressable, ActivityIndicator, Alert, Switch } from 'react-native';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { RootStackParamList } from 'navigation/RootNavigator';
 import { useAuth } from '../../context/AuthContext';
 import { colors, radii, spacing, typography } from '@lib/theme';
 import DisclaimerBanner from '@components/DisclaimerBanner';
-import StatCard from '@components/cards/StatCard';
+import { StatCard } from '@components/cards/StatCard';
 import { useProfile } from '@features/profile/api/use-profile';
 import { Avatar } from '@components/Avatar';
 import { useProfileStats } from '@features/profile/api/use-profile-stats';
 import { useDeleteAccount } from '@features/profile/api/use-delete-account';
+import { useTheme } from '@lib/theme/ThemeProvider';
 
 type Props = NativeStackScreenProps<RootStackParamList, 'Profile'>;
 
 export default function ProfileScreen({}: Props) {
   const { logout } = useAuth();
+  const styles = useProfileStyles();
 
   const { data: user, isLoading: isProfileLoading } = useProfile();
   const { data: stats, isLoading: isStatsLoading } = useProfileStats();
 
-  const { mutate: deleteAccount, isPending: isDeleting } = useDeleteAccount();
+  const { mutateAsync: deleteAccount, isPending: isDeleting } = useDeleteAccount();
 
   const handleLogout = async () => {
     Alert.alert('Log out', 'Are you sure you want to logout?', [
@@ -83,7 +85,10 @@ export default function ProfileScreen({}: Props) {
           <Text style={styles.metaText}>Member since {new Date(user.createdAt).toLocaleDateString()}</Text>
         )}
 
-        <Pressable style={styles.logoutButton} onPress={handleLogout}>
+        <Pressable
+          style={styles.logoutButton}
+          onPress={handleLogout}
+        >
           <Text style={styles.logoutButtonText}>Log out</Text>
         </Pressable>
       </View>
@@ -101,11 +106,26 @@ export default function ProfileScreen({}: Props) {
         ) : (
           <>
             <View style={styles.statsGrid}>
-              <StatCard label="Cases attempted" value={stats.totalAttempts} />
-              <StatCard label="Unique cases" value={stats.uniqueCasesAttempted} />
-              <StatCard label="Sensitivity (melanoma)" value={formatPercent(stats.sensitivity)} />
-              <StatCard label="Specificity" value={formatPercent(stats.specificity)} />
-              <StatCard label="Overall accuracy" value={formatPercent(stats.accuracy)} />
+              <StatCard
+                label="Cases attempted"
+                value={stats.totalAttempts}
+              />
+              <StatCard
+                label="Unique cases"
+                value={stats.uniqueCasesAttempted}
+              />
+              <StatCard
+                label="Sensitivity (melanoma)"
+                value={formatPercent(stats.sensitivity)}
+              />
+              <StatCard
+                label="Specificity"
+                value={formatPercent(stats.specificity)}
+              />
+              <StatCard
+                label="Overall accuracy"
+                value={formatPercent(stats.accuracy)}
+              />
             </View>
 
             <Text style={styles.mutedText}>
@@ -141,126 +161,130 @@ export default function ProfileScreen({}: Props) {
   );
 }
 
-const styles = StyleSheet.create({
-  container: {
-    padding: spacing.lg,
-    paddingBottom: spacing.xl,
-    backgroundColor: colors.background,
-    flexGrow: 1,
-  },
+const useProfileStyles = () => {
+  const { colors } = useTheme();
 
-  card: {
-    backgroundColor: colors.surface,
-    borderRadius: radii.card,
-    padding: spacing.md,
-    marginBottom: spacing.md,
-    borderWidth: StyleSheet.hairlineWidth,
-    borderColor: colors.border,
-  },
+  return StyleSheet.create({
+    container: {
+      padding: spacing.lg,
+      paddingBottom: spacing.xl,
+      backgroundColor: colors.background,
+      flexGrow: 1,
+    },
 
-  sectionTitle: {
-    ...typography.subtitle,
-    color: colors.textPrimary,
-    marginBottom: spacing.sm,
-  },
+    card: {
+      backgroundColor: colors.surface,
+      borderRadius: radii.card,
+      padding: spacing.md,
+      marginBottom: spacing.md,
+      borderWidth: StyleSheet.hairlineWidth,
+      borderColor: colors.border,
+    },
 
-  accountHeader: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    marginBottom: spacing.sm,
-  },
+    sectionTitle: {
+      ...typography.subtitle,
+      color: colors.textPrimary,
+      marginBottom: spacing.sm,
+    },
 
-  accountText: {
-    flex: 1,
-  },
+    accountHeader: {
+      flexDirection: 'row',
+      alignItems: 'center',
+      marginBottom: spacing.sm,
+    },
 
-  accountName: {
-    fontWeight: 'bold',
-    color: colors.textPrimary,
-    marginBottom: spacing.xs,
-  },
+    accountText: {
+      flex: 1,
+    },
 
-  accountEmail: {
-    ...typography.small,
-    color: colors.textSecondary,
-  },
+    accountName: {
+      fontWeight: 'bold',
+      color: colors.textPrimary,
+      marginBottom: spacing.xs,
+    },
 
-  metaText: {
-    ...typography.small,
-    color: colors.accent,
-    marginBottom: spacing.sm,
-  },
+    accountEmail: {
+      ...typography.small,
+      color: colors.textSecondary,
+    },
 
-  logoutButton: {
-    marginTop: spacing.sm,
-    alignSelf: 'flex-start',
-    paddingHorizontal: spacing.lg,
-    paddingVertical: spacing.sm,
-    borderRadius: radii.full,
-    backgroundColor: colors.danger,
-  },
+    metaText: {
+      ...typography.small,
+      color: colors.accent,
+      marginBottom: spacing.sm,
+    },
 
-  logoutButtonText: {
-    color: colors.textPrimary,
-  },
+    logoutButton: {
+      marginTop: spacing.sm,
+      alignSelf: 'flex-start',
+      paddingHorizontal: spacing.lg,
+      paddingVertical: spacing.sm,
+      borderRadius: radii.full,
+      backgroundColor: colors.danger,
+    },
 
-  statsGrid: {
-    flexDirection: 'row',
-    gap: spacing.sm,
-    flexWrap: 'wrap',
-    justifyContent: 'space-between',
-    marginVertical: spacing.sm,
-  },
+    logoutButtonText: {
+      color: colors.textPrimary,
+    },
 
-  centerRow: {
-    marginTop: spacing.sm,
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
+    statsGrid: {
+      flexDirection: 'row',
+      gap: spacing.sm,
+      flexWrap: 'wrap',
+      justifyContent: 'space-between',
+      marginVertical: spacing.sm,
+    },
 
-  bodyText: {
-    ...typography.body,
-    color: colors.textSecondary,
-    marginBottom: spacing.xs,
-  },
+    centerRow: {
+      marginTop: spacing.sm,
+      alignItems: 'center',
+      justifyContent: 'center',
+    },
 
-  mutedText: {
-    ...typography.small,
-    color: colors.accent,
-    marginTop: spacing.xs,
-  },
+    bodyText: {
+      ...typography.body,
+      color: colors.textSecondary,
+      marginBottom: spacing.xs,
+    },
 
-  // Danger zone styles
-  dangerCard: {
-    backgroundColor: colors.surface,
-    borderRadius: radii.card,
-    padding: spacing.md,
-    marginBottom: spacing.md,
-    borderWidth: 1,
-    borderColor: colors.danger,
-  },
-  dangerTitle: {
-    ...typography.subtitle,
-    color: colors.danger,
-    marginBottom: spacing.sm,
-  },
-  dangerText: {
-    ...typography.small,
-    color: colors.textSecondary,
-    marginBottom: spacing.md,
-  },
-  dangerButton: {
-    alignSelf: 'flex-start',
-    paddingHorizontal: spacing.lg,
-    paddingVertical: spacing.sm,
-    borderRadius: radii.full,
-    backgroundColor: colors.danger,
-  },
-  dangerButtonDisabled: {
-    opacity: 0.7,
-  },
-  dangerButtonText: {
-    color: colors.textPrimary,
-    fontWeight: '600',
-  },
-});
+    mutedText: {
+      ...typography.small,
+      color: colors.accent,
+      marginTop: spacing.xs,
+    },
+
+    // Danger zone styles
+    dangerCard: {
+      backgroundColor: colors.surface,
+      borderRadius: radii.card,
+      padding: spacing.md,
+      marginBottom: spacing.md,
+      borderWidth: 1,
+      borderColor: colors.danger,
+    },
+    dangerTitle: {
+      ...typography.subtitle,
+      color: colors.danger,
+      marginBottom: spacing.sm,
+    },
+    dangerText: {
+      ...typography.small,
+      color: colors.textSecondary,
+      marginBottom: spacing.md,
+    },
+    dangerButton: {
+      alignSelf: 'flex-start',
+      paddingHorizontal: spacing.lg,
+      paddingVertical: spacing.sm,
+      borderRadius: radii.full,
+      backgroundColor: colors.danger,
+    },
+    dangerButtonDisabled: {
+      opacity: 0.7,
+    },
+    dangerButtonText: {
+      color: colors.textPrimary,
+      fontWeight: '600',
+    },
+  });
+};

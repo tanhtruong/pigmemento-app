@@ -13,8 +13,7 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import z from 'zod';
 import { isAxiosError } from 'axios';
 import { useRandomCase } from '@features/cases/api/use-random-case';
-
-import styles from './QuizScreen.styles'; // <-- external stylesheet using new colors
+import { useQuizStyles } from './QuizScreen.styles';
 
 const attemptSchema = z.object({
   chosenLabel: labelSchema,
@@ -25,6 +24,7 @@ type Props = NativeStackScreenProps<RootStackParamList, 'Quiz'>;
 
 export default function QuizScreen({ route, navigation }: Props) {
   const paramCaseId = route.params?.caseId;
+  const styles = useQuizStyles();
 
   // If no caseId provided -> get random unseen case
   const { data: randomCase, isLoading: isRandomLoading, isError: isRandomError } = useRandomCase(!paramCaseId);
@@ -110,10 +110,18 @@ export default function QuizScreen({ route, navigation }: Props) {
 
   return (
     <View style={styles.root}>
-      <ScrollView style={{ flex: 1 }} contentContainerStyle={styles.scrollContent} bounces={false}>
+      <ScrollView
+        style={{ flex: 1 }}
+        contentContainerStyle={styles.scrollContent}
+        bounces={false}
+      >
         {/* Image */}
         <View style={styles.imageWrapper}>
-          <Image source={{ uri: data.imageUrl }} style={styles.image} resizeMode="cover" />
+          <Image
+            source={{ uri: data.imageUrl }}
+            style={styles.image}
+            resizeMode="cover"
+          />
         </View>
 
         {/* Clinical context */}
@@ -139,13 +147,11 @@ export default function QuizScreen({ route, navigation }: Props) {
             <View style={styles.choicesRow}>
               <ChoiceButton
                 label="Benign"
-                value="benign"
                 selected={value === 'benign'}
                 onPress={() => onChange('benign')}
               />
               <ChoiceButton
                 label="Malignant"
-                value="malignant"
                 selected={value === 'malignant'}
                 onPress={() => onChange('malignant')}
               />
@@ -175,18 +181,21 @@ export default function QuizScreen({ route, navigation }: Props) {
 
 type ChoiceButtonProps = {
   label: string;
-  value: Label;
   selected: boolean;
   onPress: () => void;
 };
 
-const ChoiceButton: React.FC<ChoiceButtonProps> = ({ label, selected, onPress }) => (
-  <Pressable
-    onPress={onPress}
-    accessibilityRole="button"
-    accessibilityState={{ selected }}
-    style={[styles.choiceButton, selected && styles.choiceButtonSelected]}
-  >
-    <Text style={[styles.choiceText, selected && styles.choiceTextSelected]}>{label}</Text>
-  </Pressable>
-);
+const ChoiceButton = ({ label, selected, onPress }: ChoiceButtonProps) => {
+  const styles = useQuizStyles();
+
+  return (
+    <Pressable
+      onPress={onPress}
+      accessibilityRole="button"
+      accessibilityState={{ selected }}
+      style={[styles.choiceButton, selected && styles.choiceButtonSelected]}
+    >
+      <Text style={[styles.choiceText, selected && styles.choiceTextSelected]}>{label}</Text>
+    </Pressable>
+  );
+};

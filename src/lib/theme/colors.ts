@@ -1,60 +1,64 @@
-// Dark Mode
 export const colors = {
   // --- Base backgrounds ---
-  background: '#0B1220' as const, // app background
-  surface: '#111827' as const, // cards, modals, elevated blocks
-  surfaceAlt: '#0F172A' as const, // subtle alt surface for differentiation
-  border: '#1E293B' as const,
+  background: '#0A0710', // almost-black with faint purple
+  surface: '#0F0A18', // darker, richer purple-black
+  surfaceAlt: '#0C0814', // minimal-contrast alt surface
+  border: '#1A1226', // deep muted purple border
 
   // --- Text ---
-  textPrimary: '#E5E7EB' as const, // main text
-  textSecondary: '#94A3B8' as const, // muted labels, subtext
-  textDisabled: '#64748B' as const, // lower contrast / inactive
+  textPrimary: '#F3E8FF', // high-contrast lavender-white
+  textSecondary: '#C4A7E7', // muted lilac
+  textDisabled: '#8B6AAE',
 
-  // --- Accent (Cyan family) ---
-  accent: '#38BDF8' as const, // primary accent (links, highlights, icons)
-  accentSoft: '#0E2133' as const, // background tint for accent highlights
-  accentForeground: '#0B1220' as const,
+  // --- Accent (Brand purple) ---
+  accent: '#6F2DA8', // main accent
+  accentSoft: '#210931', // soft tinted background for accent chips
+  accentForeground: '#F3E8FF',
 
   // --- Status / feedback ---
-  success: '#22C55E' as const,
-  warning: '#F59E0B' as const,
-  danger: '#F43F5E' as const,
+  success: '#22C55E',
+  warning: '#F59E0B',
+  danger: '#F43F5E',
 
   // --- Inputs & UI ---
-  inputBackground: '#111827' as const,
-  inputBorder: '#1E293B' as const,
-  focusRing: '#38BDF8' as const,
+  inputBackground: '#1A0F26',
+  inputBorder: '#2A1C3A',
+  focusRing: '#6F2DA8',
 
   // --- Brand / extras ---
-  purpleAccent: '#A78BFA' as const, // optional secondary accent for variety
-  overlay: 'rgba(0,0,0,0.5)', // for modals, Grad-CAM overlay bg
+  purpleAccent: '#A78BFA', // secondary, optional
+  overlay: 'rgba(0,0,0,0.5)',
 };
 
 // Light Mode
 export const lightColors = {
-  background: '#F9FAFB' as const,
-  surface: '#FFFFFF' as const,
-  surfaceAlt: '#F1F5F9' as const,
-  border: '#E2E8F0' as const,
+  // --- Base backgrounds ---
+  background: '#FAF8FF', // off-white with a faint lavender hue
+  surface: '#FFFFFF', // clean white for cards
+  surfaceAlt: '#F4EEFF', // subtle lavender tint, mirrors dark surfaceAlt
+  border: '#D8CFF0', // soft purple-gray border (echoes dark border)
 
-  textPrimary: '#0F172A' as const,
-  textSecondary: '#475569' as const,
-  textDisabled: '#94A3B8' as const,
+  // --- Text ---
+  textPrimary: '#1A1026', // deep purple-black, high contrast
+  textSecondary: '#4E3E66', // muted lilac-gray
+  textDisabled: '#B6A4D4', // desaturated version of dark mode disabled
 
-  accent: '#06B6D4' as const,
-  accentSoft: '#E0F7FA' as const,
-  accentForeground: '#083344' as const,
+  // --- Accent (Brand purple) ---
+  accent: '#6F2DA8', // unchanged, same brand purple
+  accentSoft: '#EBDDFF', // very light purple tint for chips/buttons
+  accentForeground: '#FFFFFF',
 
-  success: '#16A34A' as const,
-  warning: '#F59E0B' as const,
-  danger: '#DC2626' as const,
+  // --- Status / feedback ---
+  success: '#15803D',
+  warning: '#B45309',
+  danger: '#DC2626',
 
-  inputBackground: '#FFFFFF' as const,
-  inputBorder: '#CBD5E1' as const,
-  focusRing: '#06B6D4' as const,
+  // --- Inputs & UI ---
+  inputBackground: '#FFFFFF',
+  inputBorder: '#D8CFF0', // soft, purple-tinted border
+  focusRing: '#6F2DA8',
 
   // --- Brand / extras ---
-  purpleAccent: '#8B5CF6' as const,
-  overlay: 'rgba(0,0,0,0.25)',
+  purpleAccent: '#A78BFA',
+  overlay: 'rgba(0,0,0,0.3)',
 };
