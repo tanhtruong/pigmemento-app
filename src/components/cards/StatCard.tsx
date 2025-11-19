@@ -39,7 +39,6 @@ const useStatCardStyles = () => {
       marginBottom: spacing.xs,
     },
     value: {
-      ...typography.body,
       fontWeight: 'bold',
     },
   });

@@ -13,6 +13,15 @@ export default ({ config }: ConfigContext): ExpoConfig => {
     ...config,
     name: 'Pigmemento',
     slug: 'pigmemento',
+    userInterfaceStyle: 'automatic', // 👈 key bit
+    ios: {
+      ...(config.ios || {}),
+      userInterfaceStyle: 'automatic',
+    },
+    android: {
+      ...(config.android || {}),
+      userInterfaceStyle: 'automatic',
+    },
     extra: { apiBaseUrl },
   };
 };

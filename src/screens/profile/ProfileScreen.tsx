@@ -1,5 +1,15 @@
 import React from 'react';
-import { View, Text, StyleSheet, ScrollView, Pressable, ActivityIndicator, Alert, Switch } from 'react-native';
+import {
+  View,
+  Text,
+  StyleSheet,
+  ScrollView,
+  Pressable,
+  ActivityIndicator,
+  Alert,
+  Switch,
+  TouchableOpacity,
+} from 'react-native';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { RootStackParamList } from 'navigation/RootNavigator';
 import { useAuth } from '../../context/AuthContext';
@@ -11,6 +21,7 @@ import { Avatar } from '@components/Avatar';
 import { useProfileStats } from '@features/profile/api/use-profile-stats';
 import { useDeleteAccount } from '@features/profile/api/use-delete-account';
 import { useTheme } from '@lib/theme/ThemeProvider';
+import { LogOut } from 'lucide-react-native';
 
 type Props = NativeStackScreenProps<RootStackParamList, 'Profile'>;
 
@@ -72,25 +83,37 @@ export default function ProfileScreen({}: Props) {
       <View style={styles.card}>
         <Text style={styles.sectionTitle}>Account</Text>
 
-        <View style={styles.accountHeader}>
-          <Avatar label={user.name} />
+        <View
+          style={{
+            flexDirection: 'row',
+            alignItems: 'center',
+            justifyContent: 'space-between',
+          }}
+        >
+          <View style={{ flex: 1 }}>
+            <View style={styles.accountHeader}>
+              <Avatar label={user.name} />
 
-          <View style={styles.accountText}>
-            <Text style={styles.accountName}>{user.name ?? 'Clinician'}</Text>
-            <Text style={styles.accountEmail}>{user.email}</Text>
+              <View style={styles.accountText}>
+                <Text style={styles.accountName}>{user.name ?? 'Clinician'}</Text>
+                <Text style={styles.accountEmail}>{user.email}</Text>
+              </View>
+            </View>
           </View>
-        </View>
 
+          <TouchableOpacity
+            style={styles.logoutButton}
+            onPress={handleLogout}
+          >
+            <LogOut
+              size={18}
+              color={colors.accent}
+            />
+          </TouchableOpacity>
+        </View>
         {user.createdAt && (
           <Text style={styles.metaText}>Member since {new Date(user.createdAt).toLocaleDateString()}</Text>
         )}
-
-        <Pressable
-          style={styles.logoutButton}
-          onPress={handleLogout}
-        >
-          <Text style={styles.logoutButtonText}>Log out</Text>
-        </Pressable>
       </View>
 
       {/* Training stats (placeholder for now) */}
@@ -149,7 +172,7 @@ export default function ProfileScreen({}: Props) {
           disabled={isDeleting}
         >
           {isDeleting ? (
-            <ActivityIndicator color={colors.danger ?? '#fff'} />
+            <ActivityIndicator color={colors.danger} />
           ) : (
             <Text style={styles.dangerButtonText}>Delete account</Text>
           )}
@@ -215,15 +238,13 @@ const useProfileStyles = () => {
     },
 
     logoutButton: {
-      marginTop: spacing.sm,
-      alignSelf: 'flex-start',
-      paddingHorizontal: spacing.lg,
-      paddingVertical: spacing.sm,
+      padding: spacing.sm,
       borderRadius: radii.full,
-      backgroundColor: colors.danger,
+      backgroundColor: colors.background,
     },
 
     logoutButtonText: {
+      fontWeight: '600',
       color: colors.textPrimary,
     },
 
