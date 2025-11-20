@@ -1,7 +1,7 @@
 import React from 'react';
 import { Pressable, ActivityIndicator, Text, ViewStyle } from 'react-native';
 import { useTheme } from '@lib/theme/ThemeProvider';
-import { radii, spacing, typography } from '@lib/theme';
+import { radii, spacing, useTypography } from '@lib/theme';
 
 export type ButtonVariant = 'primary' | 'secondary' | 'ghost' | 'danger';
 
@@ -22,7 +22,7 @@ export const Button = ({
   loading = false,
   style,
 }: ButtonProps) => {
-  const styles = getButtonStyles({ variant, disabled, radii, spacing, typography });
+  const styles = getButtonStyles({ variant, disabled, radii, spacing });
 
   return (
     <Pressable
@@ -34,14 +34,15 @@ export const Button = ({
   );
 };
 
-const getButtonStyles = ({ variant, disabled, radii, spacing, typography }: any) => {
+const getButtonStyles = ({ variant, disabled, radii, spacing }: any) => {
   const { colors } = useTheme();
+  const typography = useTypography();
 
   const base = {
     button: {
       paddingVertical: spacing.md,
       paddingHorizontal: spacing.lg,
-      borderRadius: radii.full,
+      borderRadius: radii.md,
       flexDirection: 'row',
       alignItems: 'center',
       justifyContent: 'center',
@@ -77,7 +78,7 @@ const getButtonStyles = ({ variant, disabled, radii, spacing, typography }: any)
         },
         text: {
           ...base.text,
-          fontWeight: '600',
+          fontWeight: '600' as const,
           color: colors.accentForeground,
         },
         pressed: base.pressed,

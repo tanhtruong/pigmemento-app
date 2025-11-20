@@ -17,7 +17,7 @@ export default function DrillSummaryScreen({
   const { colors } = useTheme();
 
   const accuracy = total > 0 ? Math.round((correct / total) * 100) : 0;
-  const avgTimeSec = typeof averageTimeMs === 'number' && averageTimeMs > 0 ? (averageTimeMs / 1000).toFixed(1) : null;
+  const avgTimeSec = averageTimeMs > 0 ? (averageTimeMs / 1000).toFixed(1) : null;
 
   const accuracyLabel = accuracy >= 90 ? 'Excellent' : accuracy >= 75 ? 'Nice work' : 'Good practice';
 

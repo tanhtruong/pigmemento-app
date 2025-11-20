@@ -15,9 +15,15 @@ export const SecondaryCard = ({ icon: Icon, title, description, onPress }: Secon
   const styles = useSecondaryCardStyles();
 
   return (
-    <TouchableOpacity style={styles.secondaryCard} onPress={onPress}>
-      <Icon size={20} style={styles.secondaryIcon} />
-      <View>
+    <TouchableOpacity
+      style={styles.secondaryCard}
+      onPress={onPress}
+    >
+      <Icon
+        size={20}
+        style={styles.secondaryIcon}
+      />
+      <View style={{ flex: 1 }}>
         <Text style={styles.secondaryTitle}>{title}</Text>
         <Text style={styles.secondaryText}>{description}</Text>
       </View>

@@ -13,7 +13,7 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import z from 'zod';
 import { isAxiosError } from 'axios';
 import { useRandomCase } from '@features/cases/api/use-random-case';
-import { useQuizStyles } from './QuizScreen.styles';
+import { useQuizStyles } from './CaseAttemptScreen.styles';
 import { ChoiceButton } from '@components/buttons/ChoiceButton';
 import { useQueryClient } from '@tanstack/react-query';
 import { queryKeys } from '@lib/query-keys';
@@ -23,9 +23,9 @@ export const attemptSchema = z.object({
   timeToAnswerMs: z.number(),
 });
 
-type Props = NativeStackScreenProps<RootStackParamList, 'Quiz'>;
+type Props = NativeStackScreenProps<RootStackParamList, 'CaseAttempt'>;
 
-export default function QuizScreen({ route, navigation }: Props) {
+export default function CaseAttemptScreen({ route, navigation }: Props) {
   const paramCaseId = route.params?.caseId;
   const styles = useQuizStyles();
   const queryClient = useQueryClient();
@@ -85,7 +85,7 @@ export default function QuizScreen({ route, navigation }: Props) {
           queryClient.invalidateQueries({
             queryKey: queryKeys.cases,
           });
-          navigation.replace('Review', { caseId });
+          navigation.replace('CaseReview', { caseId });
         },
         onError: (e) => {
           if (isAxiosError(e)) {

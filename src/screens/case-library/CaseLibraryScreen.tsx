@@ -3,12 +3,12 @@ import { View, Text, FlatList } from 'react-native';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { RootStackParamList } from 'navigation/RootNavigator';
 import { useCases } from '@features/cases/api/use-cases';
-import { useCasesStyles } from './CasesScreen.styles';
+import { useCaseLibraryStyles } from './CaseLibraryScreen.styles';
 import { CaseListItemCard } from '@features/cases/components/CaseListItemCard';
 
-export default function CasesScreen({ navigation }: NativeStackScreenProps<RootStackParamList, 'CaseList'>) {
+export default function CaseLibraryScreen({ navigation }: NativeStackScreenProps<RootStackParamList, 'CaseLibrary'>) {
   const { data, isLoading } = useCases();
-  const styles = useCasesStyles();
+  const styles = useCaseLibraryStyles();
 
   return (
     <View style={styles.container}>
@@ -19,7 +19,7 @@ export default function CasesScreen({ navigation }: NativeStackScreenProps<RootS
         renderItem={({ item }) => (
           <CaseListItemCard
             item={item}
-            onPress={() => navigation.navigate('Quiz', { caseId: item.id })}
+            onPress={() => navigation.navigate('CaseAttempt', { caseId: item.id })}
           />
         )}
         ListEmptyComponent={!isLoading ? <Text style={styles.emptyText}>No cases yet.</Text> : null}

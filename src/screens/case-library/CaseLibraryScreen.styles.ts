@@ -1,11 +1,11 @@
 import { StyleSheet } from 'react-native';
-import { colors } from '@lib/theme/colors';
 import { spacing } from '@lib/theme/spacing';
-import { typography } from '@lib/theme/typography';
+import { useTypography } from '@lib/theme/use-typography';
 import { useTheme } from '@lib/theme/ThemeProvider';
 
-export const useHistoryStyles = () => {
+export const useCaseLibraryStyles = () => {
   const { colors } = useTheme();
+  const typography = useTypography();
 
   return StyleSheet.create({
     container: {

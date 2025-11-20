@@ -1,12 +1,13 @@
 import { useTheme } from '@lib/theme/ThemeProvider';
 import { StyleSheet } from 'react-native';
-import { radii, spacing, typography } from '@lib/theme';
+import { radii, spacing, useTypography } from '@lib/theme';
 
 const SP = 16;
 const IMAGE_HEIGHT = 320;
 
 export const useDrillStyles = () => {
   const { colors } = useTheme();
+  const typography = useTypography();
 
   return StyleSheet.create({
     scrollContent: {

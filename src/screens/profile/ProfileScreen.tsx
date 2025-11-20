@@ -7,13 +7,12 @@ import {
   Pressable,
   ActivityIndicator,
   Alert,
-  Switch,
   TouchableOpacity,
 } from 'react-native';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { RootStackParamList } from 'navigation/RootNavigator';
 import { useAuth } from '../../context/AuthContext';
-import { colors, radii, spacing, typography } from '@lib/theme';
+import { colors, radii, spacing, useTypography } from '@lib/theme';
 import DisclaimerBanner from '@components/DisclaimerBanner';
 import { StatCard } from '@components/cards/StatCard';
 import { useProfile } from '@features/profile/api/use-profile';
@@ -44,7 +43,7 @@ export default function ProfileScreen({}: Props) {
   const handleDeleteAccount = () => {
     Alert.alert(
       'Delete account',
-      "This will delete your account and anonymise your training history. This action can't be undone.",
+      "This will delete your account and anonymise your training case-history. This action can't be undone.",
       [
         { text: 'Cancel', style: 'cancel' },
         {
@@ -159,6 +158,7 @@ export default function ProfileScreen({}: Props) {
       </View>
 
       <View style={{ flex: 1 }} />
+
       <View style={styles.dangerCard}>
         <Text style={styles.dangerTitle}>Danger zone</Text>
         <Text style={styles.dangerText}>
@@ -186,6 +186,7 @@ export default function ProfileScreen({}: Props) {
 
 const useProfileStyles = () => {
   const { colors } = useTheme();
+  const typography = useTypography();
 
   return StyleSheet.create({
     container: {
@@ -193,13 +194,13 @@ const useProfileStyles = () => {
       paddingBottom: spacing.xl,
       backgroundColor: colors.background,
       flexGrow: 1,
+      gap: 10,
     },
 
     card: {
       backgroundColor: colors.surface,
       borderRadius: radii.card,
       padding: spacing.md,
-      marginBottom: spacing.md,
       borderWidth: StyleSheet.hairlineWidth,
       borderColor: colors.border,
     },

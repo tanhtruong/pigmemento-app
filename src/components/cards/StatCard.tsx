@@ -2,7 +2,6 @@ import React from 'react';
 import { View, Text, StyleSheet } from 'react-native';
 import { spacing } from '@lib/theme/spacing';
 import { radii } from '@lib/theme/radii';
-import { typography } from '@lib/theme/typography';
 import { useTheme } from '@lib/theme/ThemeProvider';
 
 type StatCardProps = {

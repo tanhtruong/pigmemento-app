@@ -22,7 +22,7 @@ export const PrimaryCard = ({ description, icon: Icon, title, onPress }: Primary
         size={28}
         style={styles.primaryIcon}
       />
-      <View>
+      <View style={{ flex: 1 }}>
         <Text style={styles.primaryTitle}>{title}</Text>
         <Text style={styles.primaryText}>{description}</Text>
       </View>

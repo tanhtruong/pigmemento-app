@@ -8,9 +8,9 @@ import { useLatestAttempt } from '@features/cases/api/use-latest-attempt';
 import { ResultPill } from '@components/ResultPill';
 import { formatMsSmart } from '@lib/helpers/time';
 
-type Props = NativeStackScreenProps<RootStackParamList, 'Review'>;
+type Props = NativeStackScreenProps<RootStackParamList, 'CaseReview'>;
 
-export default function ReviewScreen({ route, navigation }: Props) {
+export default function CaseReviewScreen({ route, navigation }: Props) {
   const { caseId } = route.params as { caseId: string };
   const styles = useReviewStyles();
 
@@ -34,11 +34,9 @@ export default function ReviewScreen({ route, navigation }: Props) {
   }
 
   const isCorrect = attempt.correct;
-  const primaryLabel = isCorrect ? 'Correct' : 'Incorrect';
-  const primaryColor = isCorrect ? colors.success : colors.danger;
 
   const handleBack = () => navigation.navigate('Dashboard');
-  const handleNext = () => navigation.navigate('Quiz');
+  const handleNext = () => navigation.navigate('CaseAttempt');
 
   return (
     <View style={styles.root}>

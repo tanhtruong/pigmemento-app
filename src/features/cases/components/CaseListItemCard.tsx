@@ -2,7 +2,7 @@ import { Image, Pressable, StyleSheet, Text, View } from 'react-native';
 import React from 'react';
 import { CaseListItem } from '@lib/types/case';
 import { ResultPill } from '@components/ResultPill';
-import { radii, spacing, typography } from '@lib/theme';
+import { radii, spacing, useTypography } from '@lib/theme';
 import { useTheme } from '@lib/theme/ThemeProvider';
 
 type CaseListItemCardProps = {
@@ -14,9 +14,18 @@ type CaseListItemCardProps = {
 export function CaseListItemCard({ item, onPress, floatingPill = false }: CaseListItemCardProps) {
   const styles = useCaseListItemCardStyles();
   return (
-    <Pressable onPress={onPress} style={styles.card}>
-      <Image source={{ uri: item.imageUrl }} style={styles.image} />
-      <ResultPill isCorrect={item.lastAttempt?.correct} floating={floatingPill} />
+    <Pressable
+      onPress={onPress}
+      style={styles.card}
+    >
+      <Image
+        source={{ uri: item.imageUrl }}
+        style={styles.image}
+      />
+      <ResultPill
+        isCorrect={item.lastAttempt?.correct}
+        floating={floatingPill}
+      />
 
       <View style={styles.info}>
         <Text style={styles.title}>Case #{item.id.slice(0, 6)}</Text>
@@ -44,13 +53,13 @@ const useCaseListItemCardStyles = () => {
     },
 
     title: {
-      ...typography.body,
+      ...useTypography.body,
       fontWeight: '700',
       color: colors.textPrimary,
     },
 
     meta: {
-      ...typography.muted,
+      ...useTypography.muted,
       color: colors.textSecondary,
       marginTop: 2,
     },

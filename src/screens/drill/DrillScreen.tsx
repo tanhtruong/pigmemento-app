@@ -12,7 +12,7 @@ import { Controller, useForm } from 'react-hook-form';
 import { ChoiceButton } from '@components/buttons/ChoiceButton';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { Label } from '@lib/types/case';
-import { attemptSchema } from '../quiz/QuizScreen';
+import { attemptSchema } from '../case-attempt/CaseAttemptScreen';
 import { colors } from '@lib/theme';
 import z from 'zod';
 import { useQueryClient } from '@tanstack/react-query';
