@@ -14,8 +14,11 @@ import z from 'zod';
 import { isAxiosError } from 'axios';
 import { useRandomCase } from '@features/cases/api/use-random-case';
 import { useQuizStyles } from './QuizScreen.styles';
+import { ChoiceButton } from '@components/buttons/ChoiceButton';
+import { useQueryClient } from '@tanstack/react-query';
+import { queryKeys } from '@lib/query-keys';
 
-const attemptSchema = z.object({
+export const attemptSchema = z.object({
   chosenLabel: labelSchema,
   timeToAnswerMs: z.number(),
 });
@@ -25,6 +28,7 @@ type Props = NativeStackScreenProps<RootStackParamList, 'Quiz'>;
 export default function QuizScreen({ route, navigation }: Props) {
   const paramCaseId = route.params?.caseId;
   const styles = useQuizStyles();
+  const queryClient = useQueryClient();
 
   // If no caseId provided -> get random unseen case
   const { data: randomCase, isLoading: isRandomLoading, isError: isRandomError } = useRandomCase(!paramCaseId);
@@ -78,6 +82,9 @@ export default function QuizScreen({ route, navigation }: Props) {
       },
       {
         onSuccess: (res) => {
+          queryClient.invalidateQueries({
+            queryKey: queryKeys.cases,
+          });
           navigation.replace('Review', { caseId });
         },
         onError: (e) => {
@@ -178,24 +185,3 @@ export default function QuizScreen({ route, navigation }: Props) {
     </View>
   );
 }
-
-type ChoiceButtonProps = {
-  label: string;
-  selected: boolean;
-  onPress: () => void;
-};
-
-const ChoiceButton = ({ label, selected, onPress }: ChoiceButtonProps) => {
-  const styles = useQuizStyles();
-
-  return (
-    <Pressable
-      onPress={onPress}
-      accessibilityRole="button"
-      accessibilityState={{ selected }}
-      style={[styles.choiceButton, selected && styles.choiceButtonSelected]}
-    >
-      <Text style={[styles.choiceText, selected && styles.choiceTextSelected]}>{label}</Text>
-    </Pressable>
-  );
-};

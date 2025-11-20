@@ -2,7 +2,7 @@ import React, { useLayoutEffect } from 'react';
 import { View, Text, TouchableOpacity, Pressable, Alert } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { useAuth } from '../../context/AuthContext';
-import { Library, LogOut, PlayCircle, UserCircle } from 'lucide-react-native';
+import { Library, LogOut, PlayCircle, Timer, UserCircle } from 'lucide-react-native';
 import { useDashboardStyles } from './DashboardScreen.styles';
 import { colors } from '@lib/theme/colors';
 import { PrimaryCard } from '@components/cards/PrimaryCard';
@@ -22,7 +22,17 @@ const DashboardScreen: React.FC = () => {
     navigation.setOptions({
       headerRight: () => (
         <Pressable onPress={() => navigation.navigate('Profile')}>
-          {user ? <Avatar label={user.name} size={24} /> : <UserCircle color={colors.textPrimary} size={20} />}
+          {user ? (
+            <Avatar
+              label={user.name}
+              size={24}
+            />
+          ) : (
+            <UserCircle
+              color={colors.textPrimary}
+              size={20}
+            />
+          )}
         </Pressable>
       ),
     });
@@ -48,6 +58,10 @@ const DashboardScreen: React.FC = () => {
     navigation.navigate('History');
   };
 
+  const openDrill = () => {
+    navigation.navigate('Drill', { limit: 10 });
+  };
+
   return (
     <View style={styles.container}>
       {/* Header */}
@@ -56,8 +70,14 @@ const DashboardScreen: React.FC = () => {
           <Text style={styles.appTitle}>Pigmemento</Text>
           <Text style={styles.subtitle}>Train your melanoma recognition skills.</Text>
         </View>
-        <TouchableOpacity style={styles.logoutButton} onPress={handleLogout}>
-          <LogOut size={18} color={colors.accent} />
+        <TouchableOpacity
+          style={styles.logoutButton}
+          onPress={handleLogout}
+        >
+          <LogOut
+            size={18}
+            color={colors.accent}
+          />
         </TouchableOpacity>
       </View>
 
@@ -75,6 +95,13 @@ const DashboardScreen: React.FC = () => {
           description="See all cases you’ve practiced and how you performed."
           icon={Library}
           onPress={openAttemptHistory}
+        />
+
+        <SecondaryCard
+          title="Start 10-case drill"
+          description="Get 10 random cases in a row and track your accuracy and speed."
+          icon={Timer}
+          onPress={openDrill}
         />
 
         {/* Spacer */}

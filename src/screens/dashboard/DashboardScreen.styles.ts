@@ -43,6 +43,7 @@ export const useDashboardStyles = () => {
       paddingHorizontal: spacing.lg,
       paddingTop: spacing.md,
       paddingBottom: spacing.xl,
+      gap: 5,
     },
 
     spacer: {

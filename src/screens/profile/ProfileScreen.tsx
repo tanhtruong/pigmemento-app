@@ -304,7 +304,7 @@ const useProfileStyles = () => {
       opacity: 0.7,
     },
     dangerButtonText: {
-      color: colors.textPrimary,
+      color: colors.accentForeground,
       fontWeight: '600',
     },
   });

@@ -13,12 +13,16 @@ import { AttemptResponse } from '@lib/types/attempt';
 import HistoryScreen from '../screens/history/HistoryScreen';
 import ProfileScreen from '../screens/profile/ProfileScreen';
 import { useTheme } from '@lib/theme/ThemeProvider';
+import DrillScreen from '../screens/drill/DrillScreen';
+import DrillSummaryScreen from '../screens/drill/DrillSummaryScreen';
 
 export type RootStackParamList = {
   Login: undefined;
   Register: undefined;
   Dashboard: undefined;
   CaseList: undefined;
+  Drill: { limit: number } | undefined;
+  DrillSummary: { total: number; correct: number; averageTimeMs: number } | undefined;
   History: undefined;
   Quiz: { caseId: string } | undefined;
   Review: { caseId: string; attempt?: AttemptResponse } | undefined;
@@ -67,16 +71,54 @@ export default function RootNavigator() {
                 headerBackVisible: false, // no back button here
               }}
             />
-            <Stack.Screen name="CaseList" component={CasesScreen} options={{ title: 'Cases' }} />
-            <Stack.Screen name="History" component={HistoryScreen} options={{ title: 'History' }} />
-            <Stack.Screen name="Quiz" component={QuizScreen} options={{ title: 'Quiz' }} />
-            <Stack.Screen name="Review" component={ReviewScreen} options={{ title: 'Guided Review' }} />
-            <Stack.Screen name="Profile" component={ProfileScreen} options={{ title: 'Profile' }} />
+            <Stack.Screen
+              name="CaseList"
+              component={CasesScreen}
+              options={{ title: 'Cases' }}
+            />
+            <Stack.Screen
+              name="Drill"
+              component={DrillScreen}
+              options={{ title: 'Drill' }}
+            />
+            <Stack.Screen
+              name="DrillSummary"
+              component={DrillSummaryScreen}
+              options={{ title: 'Drill Summary' }}
+            />
+            <Stack.Screen
+              name="History"
+              component={HistoryScreen}
+              options={{ title: 'History' }}
+            />
+            <Stack.Screen
+              name="Quiz"
+              component={QuizScreen}
+              options={{ title: 'Quiz' }}
+            />
+            <Stack.Screen
+              name="Review"
+              component={ReviewScreen}
+              options={{ title: 'Guided Review' }}
+            />
+            <Stack.Screen
+              name="Profile"
+              component={ProfileScreen}
+              options={{ title: 'Profile' }}
+            />
           </>
         ) : (
           <>
-            <Stack.Screen name="Login" component={LoginScreen} options={{ headerShown: false }} />
-            <Stack.Screen name="Register" component={RegisterScreen} options={{ headerShown: false }} />
+            <Stack.Screen
+              name="Login"
+              component={LoginScreen}
+              options={{ headerShown: false }}
+            />
+            <Stack.Screen
+              name="Register"
+              component={RegisterScreen}
+              options={{ headerShown: false }}
+            />
           </>
         )}
       </Stack.Navigator>
