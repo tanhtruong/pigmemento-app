@@ -56,8 +56,6 @@ export const useTypography = () => {
       fontSize: 14,
       fontWeight: '600' as const,
       color: colors.accent,
-      textTransform: 'uppercase' as const,
-      letterSpacing: 0.8,
     },
   };
 };

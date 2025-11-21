@@ -1,8 +1,10 @@
 import { StyleSheet } from 'react-native';
 import { useTheme } from '@lib/theme/ThemeProvider';
+import { radii, spacing, useTypography } from '@lib/theme';
 
 export const useReviewStyles = () => {
   const { colors } = useTheme();
+  const typography = useTypography();
 
   return StyleSheet.create({
     root: {
@@ -74,7 +76,6 @@ export const useReviewStyles = () => {
       fontSize: 14,
       fontWeight: '700',
       color: colors.textPrimary,
-      textTransform: 'capitalize',
     },
     teachingCard: {
       backgroundColor: colors.surface,
@@ -129,8 +130,40 @@ export const useReviewStyles = () => {
       fontWeight: '600',
     },
     disclaimer: {
-      fontSize: 9,
+      fontSize: 8,
       color: colors.textSecondary,
+    },
+
+    // Model Card
+    modelCard: {
+      backgroundColor: colors.surface,
+      borderRadius: radii.lg,
+      paddingHorizontal: spacing.lg,
+      paddingVertical: spacing.md,
+    },
+    modelHeader: {
+      flexDirection: 'row',
+      justifyContent: 'space-between',
+      alignItems: 'center',
+      marginBottom: spacing.sm,
+    },
+    modelTitle: {
+      ...typography.subtitle,
+      color: colors.textPrimary,
+      fontWeight: '600',
+    },
+    modelText: {
+      ...typography.small,
+      color: colors.textPrimary,
+    },
+    modelBarRow: {
+      marginTop: spacing.sm,
+      marginBottom: spacing.sm,
+    },
+    modelBarLabel: {
+      ...typography.caption,
+      color: colors.textPrimary,
+      marginBottom: spacing.xs,
     },
   });
 };

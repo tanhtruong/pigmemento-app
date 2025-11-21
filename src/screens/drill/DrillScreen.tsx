@@ -18,6 +18,7 @@ import z from 'zod';
 import { useQueryClient } from '@tanstack/react-query';
 import { queryKeys } from '@lib/query-keys';
 import { ProgressBar } from '@components/ProgressBar';
+import { Button } from '@components/buttons/Button';
 
 type Props = NativeStackScreenProps<RootStackParamList, 'Drill'>;
 
@@ -179,9 +180,6 @@ export default function DrillScreen({ route, navigation }: Props) {
         {/* Clinical context */}
         <View style={styles.clinicalCard}>
           <Text style={styles.clinicalLabel}>Clinical context</Text>
-          <Text style={styles.clinicalMain}>
-            {cases[index].patientAge}-year-old · {cases[index].site}
-          </Text>
           {!!cases[index].clinicalNote && <Text style={styles.clinicalNote}>{cases[index].clinicalNote}</Text>}
         </View>
 
@@ -214,13 +212,12 @@ export default function DrillScreen({ route, navigation }: Props) {
         {!!errors.chosenLabel && <Text style={styles.errorText}>{errors.chosenLabel.message}</Text>}
 
         {/* Submit */}
-        <Pressable
+        <Button
+          title={isPending || isSubmitting ? 'Submitting…' : 'Submit answer'}
           onPress={onPressSubmit}
           disabled={disabled}
-          style={[styles.submitButton, disabled && styles.submitButtonDisabled]}
-        >
-          <Text style={styles.submitText}>{isPending || isSubmitting ? 'Submitting…' : 'Submit answer'}</Text>
-        </Pressable>
+          style={{ marginTop: 18 }}
+        />
 
         {/* Disclaimer */}
         <Text style={styles.disclaimer}>

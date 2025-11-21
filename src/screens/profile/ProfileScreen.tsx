@@ -21,6 +21,7 @@ import { useProfileStats } from '@features/profile/api/use-profile-stats';
 import { useDeleteAccount } from '@features/profile/api/use-delete-account';
 import { useTheme } from '@lib/theme/ThemeProvider';
 import { LogOut } from 'lucide-react-native';
+import { Button } from '@components/buttons/Button';
 
 type Props = NativeStackScreenProps<RootStackParamList, 'Profile'>;
 
@@ -166,17 +167,12 @@ export default function ProfileScreen({}: Props) {
           be undone.
         </Text>
 
-        <Pressable
-          style={[styles.dangerButton, isDeleting && styles.dangerButtonDisabled]}
-          onPress={handleDeleteAccount}
+        <Button
+          title="Delete account"
+          variant="danger"
           disabled={isDeleting}
-        >
-          {isDeleting ? (
-            <ActivityIndicator color={colors.danger} />
-          ) : (
-            <Text style={styles.dangerButtonText}>Delete account</Text>
-          )}
-        </Pressable>
+          onPress={handleDeleteAccount}
+        />
       </View>
 
       <DisclaimerBanner />
@@ -244,11 +240,6 @@ const useProfileStyles = () => {
       backgroundColor: colors.background,
     },
 
-    logoutButtonText: {
-      fontWeight: '600',
-      color: colors.textPrimary,
-    },
-
     statsGrid: {
       flexDirection: 'row',
       gap: spacing.sm,
@@ -280,7 +271,6 @@ const useProfileStyles = () => {
       backgroundColor: colors.surface,
       borderRadius: radii.card,
       padding: spacing.md,
-      marginBottom: spacing.md,
       borderWidth: 1,
       borderColor: colors.danger,
     },
@@ -293,20 +283,6 @@ const useProfileStyles = () => {
       ...typography.small,
       color: colors.textSecondary,
       marginBottom: spacing.md,
-    },
-    dangerButton: {
-      alignSelf: 'flex-start',
-      paddingHorizontal: spacing.lg,
-      paddingVertical: spacing.sm,
-      borderRadius: radii.full,
-      backgroundColor: colors.danger,
-    },
-    dangerButtonDisabled: {
-      opacity: 0.7,
-    },
-    dangerButtonText: {
-      color: colors.accentForeground,
-      fontWeight: '600',
     },
   });
 };

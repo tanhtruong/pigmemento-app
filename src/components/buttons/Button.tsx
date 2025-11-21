@@ -63,7 +63,7 @@ const getButtonStyles = ({ variant, disabled, radii, spacing }: any) => {
       },
       text: {
         ...base.text,
-        color: colors.textDisabled,
+        color: colors.accentForeground,
       },
       pressed: base.pressed,
     };

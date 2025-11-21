@@ -22,14 +22,6 @@ export const MissedCaseReviewScreen = ({ route, navigation }: MistakeReviewScree
         data={data}
         keyExtractor={(item) => item.id}
         contentContainerStyle={{ padding: spacing.lg }}
-        ListHeaderComponent={
-          <View style={{ marginBottom: 8 }}>
-            <Text style={typography.heading2}>Review mistakes</Text>
-            <Text style={typography.body}>
-              Go through cases you previously got wrong and see if you can spot the patterns now.
-            </Text>
-          </View>
-        }
         renderItem={({ item }) => (
           <CaseListItemCard
             item={item}

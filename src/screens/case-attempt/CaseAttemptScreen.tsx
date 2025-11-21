@@ -17,6 +17,7 @@ import { useQuizStyles } from './CaseAttemptScreen.styles';
 import { ChoiceButton } from '@components/buttons/ChoiceButton';
 import { useQueryClient } from '@tanstack/react-query';
 import { queryKeys } from '@lib/query-keys';
+import { Button } from '@components/buttons/Button';
 
 export const attemptSchema = z.object({
   chosenLabel: labelSchema,
@@ -134,9 +135,6 @@ export default function CaseAttemptScreen({ route, navigation }: Props) {
         {/* Clinical context */}
         <View style={styles.clinicalCard}>
           <Text style={styles.clinicalLabel}>Clinical context</Text>
-          <Text style={styles.clinicalMain}>
-            {data.patientAge}-year-old · {data.site}
-          </Text>
           {!!data.clinicalNote && <Text style={styles.clinicalNote}>{data.clinicalNote}</Text>}
         </View>
 
@@ -169,13 +167,12 @@ export default function CaseAttemptScreen({ route, navigation }: Props) {
         {!!errors.chosenLabel && <Text style={styles.errorText}>{errors.chosenLabel.message}</Text>}
 
         {/* Submit */}
-        <Pressable
-          onPress={onPressSubmit}
+        <Button
+          title={isPending || isSubmitting ? 'Submitting…' : 'Submit answer'}
           disabled={disabled}
-          style={[styles.submitButton, disabled && styles.submitButtonDisabled]}
-        >
-          <Text style={styles.submitText}>{isPending || isSubmitting ? 'Submitting…' : 'Submit answer'}</Text>
-        </Pressable>
+          onPress={onPressSubmit}
+          style={{ marginTop: 14 }}
+        />
 
         {/* Disclaimer */}
         <Text style={styles.disclaimer}>

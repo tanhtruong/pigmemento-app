@@ -26,7 +26,7 @@ export const ResultPill = ({ isCorrect, floating }: ResultPillProps) => {
       ]}
     >
       <Result
-        size={16}
+        size={10}
         style={styles.icon}
         color={color}
       />
@@ -57,7 +57,7 @@ export const useResultPillStyles = () => {
       marginRight: 4,
     },
     text: {
-      ...typography.small,
+      fontSize: 8,
       fontWeight: '600',
       letterSpacing: 0.5,
       color: colors.textPrimary,

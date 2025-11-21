@@ -14,7 +14,7 @@ export const useCaseLibraryStyles = () => {
     },
 
     listContent: {
-      padding: spacing.md, // ~12
+      padding: spacing.lg,
     },
 
     emptyText: {
