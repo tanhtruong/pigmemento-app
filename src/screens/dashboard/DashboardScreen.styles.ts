@@ -1,11 +1,12 @@
 import { StyleSheet } from 'react-native';
 import { useTheme } from '@lib/theme/ThemeProvider';
-import { typography } from '@lib/theme/typography';
+import { useTypography } from '@lib/theme/use-typography';
 import { radii } from '@lib/theme/radii';
 import { spacing } from '@lib/theme/spacing';
 
 export const useDashboardStyles = () => {
   const { colors } = useTheme();
+  const typography = useTypography();
 
   return StyleSheet.create({
     container: {
@@ -43,6 +44,7 @@ export const useDashboardStyles = () => {
       paddingHorizontal: spacing.lg,
       paddingTop: spacing.md,
       paddingBottom: spacing.xl,
+      gap: 5,
     },
 
     spacer: {

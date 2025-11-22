@@ -38,7 +38,7 @@ export default function LoginScreen({ navigation }: NativeStackScreenProps<RootS
 
   return (
     <AuthLayout>
-      <Text style={styles.title}>Welcome back</Text>
+      <Text style={styles.title}>Welcome to Pigmemento</Text>
 
       <Controller
         control={control}
@@ -86,7 +86,10 @@ export default function LoginScreen({ navigation }: NativeStackScreenProps<RootS
         <Text style={styles.submitText}>{isSubmitting ? 'Signing in…' : 'Sign in'}</Text>
       </Pressable>
 
-      <Pressable style={styles.link} onPress={() => navigation.replace('Register')}>
+      <Pressable
+        style={styles.link}
+        onPress={() => navigation.replace('Register')}
+      >
         <Text style={styles.linkText}>No account? Register</Text>
       </Pressable>
     </AuthLayout>

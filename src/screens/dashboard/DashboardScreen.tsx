@@ -2,7 +2,7 @@ import React, { useLayoutEffect } from 'react';
 import { View, Text, TouchableOpacity, Pressable, Alert } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { useAuth } from '../../context/AuthContext';
-import { Library, LogOut, PlayCircle, UserCircle } from 'lucide-react-native';
+import { Book, History, LogOut, RefreshCw, Timer, UserCircle } from 'lucide-react-native';
 import { useDashboardStyles } from './DashboardScreen.styles';
 import { colors } from '@lib/theme/colors';
 import { PrimaryCard } from '@components/cards/PrimaryCard';
@@ -22,7 +22,17 @@ const DashboardScreen: React.FC = () => {
     navigation.setOptions({
       headerRight: () => (
         <Pressable onPress={() => navigation.navigate('Profile')}>
-          {user ? <Avatar label={user.name} size={24} /> : <UserCircle color={colors.textPrimary} size={20} />}
+          {user ? (
+            <Avatar
+              label={user.name}
+              size={24}
+            />
+          ) : (
+            <UserCircle
+              color={colors.textPrimary}
+              size={20}
+            />
+          )}
         </Pressable>
       ),
     });
@@ -36,18 +46,6 @@ const DashboardScreen: React.FC = () => {
     ]);
   };
 
-  const startQuiz = () => {
-    navigation.navigate('CaseList');
-  };
-
-  const openGuidedReview = () => {
-    navigation.navigate('GuidedReview');
-  };
-
-  const openAttemptHistory = () => {
-    navigation.navigate('History');
-  };
-
   return (
     <View style={styles.container}>
       {/* Header */}
@@ -56,25 +54,45 @@ const DashboardScreen: React.FC = () => {
           <Text style={styles.appTitle}>Pigmemento</Text>
           <Text style={styles.subtitle}>Train your melanoma recognition skills.</Text>
         </View>
-        <TouchableOpacity style={styles.logoutButton} onPress={handleLogout}>
-          <LogOut size={18} color={colors.accent} />
+        <TouchableOpacity
+          style={styles.logoutButton}
+          onPress={handleLogout}
+        >
+          <LogOut
+            size={18}
+            color={colors.accent}
+          />
         </TouchableOpacity>
       </View>
 
       {/* Main actions */}
       <View style={styles.content}>
         <PrimaryCard
-          title="Quiz Library"
-          description="See a dermatoscopic case and choose benign vs malignant."
-          icon={PlayCircle}
-          onPress={startQuiz}
+          title="Start 10-case Drill"
+          description="Get 10 random cases in a row and track your accuracy and speed."
+          icon={Timer}
+          onPress={() => navigation.navigate('Drill', { limit: 10 })}
         />
 
         <SecondaryCard
-          title="Attempt History"
+          title="Case Library"
+          description="See a dermatoscopic case and choose benign vs malignant."
+          icon={Book}
+          onPress={() => navigation.navigate('CaseLibrary')}
+        />
+
+        <SecondaryCard
+          title="Review Missed Cases"
+          description="Retry missed cases to solidify learning."
+          icon={RefreshCw}
+          onPress={() => navigation.navigate('MissedCaseReview')}
+        />
+
+        <SecondaryCard
+          title="Case History"
           description="See all cases you’ve practiced and how you performed."
-          icon={Library}
-          onPress={openAttemptHistory}
+          icon={History}
+          onPress={() => navigation.navigate('CaseHistory')}
         />
 
         {/* Spacer */}

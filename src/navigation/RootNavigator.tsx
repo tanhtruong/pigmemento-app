@@ -3,25 +3,30 @@ import { DarkTheme, DefaultTheme, NavigationContainer, Theme } from '@react-navi
 import { createNativeStackNavigator, NativeStackNavigationOptions } from '@react-navigation/native-stack';
 import { StyleSheet, Text, View } from 'react-native';
 import { useAuth } from '../context/AuthContext';
+import DashboardScreen from '../screens/dashboard/DashboardScreen';
+import CaseLibraryScreen from '../screens/case-library/CaseLibraryScreen';
+import DrillScreen from '../screens/drill/DrillScreen';
+import DrillSummaryScreen from '../screens/drill/DrillSummaryScreen';
+import { useTheme } from '@lib/theme/ThemeProvider';
+import CaseAttemptScreen from '../screens/case-attempt/CaseAttemptScreen';
+import CaseReviewScreen from '../screens/case-review/CaseReviewScreen';
+import ProfileScreen from '../screens/profile/ProfileScreen';
+import { MissedCaseReviewScreen } from '../screens/case-review/MissedCaseReviewScreen';
 import LoginScreen from '../screens/auth/LoginScreen';
 import RegisterScreen from '../screens/auth/RegisterScreen';
-import CasesScreen from '../screens/cases/CasesScreen';
-import QuizScreen from '../screens/quiz/QuizScreen';
-import ReviewScreen from '../screens/review/ReviewScreen';
-import DashboardScreen from '../screens/dashboard/DashboardScreen';
-import { AttemptResponse } from '@lib/types/attempt';
-import HistoryScreen from '../screens/history/HistoryScreen';
-import ProfileScreen from '../screens/profile/ProfileScreen';
-import { useTheme } from '@lib/theme/ThemeProvider';
+import CaseHistoryScreen from '../screens/case-history/CaseHistoryScreen';
 
 export type RootStackParamList = {
   Login: undefined;
   Register: undefined;
   Dashboard: undefined;
-  CaseList: undefined;
-  History: undefined;
-  Quiz: { caseId: string } | undefined;
-  Review: { caseId: string; attempt?: AttemptResponse } | undefined;
+  CaseLibrary: undefined;
+  CaseAttempt: { caseId: string } | undefined;
+  CaseReview: { caseId: string } | undefined;
+  CaseHistory: undefined;
+  MissedCaseReview: undefined;
+  Drill: { limit: number } | undefined;
+  DrillSummary: { total: number; correct: number; averageTimeMs: number } | undefined;
   Profile: undefined;
 };
 
@@ -67,16 +72,59 @@ export default function RootNavigator() {
                 headerBackVisible: false, // no back button here
               }}
             />
-            <Stack.Screen name="CaseList" component={CasesScreen} options={{ title: 'Cases' }} />
-            <Stack.Screen name="History" component={HistoryScreen} options={{ title: 'History' }} />
-            <Stack.Screen name="Quiz" component={QuizScreen} options={{ title: 'Quiz' }} />
-            <Stack.Screen name="Review" component={ReviewScreen} options={{ title: 'Guided Review' }} />
-            <Stack.Screen name="Profile" component={ProfileScreen} options={{ title: 'Profile' }} />
+            <Stack.Screen
+              name="CaseLibrary"
+              component={CaseLibraryScreen}
+              options={{ title: 'Case Library' }}
+            />
+            <Stack.Screen
+              name="Drill"
+              component={DrillScreen}
+              options={{ title: 'Drill' }}
+            />
+            <Stack.Screen
+              name="DrillSummary"
+              component={DrillSummaryScreen}
+              options={{ title: 'Drill Summary' }}
+            />
+            <Stack.Screen
+              name="CaseHistory"
+              component={CaseHistoryScreen}
+              options={{ title: 'Case History' }}
+            />
+            <Stack.Screen
+              name="CaseAttempt"
+              component={CaseAttemptScreen}
+              options={{ title: 'Case Attempt' }}
+            />
+            <Stack.Screen
+              name="CaseReview"
+              component={CaseReviewScreen}
+              options={{ title: 'Case Review' }}
+            />
+            <Stack.Screen
+              name="Profile"
+              component={ProfileScreen}
+              options={{ title: 'Profile' }}
+            />
+            <Stack.Screen
+              name="MissedCaseReview"
+              component={MissedCaseReviewScreen}
+              options={{ title: 'Missed Case Reviews' }}
+            />
           </>
         ) : (
           <>
-            <Stack.Screen name="Login" component={LoginScreen} options={{ headerShown: false }} />
-            <Stack.Screen name="Register" component={RegisterScreen} options={{ headerShown: false }} />
+            <Stack.Screen
+              name="Login"
+              component={LoginScreen}
+              options={{ headerShown: false }}
+            />
+            <Stack.Screen
+              name="Register"
+              component={RegisterScreen}
+              options={{ headerShown: false }}
+            />
           </>
         )}
       </Stack.Navigator>

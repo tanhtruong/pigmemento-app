@@ -1,5 +1,5 @@
 import { StyleSheet, Text, View } from 'react-native';
-import { radii, spacing, typography } from '@lib/theme';
+import { radii, spacing, useTypography } from '@lib/theme';
 import { Check, X } from 'lucide-react-native';
 import { useTheme } from '@lib/theme/ThemeProvider';
 
@@ -26,7 +26,7 @@ export const ResultPill = ({ isCorrect, floating }: ResultPillProps) => {
       ]}
     >
       <Result
-        size={16}
+        size={10}
         style={styles.icon}
         color={color}
       />
@@ -37,6 +37,7 @@ export const ResultPill = ({ isCorrect, floating }: ResultPillProps) => {
 
 export const useResultPillStyles = () => {
   const { colors } = useTheme();
+  const typography = useTypography();
 
   return StyleSheet.create({
     pill: {
@@ -56,10 +57,9 @@ export const useResultPillStyles = () => {
       marginRight: 4,
     },
     text: {
-      ...typography.small,
+      fontSize: 8,
       fontWeight: '600',
       letterSpacing: 0.5,
-      // (You override color in the component with success/danger)
       color: colors.textPrimary,
     },
   });

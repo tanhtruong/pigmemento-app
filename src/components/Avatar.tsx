@@ -1,6 +1,6 @@
 import { StyleSheet, Text, View } from 'react-native';
 import React from 'react';
-import { radii, spacing, typography } from '@lib/theme';
+import { radii, spacing, useTypography } from '@lib/theme';
 import { useTheme } from '@lib/theme/ThemeProvider';
 
 type AvatarProps = {
@@ -31,6 +31,7 @@ export const Avatar = ({ label, size = 44 }: AvatarProps) => {
 
 const useAvatarStyles = () => {
   const { colors } = useTheme();
+  const typography = useTypography();
 
   return StyleSheet.create({
     avatar: {

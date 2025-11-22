@@ -13,18 +13,23 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import z from 'zod';
 import { isAxiosError } from 'axios';
 import { useRandomCase } from '@features/cases/api/use-random-case';
-import { useQuizStyles } from './QuizScreen.styles';
+import { useQuizStyles } from './CaseAttemptScreen.styles';
+import { ChoiceButton } from '@components/buttons/ChoiceButton';
+import { useQueryClient } from '@tanstack/react-query';
+import { queryKeys } from '@lib/query-keys';
+import { Button } from '@components/buttons/Button';
 
-const attemptSchema = z.object({
+export const attemptSchema = z.object({
   chosenLabel: labelSchema,
   timeToAnswerMs: z.number(),
 });
 
-type Props = NativeStackScreenProps<RootStackParamList, 'Quiz'>;
+type Props = NativeStackScreenProps<RootStackParamList, 'CaseAttempt'>;
 
-export default function QuizScreen({ route, navigation }: Props) {
+export default function CaseAttemptScreen({ route, navigation }: Props) {
   const paramCaseId = route.params?.caseId;
   const styles = useQuizStyles();
+  const queryClient = useQueryClient();
 
   // If no caseId provided -> get random unseen case
   const { data: randomCase, isLoading: isRandomLoading, isError: isRandomError } = useRandomCase(!paramCaseId);
@@ -78,7 +83,10 @@ export default function QuizScreen({ route, navigation }: Props) {
       },
       {
         onSuccess: (res) => {
-          navigation.replace('Review', { caseId });
+          queryClient.invalidateQueries({
+            queryKey: queryKeys.cases,
+          });
+          navigation.replace('CaseReview', { caseId });
         },
         onError: (e) => {
           if (isAxiosError(e)) {
@@ -127,9 +135,6 @@ export default function QuizScreen({ route, navigation }: Props) {
         {/* Clinical context */}
         <View style={styles.clinicalCard}>
           <Text style={styles.clinicalLabel}>Clinical context</Text>
-          <Text style={styles.clinicalMain}>
-            {data.patientAge}-year-old · {data.site}
-          </Text>
           {!!data.clinicalNote && <Text style={styles.clinicalNote}>{data.clinicalNote}</Text>}
         </View>
 
@@ -162,13 +167,12 @@ export default function QuizScreen({ route, navigation }: Props) {
         {!!errors.chosenLabel && <Text style={styles.errorText}>{errors.chosenLabel.message}</Text>}
 
         {/* Submit */}
-        <Pressable
-          onPress={onPressSubmit}
+        <Button
+          title={isPending || isSubmitting ? 'Submitting…' : 'Submit answer'}
           disabled={disabled}
-          style={[styles.submitButton, disabled && styles.submitButtonDisabled]}
-        >
-          <Text style={styles.submitText}>{isPending || isSubmitting ? 'Submitting…' : 'Submit answer'}</Text>
-        </Pressable>
+          onPress={onPressSubmit}
+          style={{ marginTop: 14 }}
+        />
 
         {/* Disclaimer */}
         <Text style={styles.disclaimer}>
@@ -178,24 +182,3 @@ export default function QuizScreen({ route, navigation }: Props) {
     </View>
   );
 }
-
-type ChoiceButtonProps = {
-  label: string;
-  selected: boolean;
-  onPress: () => void;
-};
-
-const ChoiceButton = ({ label, selected, onPress }: ChoiceButtonProps) => {
-  const styles = useQuizStyles();
-
-  return (
-    <Pressable
-      onPress={onPress}
-      accessibilityRole="button"
-      accessibilityState={{ selected }}
-      style={[styles.choiceButton, selected && styles.choiceButtonSelected]}
-    >
-      <Text style={[styles.choiceText, selected && styles.choiceTextSelected]}>{label}</Text>
-    </Pressable>
-  );
-};

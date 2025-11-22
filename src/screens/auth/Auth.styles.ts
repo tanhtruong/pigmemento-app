@@ -1,12 +1,12 @@
 import { StyleSheet } from 'react-native';
-import { colors } from '@lib/theme/colors';
 import { spacing } from '@lib/theme/spacing';
 import { radii } from '@lib/theme/radii';
-import { typography } from '@lib/theme/typography';
+import { useTypography } from '@lib/theme/use-typography';
 import { useTheme } from '@lib/theme/ThemeProvider';
 
 export const useAuthStyles = () => {
   const { colors } = useTheme();
+  const typography = useTypography();
 
   return StyleSheet.create({
     container: {

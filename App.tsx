@@ -17,7 +17,7 @@ const AppContent = () => {
     <SafeAreaProvider initialMetrics={initialWindowMetrics}>
       <QueryClientProvider client={queryClient}>
         <AuthProvider>
-          <StatusBar style={isDark ? 'light' : 'dark'} />
+          <StatusBar style="auto" />
           <SafeAreaView style={styles.safeArea}>
             <View style={styles.container}>
               <RootNavigator />

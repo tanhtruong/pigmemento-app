@@ -5,7 +5,7 @@ import { FlatList, Text, View } from 'react-native';
 import { CaseListItemCard } from '@features/cases/components/CaseListItemCard';
 import { useHistoryStyles } from './HistoryScreen.styles';
 
-export default function HistoryScreen({ navigation }: NativeStackScreenProps<RootStackParamList, 'History'>) {
+export default function CaseHistoryScreen({ navigation }: NativeStackScreenProps<RootStackParamList, 'CaseHistory'>) {
   const { data, isLoading } = useCaseHistory();
   const styles = useHistoryStyles();
 
@@ -18,7 +18,7 @@ export default function HistoryScreen({ navigation }: NativeStackScreenProps<Roo
         renderItem={({ item }) => (
           <CaseListItemCard
             item={item}
-            onPress={() => navigation.navigate('Review', { caseId: item.id })}
+            onPress={() => navigation.navigate('CaseReview', { caseId: item.id })}
             floatingPill
           />
         )}

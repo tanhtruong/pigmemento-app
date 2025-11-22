@@ -14,9 +14,15 @@ export const PrimaryCard = ({ description, icon: Icon, title, onPress }: Primary
   const styles = usePrimaryCardStyles();
 
   return (
-    <TouchableOpacity style={styles.primaryCard} onPress={onPress}>
-      <Icon size={28} style={styles.primaryIcon} />
-      <View>
+    <TouchableOpacity
+      style={styles.primaryCard}
+      onPress={onPress}
+    >
+      <Icon
+        size={28}
+        style={styles.primaryIcon}
+      />
+      <View style={{ flex: 1 }}>
         <Text style={styles.primaryTitle}>{title}</Text>
         <Text style={styles.primaryText}>{description}</Text>
       </View>
@@ -36,7 +42,7 @@ const usePrimaryCardStyles = () => {
       borderRadius: radii.card,
       borderWidth: 1,
       borderColor: colors.border,
-      marginBottom: spacing.md,
+      marginBottom: spacing.sm,
     },
     primaryIcon: {
       marginRight: spacing.md,

@@ -1,6 +1,7 @@
 import { colors, lightColors } from '@lib/theme/colors';
 import { createContext, PropsWithChildren, useContext, useMemo, useState } from 'react';
 import { useColorScheme } from 'react-native';
+import { useTypography } from '@lib/theme/use-typography';
 
 type ThemeMode = 'dark' | 'light' | 'system';
 
