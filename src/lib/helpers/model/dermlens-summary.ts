@@ -7,24 +7,41 @@ export function getDermLensSummary({ benign, malignant }: Probs): string {
   const b = benign / total;
   const m = malignant / total;
 
-  // High malignant probability
+  // Very strong malignant-leaning pattern
+  if (m >= 0.95) {
+    return `This analysis highlights a pattern that very strongly leans toward features commonly emphasized when teaching about melanoma recognition. In a learning context, this would be a case to study carefully.`;
+  }
+
+  // Clear malignant-leaning pattern
   if (m >= 0.85) {
-    return `I'm picking up several features in this lesion that strongly resemble the malignant examples I've been trained on.`;
+    return `The visual cues here are clearly skewed toward patterns often highlighted in melanoma-focused teaching examples, although this alone should never be used for diagnosis.`;
   }
 
+  // Moderate malignant-leaning pattern
   if (m >= 0.65) {
-    return `I'm seeing a noticeable number of features that resemble malignant patterns, though it's not completely clear to me.`;
+    return `I'm seeing several features that tilt toward melanoma-like patterns, but there are still some elements that are less specific. This would be a good example for reviewing what pushes a lesion into a more concerning zone.`;
   }
 
-  // Ambiguous
+  // Slight malignant-leaning pattern
+  if (m > 0.55) {
+    return `There is a mild tilt toward melanoma-like visual cues, but the overall picture is still somewhat mixed. This kind of case can be useful for practicing how to weigh borderline features.`;
+  }
+
+  // Ambiguous / balanced
   if (m >= 0.45 && m <= 0.55) {
-    return `I'm unsure here. The features look quite balanced between benign and malignant patterns in my training data.`;
+    return `The pattern here is quite balanced, without a clear lean toward either benign or melanoma-like features. In teaching terms, this would be considered a genuinely uncertain example where clinical context and expert review are especially important.`;
   }
 
-  if (m >= 0.25) {
-    return `I'm leaning toward benign-like features, though I do notice a few elements that resemble malignant patterns.`;
+  // Slight benign-leaning pattern
+  if (m >= 0.35) {
+    return `The visual impression leans modestly toward benign-like features, though there are a few aspects that prevent a clearly reassuring pattern. This type of case is useful for exploring subtle warning signs.`;
   }
 
-  // Strong benign probability
-  return `I'm mostly seeing features that match benign examples from my training data.`;
+  // Clear benign-leaning pattern
+  if (m >= 0.15) {
+    return `Most of the cues here line up with patterns usually associated with benign lesions, with only limited elements that might raise concern. It’s a helpful example of a generally reassuring appearance with small points to double-check.`;
+  }
+
+  // Very strong benign-leaning pattern
+  return `The lesion shows a pattern that strongly aligns with benign-appearing examples in educational materials, with few features that stand out as worrisome in this kind of visual analysis.`;
 }

@@ -1,4 +1,4 @@
-import { useQuery } from '@tanstack/react-query';
+import { useMutation, useQuery } from '@tanstack/react-query';
 import { queryKeys } from '@lib/query-keys';
 import { api } from '@lib/api';
 
@@ -10,19 +10,15 @@ export type InferenceResponse = {
   camPngUrl: string;
 };
 
-export const useInference = (caseId?: string) => {
-  return useQuery({
-    queryKey: queryKeys['infer-case'](caseId),
-    enabled: !!caseId,
-    queryFn: async () => {
+export const useInference = () => {
+  return useMutation({
+    mutationFn: async (caseId: string) => {
       const MIN_DURATION = 2000; // 2 seconds
       const start = Date.now();
 
-      // Run the actual inference
       const res = await api.post<InferenceResponse>(`/inference/cases/${caseId}`);
       const data = res.data;
 
-      // Enforce minimum loading time
       const elapsed = Date.now() - start;
       const remaining = MIN_DURATION - elapsed;
 
@@ -32,6 +28,6 @@ export const useInference = (caseId?: string) => {
 
       return data;
     },
-    gcTime: Infinity,
+    retry: 0, // don't silently re-run inference
   });
 };

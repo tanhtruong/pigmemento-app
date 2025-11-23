@@ -13,6 +13,7 @@ import { getDermLensSummary } from '@lib/helpers/model/dermlens-summary';
 import { Check, X } from 'lucide-react-native';
 import { useTheme } from '@lib/theme/ThemeProvider';
 import { Button } from '@components/buttons/Button';
+import { useEffect, useState } from 'react';
 
 type Props = NativeStackScreenProps<RootStackParamList, 'CaseReview'>;
 
@@ -23,7 +24,15 @@ export default function CaseReviewScreen({ route, navigation }: Props) {
 
   const { data: detail, isLoading: isCaseLoading } = useCase(caseId);
   const { data: attempt, isLoading: isAttemptLoading } = useLatestAttempt(caseId);
-  const { data: inference, isLoading: isInferenceLoading } = useInference(caseId);
+  // const { data: inference, isLoading: isInferenceLoading } = useInference(caseId);
+  const inferenceMutation = useInference();
+
+  const [showCam, setShowCam] = useState(false);
+
+  useEffect(() => {
+    if (!caseId) return;
+    inferenceMutation.mutate(caseId);
+  }, [caseId]);
 
   if (isCaseLoading || (!attempt && isAttemptLoading)) {
     return (
@@ -44,6 +53,10 @@ export default function CaseReviewScreen({ route, navigation }: Props) {
   const isCorrect = attempt.correct;
   const Result = isCorrect ? Check : X;
 
+  const inference = inferenceMutation.data;
+  const isInferenceLoading = inferenceMutation.isPending;
+
+  const hasCam = !!inference?.camPngUrl;
   const malignantProb = inference?.probs.malignant ?? 0;
   const benignProb = inference?.probs.benign ?? 0;
 
@@ -54,10 +67,21 @@ export default function CaseReviewScreen({ route, navigation }: Props) {
     <ScrollView style={styles.root}>
       {/* Case image */}
       <Image
-        source={{ uri: detail.imageUrl }}
+        source={{ uri: showCam && hasCam ? inference.camPngUrl : detail.imageUrl }}
         style={styles.image}
         resizeMode="cover"
       />
+      {/*{hasCam && (
+        <View style={styles.camToggleRow}>
+          <Text style={styles.camToggleLabel}>{showCam ? 'Model attention map' : 'Original image'}</Text>
+          <Button
+            title={showCam ? 'Show original' : 'Show heatmap'}
+            onPress={() => setShowCam((prev) => !prev)}
+            variant="secondary"
+            style={styles.camToggleButton}
+          />
+        </View>
+      )}*/}
       <View style={styles.modelCard}>
         {isInferenceLoading && <ModelLoadingAnimation />}
         {!isInferenceLoading && inference && (
