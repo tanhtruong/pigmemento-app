@@ -165,5 +165,24 @@ export const useReviewStyles = () => {
       color: colors.textPrimary,
       marginBottom: spacing.xs,
     },
+
+    //CAM
+    camToggleRow: {
+      marginTop: 8,
+      paddingHorizontal: 16,
+      flexDirection: 'row',
+      alignItems: 'center',
+      justifyContent: 'space-between',
+    },
+
+    camToggleLabel: {
+      fontSize: 14,
+      opacity: 0.7,
+    },
+
+    camToggleButton: {
+      paddingHorizontal: 12,
+      paddingVertical: 6,
+    },
   });
 };

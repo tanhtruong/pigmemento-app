@@ -70,8 +70,8 @@
   <component name="FileTemplateManagerImpl">
     <option name="RECENT_TEMPLATES">
       <list>
-        <option value="TypeScript JSX File" />
         <option value="TypeScript File" />
+        <option value="TypeScript JSX File" />
       </list>
     </option>
   </component>
@@ -129,7 +129,7 @@
     &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
     &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
     &quot;prettierjs.PrettierConfiguration.Package&quot;: &quot;/Users/tanht/Documents/Github/pigmemento-app/node_modules/prettier&quot;,
-    &quot;settings.editor.selected.configurable&quot;: &quot;preferences.lookFeel&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;editor.preferences.import&quot;,
     &quot;ts.external.directory.path&quot;: &quot;/Users/tanht/Documents/Github/pigmemento-app/node_modules/typescript/lib&quot;,
     &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
   },
@@ -146,8 +146,6 @@
 }</component>
   <component name="RecentsManager">
     <key name="MoveFile.RECENT_KEYS">
-      <recent name="$PROJECT_DIR$/src/lib/helpers/model" />
-      <recent name="$PROJECT_DIR$/src/features/inference/api" />
       <recent name="$PROJECT_DIR$/src/screens/history" />
       <recent name="$PROJECT_DIR$/src/screens/review" />
       <recent name="$PROJECT_DIR$/src/components/cards" />
@@ -183,7 +181,7 @@
       <workItem from="1763133551546" duration="783000" />
       <workItem from="1763134344019" duration="12195000" />
       <workItem from="1763301275606" duration="42002000" />
-      <workItem from="1763720612389" duration="10323000" />
+      <workItem from="1763892753079" duration="2112000" />
     </task>
     <task id="LOCAL-00001" summary="added styles and tokens for consistency between scenes">
       <option name="closed" value="true" />
@@ -212,7 +210,19 @@
       <map>
         <entry key="MAIN">
           <value>
-            <State />
+            <State>
+              <option name="FILTERS">
+                <map>
+                  <entry key="branch">
+                    <value>
+                      <list>
+                        <option value="HEAD" />
+                      </list>
+                    </value>
+                  </entry>
+                </map>
+              </option>
+            </State>
           </value>
         </entry>
       </map>
