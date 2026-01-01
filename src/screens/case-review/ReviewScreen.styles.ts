@@ -11,6 +11,11 @@ export const useReviewStyles = () => {
       flex: 1,
       backgroundColor: colors.background,
     },
+    emptyText: {
+      ...typography.muted,
+      textAlign: 'center',
+      padding: spacing.lg,
+    },
     center: {
       flex: 1,
       backgroundColor: colors.background,

@@ -5,12 +5,15 @@ import { FlatList, Text, View } from 'react-native';
 import { Loader } from '@components/Loader';
 import { CaseListItemCard } from '@features/cases/components/CaseListItemCard';
 import { spacing, useTypography } from '@lib/theme';
+import { useHistoryStyles } from '../case-history/HistoryScreen.styles';
+import { useReviewStyles } from './ReviewScreen.styles';
 
 type MistakeReviewScreenProps = NativeStackScreenProps<RootStackParamList, 'MissedCaseReview'>;
 
 export const MissedCaseReviewScreen = ({ route, navigation }: MistakeReviewScreenProps) => {
   const { data = [], isLoading } = useMistakeCases();
   const typography = useTypography();
+  const styles = useReviewStyles();
 
   if (isLoading) {
     return <Loader label="Loading missed cases…" />;
@@ -28,7 +31,7 @@ export const MissedCaseReviewScreen = ({ route, navigation }: MistakeReviewScree
             onPress={() => navigation.navigate('CaseAttempt', { caseId: item.id })}
           />
         )}
-        ListEmptyComponent={<Text>No missed cases yet. Keep training!</Text>}
+        ListEmptyComponent={<Text style={styles.emptyText}>No missed cases yet. Keep training!</Text>}
       />
     </View>
   );

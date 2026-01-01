@@ -1,37 +1,41 @@
 {
   "expo": {
-    "name": "pigmemento-app",
-    "slug": "pigmemento-app",
+    "name": "pigmemento",
+    "slug": "pigmemento",
+    "owner": "tuandrengen",
     "version": "0.0.1",
     "orientation": "portrait",
-    "icon": "./assets/icon.png",
+    "icon": "./assets/pigmemento_icon.png",
     "userInterfaceStyle": "light",
     "newArchEnabled": true,
     "splash": {
-      "image": "./assets/splash-icon.png",
+      "image": "./assets/pigmemento_icon.png",
       "resizeMode": "contain",
       "backgroundColor": "#ffffff"
     },
     "plugins": [["expo-secure-store"]],
     "ios": {
       "supportsTablet": true,
-      "bundleIdentifier": "app.pigmemento.mobile"
+      "bundleIdentifier": "app.pigmemento.mobile",
+      "userInterfaceStyle": "automatic",
+      "infoPlist": {
+        "ITSAppUsesNonExemptEncryption": false
+      }
     },
     "android": {
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#ffffff"
       },
-      "edgeToEdgeEnabled": true,
-      "predictiveBackGestureEnabled": false
+      "edgeToEdgeEnabled": true
     },
     "web": {
       "favicon": "./assets/favicon.png"
     },
     "extra": {
-      "apiBaseUrl": "https://api.pigmemento.app",
+      "apiBaseUrl": "http://localhost:5197",
       "eas": {
-        "projectId": "91cc7e68-135a-4239-a94d-22a46a6f00ad"
+        "projectId": "feaea300-68de-471d-9b9e-f0a2ad3fe071"
       }
     }
   }

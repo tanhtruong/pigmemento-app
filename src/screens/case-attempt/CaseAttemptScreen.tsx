@@ -18,6 +18,7 @@ import { ChoiceButton } from '@components/buttons/ChoiceButton';
 import { useQueryClient } from '@tanstack/react-query';
 import { queryKeys } from '@lib/query-keys';
 import { Button } from '@components/buttons/Button';
+import DisclaimerBanner from '@components/DisclaimerBanner';
 
 export const attemptSchema = z.object({
   chosenLabel: labelSchema,
@@ -171,13 +172,11 @@ export default function CaseAttemptScreen({ route, navigation }: Props) {
           title={isPending || isSubmitting ? 'Submitting…' : 'Submit answer'}
           disabled={disabled}
           onPress={onPressSubmit}
-          style={{ marginTop: 14 }}
+          style={{ marginVertical: 14 }}
         />
 
         {/* Disclaimer */}
-        <Text style={styles.disclaimer}>
-          Pigmemento is for educational training only. Do not use this app to diagnose or manage patients.
-        </Text>
+        <DisclaimerBanner />
       </ScrollView>
     </View>
   );

@@ -14,6 +14,7 @@ import { Check, X } from 'lucide-react-native';
 import { useTheme } from '@lib/theme/ThemeProvider';
 import { Button } from '@components/buttons/Button';
 import { useEffect, useState } from 'react';
+import DisclaimerBanner from '@components/DisclaimerBanner';
 
 type Props = NativeStackScreenProps<RootStackParamList, 'CaseReview'>;
 
@@ -171,9 +172,7 @@ export default function CaseReviewScreen({ route, navigation }: Props) {
         </View>
 
         {/* Disclaimer */}
-        <Text style={styles.disclaimer}>
-          {attempt.disclaimer ?? 'Educational use only — not for diagnosis or patient management.'}
-        </Text>
+        <DisclaimerBanner />
       </View>
     </ScrollView>
   );
