@@ -14,7 +14,7 @@ expo-env.d.ts
 *.orig.*
 *.jks
 *.p8
-*.p12
+*.p12y
 *.key
 *.mobileprovision
 
@@ -46,3 +46,4 @@ dist
 build
 .env
 *.log
+.idea

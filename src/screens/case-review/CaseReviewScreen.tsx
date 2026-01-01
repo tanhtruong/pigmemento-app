@@ -29,10 +29,10 @@ export default function CaseReviewScreen({ route, navigation }: Props) {
 
   const [showCam, setShowCam] = useState(false);
 
-  useEffect(() => {
-    if (!caseId) return;
-    inferenceMutation.mutate(caseId);
-  }, [caseId]);
+  // useEffect(() => {
+  //   if (!caseId) return;
+  //   inferenceMutation.mutate(caseId);
+  // }, [caseId]);
 
   if (isCaseLoading || (!attempt && isAttemptLoading)) {
     return (
@@ -53,12 +53,12 @@ export default function CaseReviewScreen({ route, navigation }: Props) {
   const isCorrect = attempt.correct;
   const Result = isCorrect ? Check : X;
 
-  const inference = inferenceMutation.data;
-  const isInferenceLoading = inferenceMutation.isPending;
+  // const inference = inferenceMutation.data;
+  // const isInferenceLoading = inferenceMutation.isPending;
 
-  const hasCam = !!inference?.camPngUrl;
-  const malignantProb = inference?.probs.malignant ?? 0;
-  const benignProb = inference?.probs.benign ?? 0;
+  // const hasCam = !!inference?.camPngUrl;
+  // const malignantProb = inference?.probs.malignant ?? 0;
+  // const benignProb = inference?.probs.benign ?? 0;
 
   const handleBack = () => navigation.navigate('Dashboard');
   const handleNext = () => navigation.navigate('CaseAttempt');
@@ -67,7 +67,8 @@ export default function CaseReviewScreen({ route, navigation }: Props) {
     <ScrollView style={styles.root}>
       {/* Case image */}
       <Image
-        source={{ uri: showCam && hasCam ? inference.camPngUrl : detail.imageUrl }}
+        // source={{ uri: showCam && hasCam ? inference.camPngUrl : detail.imageUrl }}
+        source={{ uri: detail.imageUrl }}
         style={styles.image}
         resizeMode="cover"
       />
@@ -82,7 +83,7 @@ export default function CaseReviewScreen({ route, navigation }: Props) {
           />
         </View>
       )}*/}
-      <View style={styles.modelCard}>
+      {/*<View style={styles.modelCard}>
         {isInferenceLoading && <ModelLoadingAnimation />}
         {!isInferenceLoading && inference && (
           <>
@@ -97,7 +98,7 @@ export default function CaseReviewScreen({ route, navigation }: Props) {
             </View>
           </>
         )}
-      </View>
+      </View>*/}
 
       <View style={styles.body}>
         {/* Clinical context */}

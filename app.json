@@ -15,7 +15,7 @@
     "plugins": [["expo-secure-store"]],
     "ios": {
       "supportsTablet": true,
-      "bundleIdentifier": "com.anonymous.pigmemento"
+      "bundleIdentifier": "app.pigmemento.mobile"
     },
     "android": {
       "adaptiveIcon": {

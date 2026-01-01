@@ -5,62 +5,19 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="cef93490-5693-4ead-9e57-8daa86c825cd" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/.idea/.gitignore" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/modules.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/pigmemento-app.iml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/prettier.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/App.styles.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/components/form/FormTextInput.styles.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/features/cases/api/use-random-case.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/lib/theme/borders.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/lib/theme/components/buttons.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/lib/theme/components/cards.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/lib/theme/components/inputs.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/lib/theme/elevation.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/lib/theme/index.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/lib/theme/layout.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/lib/theme/motion.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/lib/theme/opacity.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/lib/theme/overlays.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/lib/theme/radii.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/lib/theme/sizing.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/lib/theme/spacing.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/lib/theme/states.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/lib/theme/typography.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/lib/theme/zIndex.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/navigation/RootNavigator.styles.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/screens/auth/Auth.styles.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/screens/cases/CaseListScreen.styles.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/screens/dashboard/DashboardScreen.styles.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/screens/quiz/QuizScreen.styles.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/screens/quiz/ReviewScreen.styles.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/App.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/App.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app.json" beforeDir="false" afterPath="$PROJECT_DIR$/app.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/codeStyles/Project.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/codeStyles/Project.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Checkout_at_22_11_2025,_15_51/shelved.patch" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Checkout_at_22_11_2025__15_51.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Update_at_22_11_2025,_15_51/shelved.patch" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Update_at_22_11_2025__15_51.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app.config.ts" beforeDir="false" afterPath="$PROJECT_DIR$/app.config.ts" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/package-lock.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/package.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/form/FormTextInput.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/form/FormTextInput.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/context/AuthContext.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/context/AuthContext.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/features/cases/api/use-cases.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/features/cases/api/use-cases.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/features/cases/api/use-submit-answer.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/features/cases/api/use-submit-answer.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/features/dashboard/api/use-daily-attempts.ts" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/features/dashboard/api/use-drills-due.ts" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/features/dashboard/api/use-progress.ts" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/features/dashboard/api/use-recent-attempts.ts" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/features/dashboard/components/recent-attempts/list-item.tsx" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/lib/query-keys.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/lib/query-keys.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/lib/theme/colors.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/lib/theme/colors.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/lib/types/attempt.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/lib/types/attempt.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/lib/types/auth.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/lib/types/auth.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/lib/types/case.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/lib/types/case.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/navigation/RootNavigator.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/navigation/RootNavigator.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/screens/auth/AuthLayout.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/screens/auth/AuthLayout.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/screens/auth/LoginScreen.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/screens/auth/LoginScreen.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/screens/auth/RegisterScreen.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/screens/auth/RegisterScreen.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/screens/cases/CaseListScreen.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/screens/cases/CaseListScreen.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/cards/StatCard.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/cards/StatCard.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/screens/case-review/CaseReviewScreen.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/screens/case-review/CaseReviewScreen.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/screens/dashboard/DashboardScreen.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/screens/dashboard/DashboardScreen.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/screens/quiz/QuizScreen.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/screens/quiz/QuizScreen.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/screens/quiz/ReviewScreen.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/screens/quiz/ReviewScreen.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/screens/drill/DrillSummaryScreen.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/screens/drill/DrillSummaryScreen.tsx" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -119,7 +76,9 @@
     &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
     &quot;RunOnceActivity.TerminalTabsStorage.copyFrom.TerminalArrangementManager.252&quot;: &quot;true&quot;,
     &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.typescript.service.memoryLimit.init&quot;: &quot;true&quot;,
     &quot;git-widget-placeholder&quot;: &quot;develop&quot;,
+    &quot;javascript.preferred.runtime.type.id&quot;: &quot;node&quot;,
     &quot;last_opened_file_path&quot;: &quot;/Users/tanht/Documents/Github/pigmemento-app&quot;,
     &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
     &quot;node.js.detected.package.standard&quot;: &quot;true&quot;,
@@ -129,7 +88,7 @@
     &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
     &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
     &quot;prettierjs.PrettierConfiguration.Package&quot;: &quot;/Users/tanht/Documents/Github/pigmemento-app/node_modules/prettier&quot;,
-    &quot;settings.editor.selected.configurable&quot;: &quot;editor.preferences.import&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;org.jetbrains.plugins.github.ui.GithubSettingsConfigurable&quot;,
     &quot;ts.external.directory.path&quot;: &quot;/Users/tanht/Documents/Github/pigmemento-app/node_modules/typescript/lib&quot;,
     &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
   },
@@ -154,7 +113,7 @@
   <component name="SharedIndexes">
     <attachedChunks>
       <set>
-        <option value="bundled-js-predefined-d6986cc7102b-3aa1da707db6-JavaScript-WS-252.27397.92" />
+        <option value="bundled-js-predefined-d6986cc7102b-c7e53b3be11b-JavaScript-WS-253.28294.332" />
       </set>
     </attachedChunks>
   </component>
@@ -182,6 +141,11 @@
       <workItem from="1763134344019" duration="12195000" />
       <workItem from="1763301275606" duration="42002000" />
       <workItem from="1763892753079" duration="2112000" />
+      <workItem from="1763905273576" duration="5981000" />
+      <workItem from="1765979735290" duration="79000" />
+      <workItem from="1765979821957" duration="17000" />
+      <workItem from="1765979845976" duration="1417000" />
+      <workItem from="1766062944457" duration="1302000" />
     </task>
     <task id="LOCAL-00001" summary="added styles and tokens for consistency between scenes">
       <option name="closed" value="true" />

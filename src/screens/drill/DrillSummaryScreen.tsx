@@ -37,7 +37,10 @@ export default function DrillSummaryScreen({
       >
         {/* Header */}
         <View style={styles.header}>
-          <CheckCircle size={64} />
+          <CheckCircle
+            size={64}
+            color={colors.accent}
+          />
           <Text style={styles.title}>Drill complete</Text>
           <Text style={styles.subtitle}>{accuracyLabel} session</Text>
         </View>

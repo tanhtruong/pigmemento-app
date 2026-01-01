@@ -76,7 +76,7 @@ const DashboardScreen: React.FC = () => {
 
         <SecondaryCard
           title="Case Library"
-          description="See a dermatoscopic case and choose benign vs malignant."
+          description="Browse dermatoscopic cases."
           icon={Book}
           onPress={() => navigation.navigate('CaseLibrary')}
         />

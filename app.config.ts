@@ -2,6 +2,7 @@ import { ExpoConfig, ConfigContext } from 'expo/config';
 
 export default ({ config }: ConfigContext): ExpoConfig => {
   const ENV = process.env.APP_ENV || 'dev';
+  // const apiBaseUrl = 'https://api.pigmemento.app';
   const apiBaseUrl =
     ENV === 'prod'
       ? 'https://api.pigmemento.app'
@@ -13,7 +14,7 @@ export default ({ config }: ConfigContext): ExpoConfig => {
     ...config,
     name: 'Pigmemento',
     slug: 'pigmemento',
-    userInterfaceStyle: 'automatic', // 👈 key bit
+    userInterfaceStyle: 'automatic',
     ios: {
       ...(config.ios || {}),
       userInterfaceStyle: 'automatic',

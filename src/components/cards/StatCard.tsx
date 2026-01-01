@@ -39,6 +39,7 @@ const useStatCardStyles = () => {
     },
     value: {
       fontWeight: 'bold',
+      color: colors.textPrimary,
     },
   });
 };
