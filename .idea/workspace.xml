@@ -5,12 +5,8 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="cef93490-5693-4ead-9e57-8daa86c825cd" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/src/screens/profile/SourcesScreen.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/navigation/RootNavigator.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/navigation/RootNavigator.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/screens/case-attempt/CaseAttemptScreen.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/screens/case-attempt/CaseAttemptScreen.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/screens/case-review/CaseReviewScreen.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/screens/case-review/CaseReviewScreen.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/screens/profile/ProfileScreen.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/screens/profile/ProfileScreen.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app.json" beforeDir="false" afterPath="$PROJECT_DIR$/app.json" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -143,7 +139,7 @@
       <workItem from="1765979845976" duration="1417000" />
       <workItem from="1766062944457" duration="1302000" />
       <workItem from="1767283992433" duration="13562000" />
-      <workItem from="1767876770535" duration="5919000" />
+      <workItem from="1767876770535" duration="10605000" />
     </task>
     <task id="LOCAL-00001" summary="added styles and tokens for consistency between scenes">
       <option name="closed" value="true" />
