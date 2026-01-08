@@ -15,6 +15,7 @@ import { MissedCaseReviewScreen } from '../screens/case-review/MissedCaseReviewS
 import LoginScreen from '../screens/auth/LoginScreen';
 import RegisterScreen from '../screens/auth/RegisterScreen';
 import CaseHistoryScreen from '../screens/case-history/CaseHistoryScreen';
+import SourcesScreen from '../screens/profile/SourcesScreen';
 
 export type RootStackParamList = {
   Login: undefined;
@@ -28,6 +29,7 @@ export type RootStackParamList = {
   Drill: { limit: number } | undefined;
   DrillSummary: { total: number; correct: number; averageTimeMs: number } | undefined;
   Profile: undefined;
+  Sources: undefined;
 };
 
 const Stack = createNativeStackNavigator<RootStackParamList>();
@@ -106,6 +108,11 @@ export default function RootNavigator() {
               name="Profile"
               component={ProfileScreen}
               options={{ title: 'Profile' }}
+            />
+            <Stack.Screen
+              name="Sources"
+              component={SourcesScreen}
+              options={{ title: 'Sources & References' }}
             />
             <Stack.Screen
               name="MissedCaseReview"

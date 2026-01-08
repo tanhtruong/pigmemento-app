@@ -121,7 +121,7 @@ export default function CaseAttemptScreen({ route, navigation }: Props) {
     <View style={styles.root}>
       <ScrollView
         style={{ flex: 1 }}
-        contentContainerStyle={styles.scrollContent}
+        contentContainerStyle={[styles.scrollContent, { flexGrow: 1 }]}
         bounces={false}
       >
         {/* Image */}
@@ -175,8 +175,19 @@ export default function CaseAttemptScreen({ route, navigation }: Props) {
           style={{ marginVertical: 14 }}
         />
 
-        {/* Disclaimer */}
-        <DisclaimerBanner />
+        <View style={{ marginTop: 'auto' }}>
+          <Pressable
+            onPress={() => navigation.navigate('Sources')}
+            style={{ alignSelf: 'center', marginBottom: 8 }}
+          >
+            <Text style={{ color: colors.textSecondary, fontSize: 12 }}>
+              Educational references available in Sources
+            </Text>
+          </Pressable>
+
+          {/* Disclaimer */}
+          <DisclaimerBanner />
+        </View>
       </ScrollView>
     </View>
   );

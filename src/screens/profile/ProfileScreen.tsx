@@ -1,14 +1,5 @@
 import React from 'react';
-import {
-  View,
-  Text,
-  StyleSheet,
-  ScrollView,
-  Pressable,
-  ActivityIndicator,
-  Alert,
-  TouchableOpacity,
-} from 'react-native';
+import { View, Text, StyleSheet, ScrollView, ActivityIndicator, Alert, TouchableOpacity } from 'react-native';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { RootStackParamList } from 'navigation/RootNavigator';
 import { useAuth } from '../../context/AuthContext';
@@ -22,12 +13,15 @@ import { useDeleteAccount } from '@features/profile/api/use-delete-account';
 import { useTheme } from '@lib/theme/ThemeProvider';
 import { LogOut } from 'lucide-react-native';
 import { Button } from '@components/buttons/Button';
+import { useNavigation } from '@react-navigation/native';
 
 type Props = NativeStackScreenProps<RootStackParamList, 'Profile'>;
 
 export default function ProfileScreen({}: Props) {
   const { logout } = useAuth();
   const styles = useProfileStyles();
+
+  const navigation = useNavigation<any>();
 
   const { data: user, isLoading: isProfileLoading } = useProfile();
   const { data: stats, isLoading: isStatsLoading } = useProfileStats();
@@ -158,6 +152,23 @@ export default function ProfileScreen({}: Props) {
         )}
       </View>
 
+      {/* About */}
+      <View style={styles.card}>
+        <Text style={styles.sectionTitle}>About</Text>
+
+        <TouchableOpacity
+          style={styles.linkRow}
+          onPress={() => navigation.navigate('Sources')}
+        >
+          <Text style={styles.linkText}>Sources & References</Text>
+          <Text style={styles.linkChevron}>›</Text>
+        </TouchableOpacity>
+
+        <Text style={styles.bodyText}>
+          Pigmemento includes educational medical content. View the sources and references used for teaching points.
+        </Text>
+      </View>
+
       <View style={{ flex: 1 }} />
 
       <View style={styles.dangerCard}>
@@ -283,6 +294,29 @@ const useProfileStyles = () => {
       ...typography.small,
       color: colors.textSecondary,
       marginBottom: spacing.md,
+    },
+
+    linkRow: {
+      flexDirection: 'row',
+      alignItems: 'center',
+      justifyContent: 'space-between',
+      paddingVertical: spacing.sm,
+      paddingHorizontal: spacing.sm,
+      borderRadius: radii.card,
+      backgroundColor: colors.background,
+      marginBottom: spacing.sm,
+    },
+
+    linkText: {
+      ...typography.body,
+      color: colors.textPrimary,
+      fontWeight: '600',
+    },
+
+    linkChevron: {
+      ...typography.body,
+      color: colors.textSecondary,
+      fontSize: 18,
     },
   });
 };

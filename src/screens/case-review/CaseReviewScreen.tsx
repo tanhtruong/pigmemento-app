@@ -26,9 +26,9 @@ export default function CaseReviewScreen({ route, navigation }: Props) {
   const { data: detail, isLoading: isCaseLoading } = useCase(caseId);
   const { data: attempt, isLoading: isAttemptLoading } = useLatestAttempt(caseId);
   // const { data: inference, isLoading: isInferenceLoading } = useInference(caseId);
-  const inferenceMutation = useInference();
+  // const inferenceMutation = useInference();
 
-  const [showCam, setShowCam] = useState(false);
+  // const [showCam, setShowCam] = useState(false);
 
   // useEffect(() => {
   //   if (!caseId) return;
@@ -136,7 +136,15 @@ export default function CaseReviewScreen({ route, navigation }: Props) {
 
         {/* Teaching points */}
         <View style={styles.teachingCard}>
-          <Text style={styles.clinicalLabel}>Teaching points</Text>
+          <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' }}>
+            <Text style={styles.clinicalLabel}>Teaching points</Text>
+            <Pressable
+              onPress={() => navigation.navigate('Sources')}
+              hitSlop={10}
+            >
+              <Text style={{ color: colors.accent, textDecorationLine: 'underline', fontSize: 12 }}>Sources</Text>
+            </Pressable>
+          </View>
 
           {attempt.teachingPoints && attempt.teachingPoints.length > 0 ? (
             attempt.teachingPoints.map((tp, idx) => (
